@@ -5,14 +5,34 @@ import 'package:twentyfourby_seven/Utils/Mycolor.dart';
 import 'package:twentyfourby_seven/Utils/addImage.dart';
 import 'package:twentyfourby_seven/Utils/commonCardHome.dart';
 import 'package:twentyfourby_seven/Utils/globalText.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class Homepage extends StatelessWidget {
   Homepage({super.key});
   var homeController = Get.put(HomeController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: homeController.scaffoldKey,
+      drawerEnableOpenDragGesture: true,
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: GlobalText('Drawer Header'),
+            ),
+            ListTile(
+              title: GlobalText('Item 1'),
+              onTap: homeController.closeDrawer,
+            )
+          ],
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -26,8 +46,18 @@ class Homepage extends StatelessWidget {
                     width: Get.width * 0.5,
                   ),
                   IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.format_list_bulleted))
+                      onPressed: () {
+                        homeController.openDrawer();
+                      },
+                      icon: Container(
+                          height: Get.height * 0.04,
+                          width: Get.width * 0.08,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(05),
+                              border: Border.all(
+                                  width: 1.0, style: BorderStyle.solid)),
+                          child:
+                              Center(child: Icon(Icons.format_list_bulleted))))
                 ],
               ),
               Divider(
@@ -111,9 +141,12 @@ class Homepage extends StatelessWidget {
                         ElevatedButton.icon(
                           onPressed: () {},
                           icon: Icon(Icons.search, color: Colors.white),
-                          label: GlobalText('Browse Locations'),
+                          label: GlobalText(
+                            'Browse Locations',
+                            fontWeight: FontWeight.w700,
+                          ),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
+                            backgroundColor: MyColor.yellowGold,
                             foregroundColor: Colors.white,
                             padding: EdgeInsets.symmetric(
                                 horizontal: 24, vertical: 12),
@@ -163,16 +196,36 @@ class Homepage extends StatelessWidget {
                 fontSize: Get.height * 0.025,
                 fontWeight: FontWeight.w700,
               ),
+              SizedBox(
+                height: Get.height * 0.02,
+              ),
               Container(
                 height: Get.height * 0.45,
                 width: Get.width * 0.8,
                 decoration: BoxDecoration(
                     border: Border.all(color: MyColor.yellowGold)),
-                child: WebView(
-                  initialUrl: homeController.url,
-                  javascriptMode: JavascriptMode.unrestricted,
+                child: YoutubePlayer(
+                  controller: homeController.youtubeController,
+                  liveUIColor: Colors.amber,
                 ),
               ),
+              SizedBox(
+                height: Get.height * 0.02,
+              ),
+              GlobalText('Recent Blogs'),
+              SizedBox(
+                height: Get.height * 0.02,
+              ),
+              Row(
+                children: [
+                  Card(
+                      child: Container(
+                    height: Get.height * 0.5,
+                    width: Get.width * 0.35,
+                    color: MyColor.nevyBlue,
+                  ))
+                ],
+              )
             ],
           ),
         ),
