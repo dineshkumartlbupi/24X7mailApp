@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:twentyfourby_seven/Home/homeController.dart';
+import 'package:twentyfourby_seven/Login/loginScreen.dart';
 import 'package:twentyfourby_seven/Utils/Mycolor.dart';
 import 'package:twentyfourby_seven/Utils/addImage.dart';
 import 'package:twentyfourby_seven/Utils/commonCardHome.dart';
@@ -27,7 +28,10 @@ class Homepage extends StatelessWidget {
               child: GlobalText('Drawer Header'),
             ),
             ListTile(
-              title: GlobalText('Item 1'),
+              title: GlobalText(
+                'Login',
+                onTap: () => Get.to(() => LoginScreen()),
+              ),
               onTap: homeController.closeDrawer,
             )
           ],

@@ -55,18 +55,21 @@ class GlobalText extends StatelessWidget {
       letterSpacing: letterSpacing,
       shadows: shadows,
     );
-    return isTextSelectable == true
-        ? SelectableText(
-            text,
-            textAlign: textAlign,
-            maxLines: maxLine,
-            style: textStyle ?? fontTextStyle,
-          )
-        : Text(
-            text,
-            textAlign: textAlign,
-            maxLines: maxLine,
-            style: textStyle ?? fontTextStyle,
-          );
+    return InkWell(
+      onTap: onTap,
+      child: isTextSelectable == true
+          ? SelectableText(
+              text,
+              textAlign: textAlign,
+              maxLines: maxLine,
+              style: textStyle ?? fontTextStyle,
+            )
+          : Text(
+              text,
+              textAlign: textAlign,
+              maxLines: maxLine,
+              style: textStyle ?? fontTextStyle,
+            ),
+    );
   }
 }
