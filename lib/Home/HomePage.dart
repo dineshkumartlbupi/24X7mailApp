@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:twentyfourby_seven/Home/drawerProperty.dart';
 import 'package:twentyfourby_seven/Home/homeController.dart';
-import 'package:twentyfourby_seven/Login/loginScreen.dart';
 import 'package:twentyfourby_seven/Utils/Mycolor.dart';
 import 'package:twentyfourby_seven/Utils/addImage.dart';
 import 'package:twentyfourby_seven/Utils/commonCardHome.dart';
@@ -17,26 +17,7 @@ class Homepage extends StatelessWidget {
     return Scaffold(
       key: homeController.scaffoldKey,
       drawerEnableOpenDragGesture: true,
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: GlobalText('Drawer Header'),
-            ),
-            ListTile(
-              title: GlobalText(
-                'Login',
-                onTap: () => Get.to(() => LoginScreen()),
-              ),
-              onTap: homeController.closeDrawer,
-            )
-          ],
-        ),
-      ),
+      drawer: Drawer(child: DrawerProperty()),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -216,20 +197,6 @@ class Homepage extends StatelessWidget {
               SizedBox(
                 height: Get.height * 0.02,
               ),
-              GlobalText('Recent Blogs'),
-              SizedBox(
-                height: Get.height * 0.02,
-              ),
-              Row(
-                children: [
-                  Card(
-                      child: Container(
-                    height: Get.height * 0.5,
-                    width: Get.width * 0.35,
-                    color: MyColor.nevyBlue,
-                  ))
-                ],
-              )
             ],
           ),
         ),

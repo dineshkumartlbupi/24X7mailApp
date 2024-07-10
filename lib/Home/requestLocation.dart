@@ -30,11 +30,14 @@ class RequestLocation extends StatelessWidget {
                 ),
                 Container(
                   width: Get.width * 0.5,
-                  child: TextField(
+                  child: const TextField(
                     autofocus: true,
                     decoration: InputDecoration(
-                      fillColor: MyColor.yellowGold,
+                      fillColor: MyColor.white,
                       hintText: 'Search with Zip Code',
+                      filled: true,
+                      hintStyle: TextStyle(
+                          fontWeight: FontWeight.w700, color: MyColor.black),
                       border: OutlineInputBorder(),
                     ),
                     keyboardType: TextInputType.text,
@@ -43,6 +46,31 @@ class RequestLocation extends StatelessWidget {
               ],
             ),
           ),
+          SizedBox(
+            height: Get.height * 0.02,
+          ),
+          Center(
+            child: GlobalText(
+              'Choose your virtual address',
+              fontSize: Get.height * 0.03,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          Center(
+            child: GlobalText(
+              'Choose from our company-managed locations or an address near you',
+              fontSize: Get.height * 0.014,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+                itemCount: 4,
+                itemBuilder: (_, index) => Card(
+                      color: MyColor.yellowGold,
+                      child: GlobalText(index.toString()),
+                    )),
+          )
         ],
       ),
     );

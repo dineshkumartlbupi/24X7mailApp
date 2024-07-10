@@ -1,6 +1,10 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:http/http.dart' as http;
+import 'package:twentyfourby_seven/Utils/SharedPrefrance.dart';
+
+Map<String, dynamic>? data;
 
 Future<void> login() async {
   final url = Uri.parse('https://service.24x7mail.com/user/login');
@@ -21,11 +25,30 @@ Future<void> login() async {
 
     if (response.statusCode == 200) {
       final jsonResponse = jsonDecode(response.body);
-      print('Login successful: $jsonResponse');
+      String token = jsonResponse['token'].toString();
+      SharedPrefs.putString('Token', token);
+      var viewToken = SharedPrefs.getString('Token');
+      log('ViewToken==>$token');
+      log('ViewTokensss==>$viewToken');
     } else {
-      print('Failed to login: ${response.statusCode}');
+      log('Failed to login: ${response.statusCode}');
     }
   } catch (e) {
-    print('Error: $e');
+    log('Error: $e');
+  }
+}
+
+Future<void> ViewState() async {
+  String apiUrl = "https://service.24x7mail.com/state/233";
+  try {
+    final response = await http.get(Uri.parse(apiUrl));
+    if (response.statusCode == 200) {
+      data = json.decode(response.body);
+    } else {
+      print('Server error: ${response.statusCode}');
+    }
+  } catch (e) {
+    // Handle network error
+    print('Network error: $e');
   }
 }
