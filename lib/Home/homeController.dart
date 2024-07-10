@@ -7,7 +7,6 @@ class HomeController extends GetxController {
   final String url = 'https://www.youtube.com/watch?v=wbPV81-BgW0';
   final String linkText =
       '24x7Mail: Your Virtual Mailbox for Seamless Communication.';
-
   void openDrawer() {
     scaffoldKey.currentState?.openDrawer();
   }

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:twentyfourby_seven/Home/homeController.dart';
 import 'package:twentyfourby_seven/Utils/Mycolor.dart';
 import 'package:twentyfourby_seven/Utils/globalText.dart';
 
 class RequestLocation extends StatelessWidget {
-  const RequestLocation({super.key});
-
+  RequestLocation({super.key});
+  final homeController = Get.put(HomeController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(

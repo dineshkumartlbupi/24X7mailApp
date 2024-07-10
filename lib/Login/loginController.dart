@@ -31,6 +31,7 @@ class LoginController extends GetxController {
 
   void submit() async {
     await login();
+
     if (formKey.currentState!.validate()) {
       log('Email: ${emailController.text}');
       log('Password: ${passwordController.text}');

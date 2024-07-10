@@ -2,12 +2,14 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:http/http.dart' as http;
+import 'package:twentyfourby_seven/Service/constant.dart';
 import 'package:twentyfourby_seven/Utils/SharedPrefrance.dart';
+import 'package:twentyfourby_seven/models/OperatorModel.dart';
 
 Map<String, dynamic>? data;
 
 Future<void> login() async {
-  final url = Uri.parse('https://service.24x7mail.com/user/login');
+  final url = Uri.parse(ApiURl.userLoginUrl);
   final headers = <String, String>{
     'Content-Type': 'application/json',
   };
@@ -29,7 +31,7 @@ Future<void> login() async {
       SharedPrefs.putString('Token', token);
       var viewToken = SharedPrefs.getString('Token');
       log('ViewToken==>$token');
-      log('ViewTokensss==>$viewToken');
+      log('jsonResponse==>$jsonResponse');
     } else {
       log('Failed to login: ${response.statusCode}');
     }
@@ -38,17 +40,30 @@ Future<void> login() async {
   }
 }
 
-Future<void> ViewState() async {
-  String apiUrl = "https://service.24x7mail.com/state/233";
+Future<OperatorModel?> getOperatorApi() async {
   try {
-    final response = await http.get(Uri.parse(apiUrl));
+    final response = await http.get(Uri.parse(ApiURl.operatorUrl));
     if (response.statusCode == 200) {
-      data = json.decode(response.body);
+      var temp = OperatorModel.fromJson(jsonDecode(response.body));
+      return temp;
     } else {
-      print('Server error: ${response.statusCode}');
+      log('Server error: ${response.statusCode}');
     }
   } catch (e) {
-    // Handle network error
-    print('Network error: $e');
+    log('Network error: $e');
+  }
+}
+
+Future<void> ViewState() async {
+  try {
+    final response = await http.get(Uri.parse(ApiURl.getStateUrl));
+    if (response.statusCode == 200) {
+      data = json.decode(response.body);
+      log('data of state ==>${data?['data'][0]['name']}');
+    } else {
+      log('Server error: ${response.statusCode}');
+    }
+  } catch (e) {
+    log('Network error: $e');
   }
 }

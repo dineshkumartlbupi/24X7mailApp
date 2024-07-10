@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:twentyfourby_seven/Login/loginController.dart';
+import 'package:twentyfourby_seven/Operator/OperatorView.dart';
 import 'package:twentyfourby_seven/Utils/Mycolor.dart';
 import 'package:twentyfourby_seven/Utils/addImage.dart';
 import 'package:twentyfourby_seven/Utils/globalText.dart';
@@ -125,7 +126,10 @@ class LoginScreen extends StatelessWidget {
                                   ],
                                 ),
                                 InkWell(
-                                  onTap: () => loginController.submit(),
+                                  onTap: () {
+                                    loginController.submit();
+                                    Get.to(() => OperatorView());
+                                  },
                                   child: Container(
                                     height: Get.height * 0.05,
                                     width: Get.width,
@@ -158,8 +162,7 @@ class LoginScreen extends StatelessWidget {
                                                   TextDecoration.underline),
                                           recognizer: TapGestureRecognizer()
                                             ..onTap = () {
-                                              Get.to(() =>
-                                                  const RequestLocation());
+                                              Get.to(() => RequestLocation());
                                             },
                                         ),
                                         TextSpan(
