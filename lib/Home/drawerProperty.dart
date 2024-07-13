@@ -36,9 +36,9 @@ class DrawerProperty extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.account_box),
-            title: GlobalText('sign UP', fontWeight: FontWeight.w700,
+            title: GlobalText('sign up', fontWeight: FontWeight.w700,
                 onTap: () async {
-              await ViewState();
+              await getViewState();
               Get.to(() => RequestLocation());
             }),
             onTap: homeController.closeDrawer,

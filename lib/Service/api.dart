@@ -29,7 +29,7 @@ Future<void> login() async {
       final jsonResponse = jsonDecode(response.body);
       String token = jsonResponse['token'].toString();
       SharedPrefs.putString('Token', token);
-      var viewToken = SharedPrefs.getString('Token');
+      //var viewToken = SharedPrefs.getString('Token');
       log('ViewToken==>$token');
       log('jsonResponse==>$jsonResponse');
     } else {
@@ -52,9 +52,10 @@ Future<OperatorModel?> getOperatorApi() async {
   } catch (e) {
     log('Network error: $e');
   }
+  return OperatorModel();
 }
 
-Future<void> ViewState() async {
+Future<void> getViewState() async {
   try {
     final response = await http.get(Uri.parse(ApiURl.getStateUrl));
     if (response.statusCode == 200) {

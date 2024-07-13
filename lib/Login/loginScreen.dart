@@ -112,7 +112,7 @@ class LoginScreen extends StatelessWidget {
                                     ),
                                     GlobalText('Remember me'),
                                     SizedBox(
-                                      width: Get.width * 0.15,
+                                      width: Get.width * 0.1,
                                     ),
                                     InkWell(
                                       onTap: () {
