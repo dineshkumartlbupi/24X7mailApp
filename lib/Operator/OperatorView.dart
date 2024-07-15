@@ -213,7 +213,12 @@ class OperatorView extends StatelessWidget {
                               children: [
                                 CircleAvatar(child: Icon(Icons.edit)),
                                 CircleAvatar(child: Icon(Icons.update)),
-                                CircleAvatar(child: Icon(Icons.clear)),
+                                InkWell(
+                                    onTap: () async {
+                                      //await postOperatorRejectApi(operatorData?.id.toString() ?? '');
+                                    },
+                                    child:
+                                        CircleAvatar(child: Icon(Icons.clear))),
                               ],
                             )
                           ],

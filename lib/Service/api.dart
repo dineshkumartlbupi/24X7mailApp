@@ -55,6 +55,34 @@ Future<OperatorModel?> getOperatorApi() async {
   return OperatorModel();
 }
 
+Future<void> postOperatorRejectApi(String uId) async {
+  try {
+    final response = await http
+        .post(Uri.parse(ApiURl.postOperatorReject), body: {'user_id': uId});
+    if (response.statusCode == 200) {
+      var checkStatus = jsonDecode(response.body);
+      log('checkStatus $checkStatus');
+      return checkStatus;
+    } else {
+      log('Server error: ${response.statusCode}');
+    }
+  } catch (e) {
+    log('Network error: $e');
+  }
+}
+
+Future<void> deleteOperator() async {
+  try {
+    final response = await http.delete(Uri.parse(ApiURl.deleteOperatorApi));
+    if (response.statusCode == 200) {
+      var deleteResponse = jsonDecode(response.body);
+      log('deleteResponse=>$deleteResponse');
+    }
+  } catch (e) {
+    log('manage $e');
+  }
+}
+
 Future<void> getViewState() async {
   try {
     final response = await http.get(Uri.parse(ApiURl.getStateUrl));
