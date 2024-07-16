@@ -4,11 +4,13 @@ class APIConstants {
 
   ///GetApis Operators
   static const String operatorLink = 'operator/list';
-  static const String getStateList = 'state';
+
+  static const String getStateList = 'state/233';
+  static const String county = 'feature-country';
+
   static const String addOperator = 'operator/register';
   static const String rejectOperator = 'operator/reject';
   static const String deleteOperator = 'operator/delete';
-  // https://service.24x7mail.com/operator/delete
 }
 
 class ApiURl {
@@ -20,4 +22,5 @@ class ApiURl {
   static const String postOperatorReject =
       baseUrl + APIConstants.rejectOperator;
   static const String deleteOperatorApi = baseUrl + APIConstants.deleteOperator;
+  static const String getCountryApi = baseUrl + APIConstants.county;
 }

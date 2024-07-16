@@ -6,6 +6,13 @@ import '../Service/api.dart';
 
 class OperatorController extends GetxController {
   Rx<OperatorModel> operatorView = OperatorModel().obs;
+  var selectedValue = 'All'.obs;
+  String? _selectedCountry;
+  List<dynamic> countries = [].obs;
+
+  void updateValue(String newValue) {
+    selectedValue.value = newValue;
+  }
 
   Future<void> getOperatorList() async {
     operatorView.value = await getOperatorApi() ?? operatorView.value;
@@ -30,6 +37,14 @@ class OperatorController extends GetxController {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            TextField(
+              controller: businessNameController,
+              decoration: InputDecoration(
+                  labelText: 'Business Name', border: OutlineInputBorder()),
+            ),
+            SizedBox(
+              height: Get.height * 0.02,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -62,18 +77,18 @@ class OperatorController extends GetxController {
             SizedBox(
               height: Get.height * 0.02,
             ),
-            TextField(
-              controller: businessNameController,
-              decoration: InputDecoration(
-                  labelText: 'Business Name', border: OutlineInputBorder()),
-            ),
-            SizedBox(
-              height: Get.height * 0.02,
-            ),
-            TextField(
-              controller: countryController,
-              decoration: InputDecoration(
-                  labelText: 'Country', border: OutlineInputBorder()),
+            DropdownButton<String>(
+              hint: Text('Select a Country'),
+              value: _selectedCountry,
+              onChanged: (String? newValue) {
+                _selectedCountry = newValue;
+              },
+              items: countries.map<DropdownMenuItem<String>>((country) {
+                return DropdownMenuItem<String>(
+                  value: country['name'],
+                  child: Text(country['name']),
+                );
+              }).toList(),
             ),
             SizedBox(
               height: Get.height * 0.02,

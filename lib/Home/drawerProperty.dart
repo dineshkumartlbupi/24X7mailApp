@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:twentyfourby_seven/Home/requestLocation.dart';
+import 'package:twentyfourby_seven/SignUp/signUpView.dart';
 import 'package:twentyfourby_seven/Utils/Mycolor.dart';
 import 'package:twentyfourby_seven/Utils/addImage.dart';
 
@@ -75,7 +76,7 @@ class DrawerProperty extends StatelessWidget {
             title: GlobalText(
               'Partner Program',
               fontWeight: FontWeight.w700,
-              onTap: () => Get.to(() => LoginScreen()),
+              onTap: () => Get.to(() => SignUpView()),
             ),
             onTap: homeController.closeDrawer,
           ),

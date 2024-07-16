@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:twentyfourby_seven/Home/drawerProperty.dart';
 import 'package:twentyfourby_seven/Operator/operatorController.dart';
+import 'package:twentyfourby_seven/Utils/Mycolor.dart';
 import 'package:twentyfourby_seven/Utils/addImage.dart';
 import 'package:twentyfourby_seven/Utils/globalText.dart';
 
@@ -16,6 +17,24 @@ class OperatorView extends StatelessWidget {
       drawer: Drawer(child: DrawerProperty()),
       appBar: AppBar(
           actions: [
+            Obx(() => DropdownButton<String>(
+                  value: opController.selectedValue.value,
+                  items: <String>['All', 'Rejected', 'Pending', 'Approved']
+                      .map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    if (newValue != null) {
+                      opController.updateValue(newValue);
+                    }
+                  },
+                )),
+            SizedBox(
+              width: Get.width * 0.05,
+            ),
             Image.asset(
               AddImage.homeLogo,
               height: Get.height * 0.04,
@@ -61,6 +80,10 @@ class OperatorView extends StatelessWidget {
                         opController.operatorView.value.data?[index];
                     return Card(
                       elevation: 10,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          side: BorderSide(
+                              color: MyColor.cardIColorIndigo, width: 2.0)),
                       margin: EdgeInsets.symmetric(
                           vertical: Get.height * 0.015,
                           horizontal: Get.width * 0.02),
@@ -73,6 +96,7 @@ class OperatorView extends StatelessWidget {
                             Align(
                                 alignment: Alignment.centerLeft,
                                 child: CircleAvatar(
+                                  backgroundColor: MyColor.yellowGold,
                                   radius: 10,
                                   child: GlobalText(
                                     '${index + 1}',
@@ -110,7 +134,7 @@ class OperatorView extends StatelessWidget {
                             Row(
                               children: [
                                 GlobalText(
-                                  'BUSINESS NAME',
+                                  'BUSINESS NAME :',
                                   fontWeight: FontWeight.w700,
                                   fontSize: Get.height * 0.015,
                                 ),
@@ -122,58 +146,70 @@ class OperatorView extends StatelessWidget {
                               ],
                             ),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                GlobalText(
-                                  'COUNTRY',
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: Get.height * 0.015,
+                                Row(
+                                  children: [
+                                    GlobalText(
+                                      'COUNTRY :',
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: Get.height * 0.015,
+                                    ),
+                                    GlobalText(
+                                      operatorData?.country?.name.toString() ??
+                                          '',
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: Get.height * 0.014,
+                                    ),
+                                  ],
                                 ),
-                                GlobalText(
-                                  operatorData?.country.toString() ?? '',
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: Get.height * 0.014,
+                                Row(
+                                  children: [
+                                    GlobalText(
+                                      'STATE :',
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: Get.height * 0.015,
+                                    ),
+                                    GlobalText(
+                                      operatorData?.state?.name.toString() ??
+                                          '',
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: Get.height * 0.014,
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                GlobalText(
-                                  'STATE :',
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: Get.height * 0.015,
+                                Row(
+                                  children: [
+                                    GlobalText(
+                                      'CITY :',
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: Get.height * 0.015,
+                                    ),
+                                    GlobalText(
+                                      operatorData?.city?.name.toString() ?? '',
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: Get.height * 0.014,
+                                    ),
+                                  ],
                                 ),
-                                GlobalText(
-                                  operatorData?.state.toString() ?? '',
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: Get.height * 0.014,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                GlobalText(
-                                  'CITY :',
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: Get.height * 0.015,
-                                ),
-                                GlobalText(
-                                  operatorData?.city.toString() ?? '',
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: Get.height * 0.014,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                GlobalText(
-                                  'ZIP CODE :',
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: Get.height * 0.015,
-                                ),
-                                GlobalText(
-                                  operatorData?.zipCode.toString() ?? '',
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: Get.height * 0.014,
+                                Row(
+                                  children: [
+                                    GlobalText(
+                                      'ZIP CODE :',
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: Get.height * 0.015,
+                                    ),
+                                    GlobalText(
+                                      operatorData?.zipCode.toString() ?? '',
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: Get.height * 0.014,
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
@@ -211,14 +247,24 @@ class OperatorView extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                CircleAvatar(child: Icon(Icons.edit)),
-                                CircleAvatar(child: Icon(Icons.update)),
+                                const CircleAvatar(
+                                  child: Icon(
+                                    Icons.edit,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: Get.height * 0.012,
+                                ),
+                                const CircleAvatar(child: Icon(Icons.update)),
+                                SizedBox(
+                                  width: Get.height * 0.012,
+                                ),
                                 InkWell(
                                     onTap: () async {
                                       //await postOperatorRejectApi(operatorData?.id.toString() ?? '');
                                     },
-                                    child:
-                                        CircleAvatar(child: Icon(Icons.clear))),
+                                    child: const CircleAvatar(
+                                        child: Icon(Icons.clear))),
                               ],
                             )
                           ],

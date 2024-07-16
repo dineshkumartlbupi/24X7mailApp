@@ -1,12 +1,17 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:twentyfourby_seven/Operator/operatorController.dart';
 import 'package:twentyfourby_seven/Service/constant.dart';
+import 'package:twentyfourby_seven/SignUp/signUpController.dart';
 import 'package:twentyfourby_seven/Utils/SharedPrefrance.dart';
 import 'package:twentyfourby_seven/models/OperatorModel.dart';
 
 Map<String, dynamic>? data;
+var operatorController = Get.put(OperatorController());
+var signController = Get.put(SignupController());
 
 Future<void> login() async {
   final url = Uri.parse(ApiURl.userLoginUrl);
@@ -87,12 +92,29 @@ Future<void> getViewState() async {
   try {
     final response = await http.get(Uri.parse(ApiURl.getStateUrl));
     if (response.statusCode == 200) {
-      data = json.decode(response.body);
-      log('data of state ==>${data?['data'][0]['name']}');
+      final Map<String, dynamic> parsedJson = json.decode(response.body);
+      final List<dynamic> stateData = parsedJson['data'];
+      final List<String> stateNames =
+          stateData.map((state) => state['name'] as String).toList();
+
+      signController.setStates(stateNames);
+      log('stateNames ${stateNames}');
     } else {
       log('Server error: ${response.statusCode}');
     }
   } catch (e) {
     log('Network error: $e');
+  }
+}
+
+Future<void> fetchCountries() async {
+  final response = await http.get(Uri.parse(ApiURl.getCountryApi));
+  if (response.statusCode == 200) {
+    final Map<String, dynamic> data = json.decode(response.body);
+    if (data['status'] == true) {
+      operatorController.countries = data['data'];
+    }
+  } else {
+    throw Exception('Failed to load countries');
   }
 }
