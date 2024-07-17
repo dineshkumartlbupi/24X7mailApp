@@ -1,8 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:twentyfourby_seven/Customer/customerView.dart';
 import 'package:twentyfourby_seven/Login/loginController.dart';
-import 'package:twentyfourby_seven/Operator/OperatorView.dart';
 import 'package:twentyfourby_seven/Utils/Mycolor.dart';
 import 'package:twentyfourby_seven/Utils/addImage.dart';
 import 'package:twentyfourby_seven/Utils/globalText.dart';
@@ -128,7 +128,8 @@ class LoginScreen extends StatelessWidget {
                                 InkWell(
                                   onTap: () {
                                     loginController.submit();
-                                    Get.to(() => OperatorView());
+                                    //Get.to(() => OperatorView());
+                                    Get.to(() => CustomerView());
                                   },
                                   child: Container(
                                     height: Get.height * 0.05,

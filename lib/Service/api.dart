@@ -19,7 +19,7 @@ Future<void> login() async {
     'Content-Type': 'application/json',
   };
   final body = jsonEncode({
-    'email': 'admin@gmail.com',
+    'email': 'ashutosh@yopmail.com',
     'password': '123456',
   });
 
@@ -33,10 +33,15 @@ Future<void> login() async {
     if (response.statusCode == 200) {
       final jsonResponse = jsonDecode(response.body);
       String token = jsonResponse['token'].toString();
+      String customerID = jsonResponse['data']['_id'];
+      String firstName = jsonResponse['data']['fname'];
+      String lastName = jsonResponse['data']['lname'];
       SharedPrefs.putString('Token', token);
-      //var viewToken = SharedPrefs.getString('Token');
-      log('ViewToken==>$token');
-      log('jsonResponse==>$jsonResponse');
+      SharedPrefs.putString('cID', customerID);
+      SharedPrefs.putString('firstNAme', firstName);
+      SharedPrefs.putString('lastNAme', lastName);
+      var viewCID = SharedPrefs.getString('cID');
+      //log('jsonResponse==>${jsonResponse['data']}');
     } else {
       log('Failed to login: ${response.statusCode}');
     }
