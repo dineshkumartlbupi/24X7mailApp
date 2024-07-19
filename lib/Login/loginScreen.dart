@@ -83,7 +83,7 @@ class LoginScreen extends StatelessWidget {
                                                   color: MyColor.nevyBlue),
                                     ),
                                     labelText: 'Enter Password',
-                                    border: OutlineInputBorder(),
+                                    border: const OutlineInputBorder(),
                                     errorStyle: TextStyle(color: Colors.red),
                                   ),
                                   obscureText:
@@ -115,9 +115,8 @@ class LoginScreen extends StatelessWidget {
                                       width: Get.width * 0.1,
                                     ),
                                     InkWell(
-                                      onTap: () {
-                                        loginController.forgotPassword();
-                                      },
+                                      onTap: () =>
+                                          loginController.forgotPassword(),
                                       child: GlobalText(
                                         'Forgot your Password?',
                                         color: Colors.black,

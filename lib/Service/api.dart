@@ -8,6 +8,7 @@ import 'package:twentyfourby_seven/Service/constant.dart';
 import 'package:twentyfourby_seven/SignUp/signUpController.dart';
 import 'package:twentyfourby_seven/Utils/SharedPrefrance.dart';
 import 'package:twentyfourby_seven/models/OperatorModel.dart';
+import 'package:twentyfourby_seven/models/customerMailModel.dart';
 
 Map<String, dynamic>? data;
 var operatorController = Get.put(OperatorController());
@@ -48,6 +49,25 @@ Future<void> login() async {
   } catch (e) {
     log('Error: $e');
   }
+}
+
+Future<CustomerMailModel?> getCustomerApi() async {
+  final url = Uri.parse(
+      'https://service.24x7mail.com/assign?request_comple%E2%80%A6&user_id=667d923246b74b03f473b3a7&page=1&limit=10');
+
+  try {
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final jsonData = CustomerMailModel.fromJson(jsonDecode(response.body));
+      log('customerData==>$jsonData');
+      return jsonData;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  } catch (e) {
+    print('Error: $e');
+  } finally {}
 }
 
 Future<OperatorModel?> getOperatorApi() async {
