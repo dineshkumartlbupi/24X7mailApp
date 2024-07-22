@@ -3,6 +3,9 @@ import 'package:get/get.dart';
 import 'package:twentyfourby_seven/Utils/Mycolor.dart';
 import 'package:twentyfourby_seven/Utils/addImage.dart';
 import 'package:twentyfourby_seven/Utils/globalText.dart';
+import 'package:twentyfourby_seven/customer_Address/statement_View.dart';
+
+import '../Service/api.dart';
 
 class CustomerAdd extends StatelessWidget {
   const CustomerAdd({super.key});
@@ -10,6 +13,77 @@ class CustomerAdd extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              PopupMenuButton<String>(
+                onSelected: (String newValue) async {
+                  if (newValue == 'My Address') {
+                    await getProfileApi();
+                  }
+                },
+                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                  const PopupMenuItem<String>(
+                    value: 'My Address',
+                    child: GlobalText('My Address'),
+                  ),
+                  const PopupMenuItem<String>(
+                    value: 'Address Book',
+                    child: GlobalText('Address Book'),
+                  ),
+                ],
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(Icons.supervised_user_circle_sharp),
+                    SizedBox(
+                      width: Get.width * 0.02,
+                    ),
+                    GlobalText(
+                      'User Setting',
+                      fontWeight: FontWeight.w700,
+                    ),
+                    Icon(Icons.arrow_drop_down),
+                  ],
+                ),
+              ),
+              PopupMenuButton<String>(
+                onSelected: (String newValue) {
+                  if (newValue == 'Statements') {
+                    Get.to(() => StatementView());
+                  }
+                },
+                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                  const PopupMenuItem<String>(
+                    value: 'Statements',
+                    child: GlobalText('Statements'),
+                  ),
+                  const PopupMenuItem<String>(
+                    value: 'Subscription & Billing',
+                    child: GlobalText('Subscription & Billing'),
+                  ),
+                ],
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(Icons.account_balance_rounded),
+                    SizedBox(
+                      width: Get.width * 0.02,
+                    ),
+                    GlobalText(
+                      'Account Setting',
+                      fontWeight: FontWeight.w700,
+                    ),
+                    Icon(Icons.arrow_drop_down),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
       body: Padding(
         padding: EdgeInsets.all(Get.height * 0.05),
         child: Column(
@@ -18,7 +92,7 @@ class CustomerAdd extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.location_city),
+                const Icon(Icons.location_city),
                 SizedBox(
                   width: Get.width * 0.025,
                 ),
@@ -119,7 +193,7 @@ class CustomerAdd extends StatelessWidget {
                       ElevatedButton(
                         onPressed: () {},
                         child: const GlobalText("upload"),
-                      )
+                      ),
                     ],
                   ),
                 ],

@@ -28,31 +28,40 @@ class CustomerDrawer extends StatelessWidget {
               onTap: () {},
             ),
           ),
-          PopupMenuButton<String>(
-            onSelected: (String newValue) {
-              customerController.selectedOption?.value = newValue;
-            },
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              const PopupMenuItem<String>(
-                value: 'Pending Shipment',
-                child: GlobalText('Pending Shipment'),
-              ),
-              const PopupMenuItem<String>(
-                value: 'Past Shipment',
-                child: GlobalText('Past Shipment'),
-              ),
-              const PopupMenuItem<String>(
-                value: 'Picked Up',
-                child: GlobalText('Picked Up'),
-              ),
-            ],
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Icon(Icons.open_in_browser),
-                GlobalText('Outgoing Mail'),
-                Icon(Icons.arrow_drop_down),
+          Padding(
+            padding: EdgeInsets.only(left: Get.width * 0.04),
+            child: PopupMenuButton<String>(
+              onSelected: (String newValue) {
+                customerController.selectedOption?.value = newValue;
+              },
+              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                const PopupMenuItem<String>(
+                  value: 'Pending Shipment',
+                  child: GlobalText('Pending Shipment'),
+                ),
+                const PopupMenuItem<String>(
+                  value: 'Past Shipment',
+                  child: GlobalText('Past Shipment'),
+                ),
+                const PopupMenuItem<String>(
+                  value: 'Picked Up',
+                  child: GlobalText('Picked Up'),
+                ),
               ],
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(Icons.open_in_browser),
+                  SizedBox(
+                    width: Get.width * 0.02,
+                  ),
+                  GlobalText(
+                    'Outgoing Mail',
+                    fontWeight: FontWeight.w700,
+                  ),
+                  Icon(Icons.arrow_drop_down),
+                ],
+              ),
             ),
           ),
           ListTile(
@@ -71,27 +80,36 @@ class CustomerDrawer extends StatelessWidget {
               onTap: () {},
             ),
           ),
-          PopupMenuButton<String>(
-            onSelected: (String newValue) {
-              customerController.selectedOption?.value = newValue;
-            },
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              const PopupMenuItem<String>(
-                value: 'read',
-                child: GlobalText('Read'),
-              ),
-              const PopupMenuItem<String>(
-                value: 'Past Shipment',
-                child: GlobalText('Unread'),
-              ),
-            ],
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Icon(Icons.filter_alt_rounded),
-                GlobalText('Filter'),
-                Icon(Icons.arrow_drop_down),
+          Padding(
+            padding: EdgeInsets.only(left: Get.width * 0.04),
+            child: PopupMenuButton<String>(
+              onSelected: (String newValue) {
+                customerController.selectedOption?.value = newValue;
+              },
+              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                const PopupMenuItem<String>(
+                  value: 'read',
+                  child: GlobalText('Read'),
+                ),
+                const PopupMenuItem<String>(
+                  value: 'Past Shipment',
+                  child: GlobalText('Unread'),
+                ),
               ],
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(Icons.filter_alt_rounded),
+                  SizedBox(
+                    width: Get.width * 0.02,
+                  ),
+                  GlobalText(
+                    'Filter',
+                    fontWeight: FontWeight.w700,
+                  ),
+                  Icon(Icons.arrow_drop_down),
+                ],
+              ),
             ),
           ),
         ],

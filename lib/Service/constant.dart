@@ -11,6 +11,12 @@ class APIConstants {
   static const String addOperator = 'operator/register';
   static const String rejectOperator = 'operator/reject';
   static const String deleteOperator = 'operator/delete';
+
+  ///Customer
+//  https://service.24x7mail.com/subscription/billing-statement/667d923246b74b03f473b3a7
+  // https://service.24x7mail.com/user/profile
+  static const String customerStatement = 'subscription/billing-statement/';
+  static const String customerProfile = 'user/profile';
 }
 
 class ApiURl {
@@ -23,4 +29,9 @@ class ApiURl {
       baseUrl + APIConstants.rejectOperator;
   static const String deleteOperatorApi = baseUrl + APIConstants.deleteOperator;
   static const String getCountryApi = baseUrl + APIConstants.county;
+  static const String getProfileApi = baseUrl + APIConstants.customerProfile;
+
+  ///Customer
+  static const String getStatementUrl =
+      baseUrl + APIConstants.customerStatement;
 }

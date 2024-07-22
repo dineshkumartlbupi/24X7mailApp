@@ -9,6 +9,7 @@ import 'package:twentyfourby_seven/SignUp/signUpController.dart';
 import 'package:twentyfourby_seven/Utils/SharedPrefrance.dart';
 import 'package:twentyfourby_seven/models/OperatorModel.dart';
 import 'package:twentyfourby_seven/models/customerMailModel.dart';
+import 'package:twentyfourby_seven/models/statementModell.dart';
 
 Map<String, dynamic>? data;
 var operatorController = Get.put(OperatorController());
@@ -62,6 +63,79 @@ Future<CustomerMailModel?> getCustomerApi() async {
       final jsonData = CustomerMailModel.fromJson(jsonDecode(response.body));
       log('customerData==>$jsonData');
       return jsonData;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  } catch (e) {
+    print('Error: $e');
+  } finally {}
+}
+
+Future<StatementModell?> getStatementApi() async {
+  try {
+    var userID = SharedPrefs.getString('cID');
+    final response =
+        await http.get(Uri.parse('${ApiURl.getStatementUrl}$userID'));
+    if (response.statusCode == 200) {
+      log('stat statuscode ${response.statusCode}');
+      final jsonResponse = jsonDecode(response.body);
+      final statement = StatementModell.fromJson(jsonResponse);
+      log('statementDATA==>${response.body}');
+      return statement;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  } catch (e) {
+    print('Error: $e');
+  } finally {}
+  return StatementModell();
+}
+
+Future<void> getProfileApi() async {
+  try {
+    var userID = SharedPrefs.getString('cID');
+    var token = SharedPrefs.getString('Token');
+    log('profileURl ${ApiURl.getProfileApi}');
+    final response = await http.get(
+      Uri.parse(ApiURl.getProfileApi),
+      headers: {
+        'Authorization': token,
+        //'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjdkOTIzMjQ2Yjc0YjAzZjQ3M2IzYTciLCJ1c2VyX3R5cGUiOiJ1c2VyIiwiaWF0IjoxNzIxNTU2Nzk0LCJleHAiOjE3MjE2NDMxOTR9.yNj8S55oN9C287texl_cvsc1_W1nPcYHlNy6V-Snvn4',
+      },
+    );
+    log('Profile status-code ${response.statusCode}');
+    log('profile==>${response.body}');
+
+    if (response.statusCode == 200) {
+      final jsonResponse = jsonDecode(response.body);
+      return jsonResponse;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  } catch (e) {
+    print('Error: $e');
+  } finally {}
+}
+
+Future<void> getshipment() async {
+  try {
+    var userID = SharedPrefs.getString('cID');
+    var token = SharedPrefs.getString('Token');
+
+    final response = await http.get(
+      Uri.parse(
+          'https://service.24x7mail.com/assign?request_comple…&user_id=667d923246b74b03f473b3a7&page=1&limit=10'),
+      headers: {
+        'Authorization': token,
+        //'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjdkOTIzMjQ2Yjc0YjAzZjQ3M2IzYTciLCJ1c2VyX3R5cGUiOiJ1c2VyIiwiaWF0IjoxNzIxNTU2Nzk0LCJleHAiOjE3MjE2NDMxOTR9.yNj8S55oN9C287texl_cvsc1_W1nPcYHlNy6V-Snvn4',
+      },
+    );
+    log('shipment ${response.statusCode}');
+    log('shipment==>${response.body}');
+
+    if (response.statusCode == 200) {
+      final jsonResponse = jsonDecode(response.body);
+      return jsonResponse;
     } else {
       throw Exception('Failed to load data');
     }

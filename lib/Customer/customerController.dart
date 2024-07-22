@@ -14,7 +14,9 @@ class CustomerController extends GetxController {
   var isMailChecked = false.obs;
   final RxString? selectedOption = 'Option 1'.obs;
   TextEditingController dateRangeController = TextEditingController();
+  final ScrollController scrollController = ScrollController();
   Rx<CustomerMailModel> customerModel = CustomerMailModel().obs;
+  String? baseUrl;
   @override
   void onInit() {
     getCustomerDetails();
