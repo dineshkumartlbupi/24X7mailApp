@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
+import '../Customer/customerView.dart';
 import '../Service/api.dart';
 
 class LoginController extends GetxController {
@@ -30,9 +31,10 @@ class LoginController extends GetxController {
   }
 
   void submit() async {
-    await login();
+    await login(emailController.text, passwordController.text);
 
     if (formKey.currentState!.validate()) {
+      Get.to(() => CustomerView());
       log('Email: ${emailController.text}');
       log('Password: ${passwordController.text}');
     }

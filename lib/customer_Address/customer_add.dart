@@ -3,13 +3,15 @@ import 'package:get/get.dart';
 import 'package:twentyfourby_seven/Utils/Mycolor.dart';
 import 'package:twentyfourby_seven/Utils/addImage.dart';
 import 'package:twentyfourby_seven/Utils/globalText.dart';
+import 'package:twentyfourby_seven/customer_Address/addressBook.dart';
+import 'package:twentyfourby_seven/customer_Address/customer_AddController.dart';
 import 'package:twentyfourby_seven/customer_Address/statement_View.dart';
 
 import '../Service/api.dart';
 
 class CustomerAdd extends StatelessWidget {
-  const CustomerAdd({super.key});
-
+  CustomerAdd({super.key});
+  var customerAddModel = Get.put(CustomerAddController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +23,10 @@ class CustomerAdd extends StatelessWidget {
               PopupMenuButton<String>(
                 onSelected: (String newValue) async {
                   if (newValue == 'My Address') {
-                    await getProfileApi();
+                    Get.to(() => CustomerAdd());
+                  } else if (newValue == 'Address Book') {
+                    await getShipment();
+                    Get.to(() => AddressBook());
                   }
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
@@ -37,17 +42,26 @@ class CustomerAdd extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Icon(Icons.supervised_user_circle_sharp),
+                    const Icon(
+                      Icons.supervised_user_circle_sharp,
+                      color: MyColor.brightBlue,
+                    ),
                     SizedBox(
-                      width: Get.width * 0.02,
+                      width: Get.width * 0.055,
                     ),
                     GlobalText(
                       'User Setting',
                       fontWeight: FontWeight.w700,
                     ),
+                    SizedBox(
+                      width: Get.width * 0.025,
+                    ),
                     Icon(Icons.arrow_drop_down),
                   ],
                 ),
+              ),
+              SizedBox(
+                height: Get.height * 0.002,
               ),
               PopupMenuButton<String>(
                 onSelected: (String newValue) {
@@ -68,7 +82,10 @@ class CustomerAdd extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Icon(Icons.account_balance_rounded),
+                    const Icon(
+                      Icons.account_balance_rounded,
+                      color: MyColor.brightBlue,
+                    ),
                     SizedBox(
                       width: Get.width * 0.02,
                     ),
@@ -129,29 +146,69 @@ class CustomerAdd extends StatelessWidget {
                   ),
                 ],
               ),
-              child: const Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.location_on,
-                    color: Colors.red,
+                    color: MyColor.cardIColorIndigo,
                     size: 32.0,
                   ),
-                  SizedBox(width: 16.0),
-                  Expanded(
-                    child: Text(
-                      'yuiy',
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        color: Colors.black87,
-                      ),
+                  Flexible(
+                      child: Obx(
+                    () => Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            GlobalText(
+                              customerAddModel
+                                      .propertyModel.value?.data?.username
+                                      .toString()
+                                      .toUpperCase() ??
+                                  '',
+                              fontSize: 16.0,
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w700,
+                            ),
+                            SizedBox(
+                              width: Get.width * 0.004,
+                            ),
+                            GlobalText(
+                              customerAddModel.propertyModel.value?.data?.lname
+                                      .toString()
+                                      .toUpperCase() ??
+                                  '',
+                              fontSize: 16.0,
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w700,
+                            ),
+                            GlobalText(
+                              '  #${customerAddModel.propertyModel.value?.data?.mailBoxNum.toString() ?? ''}',
+                              fontSize: 16.0,
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ],
+                        ),
+                        GlobalText(
+                          customerAddModel.propertyModel.value?.data?.feature
+                                  ?.properties?.featureDetails?.businessAddress
+                                  .toString() ??
+                              '',
+                          fontSize: 16.0,
+                          color: Colors.black87,
+                        ),
+                      ],
                     ),
-                  ),
+                  )),
                 ],
               ),
             ),
             SizedBox(
-              height: Get.height * 0.02,
+              height: Get.height * 0.04,
             ),
             GlobalText(
               'Upload USPS Form 1583 :',
@@ -161,44 +218,43 @@ class CustomerAdd extends StatelessWidget {
               height: Get.height * 0.02,
             ),
             Container(
-              height: Get.height * 0.30,
-              width: Get.width,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  border: Border.all(
-                    color: MyColor.black,
-                  )),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    AddImage.uploadIcon,
-                    height: Get.height * 0.065,
-                  ),
-                  SizedBox(
-                    height: Get.height * 0.02,
-                  ),
-                  GlobalText('Drag & Drop background image(s)'),
-                  GlobalText('or'),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: GlobalText("Choose file(s)"),
-                      ),
-                      SizedBox(
-                        width: Get.width * 0.01,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: const GlobalText("upload"),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+                padding: EdgeInsets.only(top: Get.height * 0.03),
+                height: Get.height * 0.30,
+                width: Get.width,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(
+                      color: MyColor.black,
+                    )),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Image.asset(
+                      AddImage.uploadIcon == null
+                          ? customerAddModel.image.toString()
+                          : AddImage.homeLogo,
+                      height: Get.height * 0.065,
+                    ),
+                    GlobalText('Drag & Drop background image(s)'),
+                    GlobalText('or'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {},
+                          child: GlobalText("Choose file(s)"),
+                        ),
+                        SizedBox(
+                          width: Get.width * 0.01,
+                        ),
+                        ElevatedButton(
+                          onPressed: () {},
+                          child: const GlobalText("upload"),
+                        ),
+                      ],
+                    ),
+                  ],
+                )),
           ],
         ),
       ),

@@ -15,8 +15,12 @@ class CustomerController extends GetxController {
   final RxString? selectedOption = 'Option 1'.obs;
   TextEditingController dateRangeController = TextEditingController();
   final ScrollController scrollController = ScrollController();
+  TextEditingController searchController = TextEditingController();
+
   Rx<CustomerMailModel> customerModel = CustomerMailModel().obs;
   String? baseUrl;
+  List<Data> filteredList = [];
+
   @override
   void onInit() {
     getCustomerDetails();
@@ -27,10 +31,24 @@ class CustomerController extends GetxController {
     selectedOption?.value = option;
   }
 
+  /*void _filterList() {
+    String query = searchController.text.toLowerCase();
+    filteredList = customerModel.value.data?.where((item) {
+          return item.mailId?.mailType?.toLowerCase().contains(query) ??
+              false ||
+                  item.mailId?.mailBoxId!
+                      .toString()
+                      .toLowerCase()
+                      .contains(query) ??
+              false;
+        }).toList() ??
+        [];
+  }
+*/
   Future<void> getCustomerDetails() async {
     var userID = SharedPrefs.getString('cID');
     log('userID==>$userID');
-    customerModel.value = (await getCustomerApi())!;
+    customerModel.value = (await getCustomerApi()) ?? customerModel.value;
   }
 
   final List<Map<String, dynamic>> listUserType = [

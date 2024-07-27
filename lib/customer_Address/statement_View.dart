@@ -36,7 +36,7 @@ class StatementView extends StatelessWidget {
                           fontWeight: FontWeight.w700,
                           fontSize: Get.height * 0.04,
                         ),
-                        GlobalText(
+                        const GlobalText(
                           ' Credit Balanced',
                           fontWeight: FontWeight.w500,
                         ),

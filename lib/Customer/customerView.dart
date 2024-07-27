@@ -65,6 +65,7 @@ class CustomerView extends StatelessWidget {
           Padding(
             padding: EdgeInsets.all(Get.height * 0.020),
             child: TextField(
+              controller: customerController.searchController,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.search),
                 hintText: 'Search Mail Id or Sender',
@@ -92,35 +93,43 @@ class CustomerView extends StatelessWidget {
               height: Get.height * 0.5,
               width: Get.width,
               child: Obx(
-                () => ListView.builder(
-                    itemCount:
-                        customerController.customerModel.value.data?.length,
-                    itemBuilder: (_, index) {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          customerController.customerModel.value.data?[index]
-                                      .markAsRead ==
-                                  true
-                              ? Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Row(
+                () => customerController.customerModel.value.data?.length ==
+                        null
+                    ? const Center(
+                        child: CircularProgressIndicator(
+                        color: MyColor.colorBlueHome,
+                      ))
+                    : ListView.builder(
+                        itemCount:
+                            customerController.customerModel.value.data?.length,
+                        itemBuilder: (_, index) {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              customerController.customerModel.value
+                                          .data?[index].markAsRead ==
+                                      true
+                                  ? Column(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
+                                          MainAxisAlignment.start,
                                       children: [
-                                        Obx(() => Checkbox(
-                                            value: customerController
-                                                .isMailChecked.value,
-                                            onChanged: (bool? value) {
-                                              customerController
-                                                  .isMailChecked.value = value!;
-                                            })),
                                         Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
                                           children: [
-                                            Icon(Icons.open_in_new_rounded),
-                                            GlobalText('Open and Scan'),
-                                            /*GlobalText(
+                                            Obx(() => Checkbox(
+                                                value: customerController
+                                                    .isMailChecked.value,
+                                                onChanged: (bool? value) {
+                                                  customerController
+                                                      .isMailChecked
+                                                      .value = value!;
+                                                })),
+                                            Row(
+                                              children: [
+                                                Icon(Icons.open_in_new_rounded),
+                                                GlobalText('Open and Scan'),
+                                                /*GlobalText(
                                               customerController
                                                       .customerModel
                                                       .value
@@ -130,13 +139,14 @@ class CustomerView extends StatelessWidget {
                                                   '',
                                               fontWeight: FontWeight.w700,
                                             ),*/
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Icon(Icons.local_shipping_outlined),
-                                            GlobalText('Add to Shipment'),
-                                            /* GlobalText(
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Icon(Icons
+                                                    .local_shipping_outlined),
+                                                GlobalText('Add to Shipment'),
+                                                /* GlobalText(
                                               customerController
                                                       .customerModel
                                                       .value
@@ -145,31 +155,31 @@ class CustomerView extends StatelessWidget {
                                                       .toString() ??
                                                   '',
                                             ),*/
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Icon(Icons.recycling),
-                                            GlobalText('Recycle'),
-                                            /* GlobalText(
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Icon(Icons.recycling),
+                                                GlobalText('Recycle'),
+                                                /* GlobalText(
                                               customerController.customerModel.value
                                                       .data?[index].recycle
                                                       .toString() ??
                                                   '',
                                             ),*/
+                                              ],
+                                            ),
                                           ],
                                         ),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Row(
+                                        const Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
                                           children: [
-                                            Icon(Icons.share),
-                                            GlobalText('shared'),
-                                            /* GlobalText(
+                                            Row(
+                                              children: [
+                                                Icon(Icons.share),
+                                                GlobalText('shared'),
+                                                /* GlobalText(
                                               customerController
                                                       .customerModel
                                                       .value
@@ -178,13 +188,13 @@ class CustomerView extends StatelessWidget {
                                                       .toString() ??
                                                   '',
                                             ),*/
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Icon(Icons.adf_scanner_sharp),
-                                            GlobalText('Rescan'),
-                                            /* GlobalText(
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Icon(Icons.adf_scanner_sharp),
+                                                GlobalText('Rescan'),
+                                                /* GlobalText(
                                               customerController
                                                       .customerModel
                                                       .value
@@ -193,13 +203,14 @@ class CustomerView extends StatelessWidget {
                                                       .toString() ??
                                                   '',
                                             ),*/
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Icon(Icons.local_shipping_rounded),
-                                            GlobalText('Pick UP'),
-                                            /* GlobalText(
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Icon(Icons
+                                                    .local_shipping_rounded),
+                                                GlobalText('Pick UP'),
+                                                /* GlobalText(
                                               customerController
                                                       .customerModel
                                                       .value
@@ -208,139 +219,166 @@ class CustomerView extends StatelessWidget {
                                                       .toString() ??
                                                   '',
                                             ),*/
+                                              ],
+                                            ),
                                           ],
-                                        ),
+                                        )
                                       ],
                                     )
-                                  ],
-                                )
-                              : SizedBox(),
-                          Card(
-                            color: MyColor.cardIconColor,
-                            elevation: 5,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                  : SizedBox(),
+                              Card(
+                                color: MyColor.cardIconColor,
+                                elevation: 5,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Column(
                                   children: [
-                                    Checkbox(
-                                        value: customerController.customerModel
-                                            .value.data?[index].markAsRead,
-                                        onChanged: (bool? value) {
-                                          customerController.customerModel.value
-                                                  .data?[index].markAsRead !=
-                                              value;
-                                        }),
-                                    GlobalText(
-                                      customerController.customerModel.value
-                                              .data?[index].mailId?.mailType
-                                              .toString() ??
-                                          '',
-                                      fontWeight: FontWeight.w700,
-                                      color: MyColor.black,
-                                    ),
-                                    GlobalText(
-                                      customerController.customerModel.value
-                                              .data?[index].currentStatus
-                                              .toString() ??
-                                          '',
-                                      color: MyColor.black,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    GlobalText(
-                                      customerController.customerModel.value
-                                                  .data?[index].createdAt !=
-                                              null
-                                          ? DateFormat('dd-MM-yyyy').format(
-                                              DateTime.parse(customerController
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Checkbox(
+                                            value: customerController
+                                                .customerModel
+                                                .value
+                                                .data?[index]
+                                                .markAsRead,
+                                            onChanged: (bool? value) {
+                                              customerController
                                                       .customerModel
                                                       .value
                                                       .data?[index]
-                                                      .createdAt ??
-                                                  ''))
-                                          : '',
-                                      fontWeight: FontWeight.w700,
-                                      color: MyColor.black,
+                                                      .markAsRead !=
+                                                  value;
+                                            }),
+                                        GlobalText(
+                                          customerController.customerModel.value
+                                                  .data?[index].mailId?.mailType
+                                                  .toString() ??
+                                              '',
+                                          fontWeight: FontWeight.w700,
+                                          color: MyColor.black,
+                                        ),
+                                        GlobalText(
+                                          customerController.customerModel.value
+                                                  .data?[index].currentStatus
+                                                  .toString() ??
+                                              '',
+                                          color: MyColor.black,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ],
                                     ),
-                                    Container(
-                                      height: Get.height * 0.07,
-                                      width: Get.width * 0.25,
-                                      child: ListView.builder(
-                                        itemCount: customerController
-                                                .customerModel
-                                                .value
-                                                .data
-                                                ?.length ??
-                                            0,
-                                        itemBuilder: (context, index) {
-                                          String baseUrl =
-                                              'https://service.24x7mail.com/uploads/';
-                                          String imagePath = customerController
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        GlobalText(
+                                          customerController.customerModel.value
+                                                      .data?[index].createdAt !=
+                                                  null
+                                              ? DateFormat('dd-MM-yyyy').format(
+                                                  DateTime.parse(
+                                                      customerController
+                                                              .customerModel
+                                                              .value
+                                                              .data?[index]
+                                                              .createdAt ??
+                                                          ''))
+                                              : '',
+                                          fontWeight: FontWeight.w700,
+                                          color: MyColor.black,
+                                        ),
+                                        Container(
+                                          height: Get.height * 0.07,
+                                          width: Get.width * 0.25,
+                                          child: customerController
+                                                      .customerModel
+                                                      .value
+                                                      .data
+                                                      ?.length ==
+                                                  null
+                                              ? Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                  color: MyColor.colorBlueHome,
+                                                ))
+                                              : ListView.builder(
+                                                  itemCount: customerController
+                                                          .customerModel
+                                                          .value
+                                                          .data
+                                                          ?.length ??
+                                                      0,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    String baseUrl =
+                                                        'https://service.24x7mail.com/uploads/';
+                                                    String imagePath =
+                                                        customerController
+                                                                .customerModel
+                                                                .value
+                                                                .data?[index]
+                                                                .mailId
+                                                                ?.measurement?[
+                                                                    0]
+                                                                .file ??
+                                                            '';
+                                                    String imageUrl =
+                                                        baseUrl + imagePath;
+
+                                                    return Container(
+                                                      height: Get.height * 0.07,
+                                                      width: Get.width * 0.25,
+                                                      child: GestureDetector(
+                                                        onTap: () async {
+                                                          //await getshipment();
+                                                          _showImageDialog(
+                                                              context,
+                                                              customerController
+                                                                  .customerModel
+                                                                  .value
+                                                                  .data?[index]
+                                                                  .mailId
+                                                                  ?.measurement,
+                                                              index);
+                                                        },
+                                                        child: Card(
+                                                          child: Image.network(
+                                                            imageUrl,
+                                                            fit: BoxFit.cover,
+                                                            height: Get.height *
+                                                                0.03,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                        ),
+                                        GlobalText(
+                                          customerController
                                                   .customerModel
                                                   .value
                                                   .data?[index]
                                                   .mailId
-                                                  ?.measurement?[0]
-                                                  .file ??
-                                              '';
-                                          String imageUrl = baseUrl + imagePath;
-
-                                          return Container(
-                                            height: Get.height * 0.07,
-                                            width: Get.width * 0.25,
-                                            child: GestureDetector(
-                                              onTap: () async {
-                                                //await getshipment();
-                                                _showImageDialog(
-                                                    context,
-                                                    customerController
-                                                        .customerModel
-                                                        .value
-                                                        .data?[index]
-                                                        .mailId
-                                                        ?.measurement,
-                                                    index);
-                                              },
-                                              child: Card(
-                                                child: Image.network(
-                                                  imageUrl,
-                                                  fit: BoxFit.cover,
-                                                  height: Get.height * 0.03,
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                    GlobalText(
-                                      customerController.customerModel.value
-                                              .data?[index].mailId?.mailBoxId
-                                              .toString() ??
-                                          '',
-                                      fontWeight: FontWeight.w700,
-                                      color: MyColor.black,
+                                                  ?.mailBoxId
+                                                  .toString() ??
+                                              '',
+                                          fontWeight: FontWeight.w700,
+                                          color: MyColor.black,
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: Get.height * 0.004,
-                          )
-                        ],
-                      );
-                    }),
+                              ),
+                              SizedBox(
+                                height: Get.height * 0.004,
+                              )
+                            ],
+                          );
+                        }),
               )),
         ],
       ),

@@ -9,20 +9,23 @@ import 'package:twentyfourby_seven/SignUp/signUpController.dart';
 import 'package:twentyfourby_seven/Utils/SharedPrefrance.dart';
 import 'package:twentyfourby_seven/models/OperatorModel.dart';
 import 'package:twentyfourby_seven/models/customerMailModel.dart';
+import 'package:twentyfourby_seven/models/profileModel.dart';
 import 'package:twentyfourby_seven/models/statementModell.dart';
 
 Map<String, dynamic>? data;
 var operatorController = Get.put(OperatorController());
 var signController = Get.put(SignupController());
 
-Future<void> login() async {
+Future<void> login(String email, password) async {
   final url = Uri.parse(ApiURl.userLoginUrl);
   final headers = <String, String>{
     'Content-Type': 'application/json',
   };
   final body = jsonEncode({
-    'email': 'ashutosh@yopmail.com',
-    'password': '123456',
+    'email': email,
+    'password': password,
+    //'email': 'ashutosh@yopmail.com',
+    //'password': '123456',
   });
 
   try {
@@ -53,8 +56,11 @@ Future<void> login() async {
 }
 
 Future<CustomerMailModel?> getCustomerApi() async {
+  var userID = SharedPrefs.getString('cID');
+  var token = SharedPrefs.getString('Token');
+
   final url = Uri.parse(
-      'https://service.24x7mail.com/assign?request_comple%E2%80%A6&user_id=667d923246b74b03f473b3a7&page=1&limit=10');
+      'https://service.24x7mail.com/assign?request_comple%E2%80%A6&user_id=$userID&page=1&limit=10');
 
   try {
     final response = await http.get(url);
@@ -80,7 +86,7 @@ Future<StatementModell?> getStatementApi() async {
       log('stat statuscode ${response.statusCode}');
       final jsonResponse = jsonDecode(response.body);
       final statement = StatementModell.fromJson(jsonResponse);
-      log('statementDATA==>${response.body}');
+      //log('statementDATA==>${response.body}');
       return statement;
     } else {
       throw Exception('Failed to load data');
@@ -91,7 +97,7 @@ Future<StatementModell?> getStatementApi() async {
   return StatementModell();
 }
 
-Future<void> getProfileApi() async {
+Future<UserModel?> getProfileApi() async {
   try {
     var userID = SharedPrefs.getString('cID');
     var token = SharedPrefs.getString('Token');
@@ -100,11 +106,39 @@ Future<void> getProfileApi() async {
       Uri.parse(ApiURl.getProfileApi),
       headers: {
         'Authorization': token,
-        //'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjdkOTIzMjQ2Yjc0YjAzZjQ3M2IzYTciLCJ1c2VyX3R5cGUiOiJ1c2VyIiwiaWF0IjoxNzIxNTU2Nzk0LCJleHAiOjE3MjE2NDMxOTR9.yNj8S55oN9C287texl_cvsc1_W1nPcYHlNy6V-Snvn4',
       },
     );
     log('Profile status-code ${response.statusCode}');
-    log('profile==>${response.body}');
+
+    if (response.statusCode == 200) {
+      final jsonResponse = UserModel.fromJson(jsonDecode(response.body));
+      log('profile==>$jsonResponse');
+      log('response ${response.body}');
+
+      return jsonResponse;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  } catch (e) {
+    print('Error: $e');
+  } finally {}
+  return UserModel();
+}
+
+Future<void> uploadImage() async {
+  try {
+    var userID = SharedPrefs.getString('cID');
+    var token = SharedPrefs.getString('Token');
+
+    final response = await http.post(
+      Uri.parse(ApiURl.postUploadMail),
+      body: {''},
+      headers: {
+        'Authorization': token,
+      },
+    );
+    log('shipment ${response.statusCode}');
+    log('shipment==>${response.body}');
 
     if (response.statusCode == 200) {
       final jsonResponse = jsonDecode(response.body);
@@ -117,14 +151,14 @@ Future<void> getProfileApi() async {
   } finally {}
 }
 
-Future<void> getshipment() async {
+Future<void> getShipment() async {
   try {
     var userID = SharedPrefs.getString('cID');
     var token = SharedPrefs.getString('Token');
 
     final response = await http.get(
       Uri.parse(
-          'https://service.24x7mail.com/assign?request_comple…&user_id=667d923246b74b03f473b3a7&page=1&limit=10'),
+          'https://service.24x7mail.com/assign/shipment-list?username=customer&id=$userID'),
       headers: {
         'Authorization': token,
         //'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjdkOTIzMjQ2Yjc0YjAzZjQ3M2IzYTciLCJ1c2VyX3R5cGUiOiJ1c2VyIiwiaWF0IjoxNzIxNTU2Nzk0LCJleHAiOjE3MjE2NDMxOTR9.yNj8S55oN9C287texl_cvsc1_W1nPcYHlNy6V-Snvn4',
