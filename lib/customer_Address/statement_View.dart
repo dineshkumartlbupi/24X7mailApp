@@ -12,10 +12,13 @@ class StatementView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: MyColor.backgroundLogin,
+      ),
       body: Obx(
         () => Padding(
           padding:
-              EdgeInsets.only(top: Get.height * 0.10, left: Get.width * 0.02),
+              EdgeInsets.only(top: Get.height * 0.05, left: Get.width * 0.025),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,23 +58,39 @@ class StatementView extends StatelessWidget {
               SizedBox(
                 height: Get.height * 0.02,
               ),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  GlobalText('#'),
-                  GlobalText('Date'),
-                  GlobalText('Description'),
-                  GlobalText('Amount'),
+                  GlobalText(
+                    '#',
+                    fontWeight: FontWeight.w700,
+                    fontSize: Get.height * 0.02,
+                  ),
+                  GlobalText(
+                    'Date',
+                    fontWeight: FontWeight.w700,
+                    fontSize: Get.height * 0.02,
+                  ),
+                  GlobalText(
+                    'Description',
+                    fontWeight: FontWeight.w700,
+                    fontSize: Get.height * 0.02,
+                  ),
+                  GlobalText(
+                    'Amount',
+                    fontWeight: FontWeight.w700,
+                    fontSize: Get.height * 0.02,
+                  ),
                 ],
               ),
               Container(
-                height: Get.height * 0.2,
+                height: Get.height * 0.25,
                 child: ListView.builder(
                   itemCount: addStatement.statement.value.data?.length,
                   itemBuilder: (_, index) {
                     return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         GlobalText('${index + 1}'),
@@ -89,6 +108,9 @@ class StatementView extends StatelessWidget {
                             ''),
                         GlobalText(
                             '\$${addStatement.statement.value.data?[index].amount.toString() ?? ''}'),
+                        SizedBox(
+                          height: Get.height * 0.0015,
+                        )
                       ],
                     );
                   },

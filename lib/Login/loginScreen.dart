@@ -116,7 +116,7 @@ class LoginScreen extends StatelessWidget {
                                     InkWell(
                                       onTap: () =>
                                           loginController.forgotPassword(),
-                                      child: GlobalText(
+                                      child: const GlobalText(
                                         'Forgot your Password?',
                                         color: Colors.black,
                                       ),

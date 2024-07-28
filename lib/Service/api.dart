@@ -12,6 +12,8 @@ import 'package:twentyfourby_seven/models/customerMailModel.dart';
 import 'package:twentyfourby_seven/models/profileModel.dart';
 import 'package:twentyfourby_seven/models/statementModell.dart';
 
+import '../models/SubscriptionModel.dart';
+
 Map<String, dynamic>? data;
 var operatorController = Get.put(OperatorController());
 var signController = Get.put(SignupController());
@@ -250,4 +252,31 @@ Future<void> fetchCountries() async {
   } else {
     throw Exception('Failed to load countries');
   }
+}
+
+Future<SubscriptionModel?> subscriptionApi() async {
+  try {
+    var userID = SharedPrefs.getString('cID');
+    var token = SharedPrefs.getString('Token');
+
+    final response = await http.get(
+      Uri.parse(ApiURl.subscriptionsApi),
+      headers: {
+        'Authorization': token,
+      },
+    );
+    if (response.statusCode == 200) {
+      log('subscription ==>${response.body}');
+      final jsonResponse =
+          SubscriptionModel.fromJson(jsonDecode(response.body));
+      log('subscription try==>$jsonResponse');
+
+      return jsonResponse;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  } catch (e) {
+    print('Error: $e');
+  } finally {}
+  return SubscriptionModel();
 }

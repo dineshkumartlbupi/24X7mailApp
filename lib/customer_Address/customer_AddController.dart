@@ -5,18 +5,23 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:twentyfourby_seven/Service/api.dart';
+import 'package:twentyfourby_seven/models/SubscriptionModel.dart';
 import 'package:twentyfourby_seven/models/profileModel.dart';
 import 'package:twentyfourby_seven/models/statementModell.dart';
 
 class CustomerAddController extends GetxController {
   Rx<StatementModell> statement = StatementModell().obs;
   Rx<UserModel?> propertyModel = UserModel().obs;
+  Rx<SubscriptionModel?> subscribeView = SubscriptionModel().obs;
   var image = Rx<File?>(null);
-
+  var shipmentName = ''.obs;
+  var shipmentNumber = ''.obs;
+  var shipmentDate = ''.obs;
   @override
   void onInit() {
     getStatementDetails();
     getAddressDetails();
+    getSubscribeData();
     super.onInit();
   }
 
@@ -39,5 +44,9 @@ class CustomerAddController extends GetxController {
     log('getAddress');
     propertyModel.value = await getProfileApi() ?? propertyModel.value;
     log(propertyModel.value?.data?.username.toString() ?? '');
+  }
+
+  Future<void> getSubscribeData() async {
+    subscribeView.value = await subscriptionApi();
   }
 }

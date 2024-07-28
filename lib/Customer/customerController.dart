@@ -31,12 +31,12 @@ class CustomerController extends GetxController {
     selectedOption?.value = option;
   }
 
-  /*void _filterList() {
+  void filterList() {
     String query = searchController.text.toLowerCase();
     filteredList = customerModel.value.data?.where((item) {
           return item.mailId?.mailType?.toLowerCase().contains(query) ??
               false ||
-                  item.mailId?.mailBoxId!
+                  item.mailId!.mailBoxId
                       .toString()
                       .toLowerCase()
                       .contains(query) ??
@@ -44,7 +44,7 @@ class CustomerController extends GetxController {
         }).toList() ??
         [];
   }
-*/
+
   Future<void> getCustomerDetails() async {
     var userID = SharedPrefs.getString('cID');
     log('userID==>$userID');

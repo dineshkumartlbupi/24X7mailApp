@@ -6,6 +6,7 @@ import 'package:twentyfourby_seven/Utils/globalText.dart';
 import 'package:twentyfourby_seven/customer_Address/addressBook.dart';
 import 'package:twentyfourby_seven/customer_Address/customer_AddController.dart';
 import 'package:twentyfourby_seven/customer_Address/statement_View.dart';
+import 'package:twentyfourby_seven/customer_Address/subscribeView.dart';
 
 import '../Service/api.dart';
 
@@ -67,6 +68,8 @@ class CustomerAdd extends StatelessWidget {
                 onSelected: (String newValue) {
                   if (newValue == 'Statements') {
                     Get.to(() => StatementView());
+                  } else if (newValue == 'Subscription & Billing') {
+                    Get.to(() => SubscribeView());
                   }
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[

@@ -8,6 +8,7 @@ import 'package:twentyfourby_seven/Utils/SharedPrefrance.dart';
 import 'package:twentyfourby_seven/Utils/globalText.dart';
 import 'package:twentyfourby_seven/customer_Address/customer_add.dart';
 
+import '../Utils/commonDialog.dart';
 import '../models/customerMailModel.dart';
 import 'customerController.dart';
 import 'customerDrawer.dart';
@@ -74,6 +75,10 @@ class CustomerView extends StatelessWidget {
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
               ),
+              onChanged: (value) {
+                customerController.filterList();
+                //value = customerController.searchController.value.toString();
+              },
             ),
           ),
           Padding(
@@ -128,7 +133,15 @@ class CustomerView extends StatelessWidget {
                                             Row(
                                               children: [
                                                 Icon(Icons.open_in_new_rounded),
-                                                GlobalText('Open and Scan'),
+                                                GlobalText(
+                                                  'Open and Scan',
+                                                  onTap: () {
+                                                    Get.dialog(CommonDialog(
+                                                        title: 'Open and Scan',
+                                                        content:
+                                                            GlobalText('')));
+                                                  },
+                                                ),
                                                 /*GlobalText(
                                               customerController
                                                       .customerModel
@@ -145,7 +158,15 @@ class CustomerView extends StatelessWidget {
                                               children: [
                                                 Icon(Icons
                                                     .local_shipping_outlined),
-                                                GlobalText('Add to Shipment'),
+                                                GlobalText(
+                                                  'Add to Shipment',
+                                                  onTap: () {
+                                                    Get.dialog(CommonDialog(
+                                                      title: 'Add to Shipment',
+                                                      content: GlobalText(''),
+                                                    ));
+                                                  },
+                                                ),
                                                 /* GlobalText(
                                               customerController
                                                       .customerModel
@@ -160,7 +181,15 @@ class CustomerView extends StatelessWidget {
                                             Row(
                                               children: [
                                                 Icon(Icons.recycling),
-                                                GlobalText('Recycle'),
+                                                GlobalText(
+                                                  'Recycle',
+                                                  onTap: () {
+                                                    Get.dialog(CommonDialog(
+                                                        title: 'Recycle',
+                                                        content:
+                                                            GlobalText('')));
+                                                  },
+                                                ),
                                                 /* GlobalText(
                                               customerController.customerModel.value
                                                       .data?[index].recycle
@@ -171,14 +200,22 @@ class CustomerView extends StatelessWidget {
                                             ),
                                           ],
                                         ),
-                                        const Row(
+                                        Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceAround,
                                           children: [
                                             Row(
                                               children: [
                                                 Icon(Icons.share),
-                                                GlobalText('shared'),
+                                                GlobalText(
+                                                  'shared',
+                                                  onTap: () {
+                                                    Get.dialog(CommonDialog(
+                                                        title: 'shared',
+                                                        content:
+                                                            GlobalText('')));
+                                                  },
+                                                ),
                                                 /* GlobalText(
                                               customerController
                                                       .customerModel
@@ -193,7 +230,15 @@ class CustomerView extends StatelessWidget {
                                             Row(
                                               children: [
                                                 Icon(Icons.adf_scanner_sharp),
-                                                GlobalText('Rescan'),
+                                                GlobalText(
+                                                  'Rescan',
+                                                  onTap: () {
+                                                    Get.dialog(CommonDialog(
+                                                        title: 'Rescan',
+                                                        content:
+                                                            GlobalText('')));
+                                                  },
+                                                ),
                                                 /* GlobalText(
                                               customerController
                                                       .customerModel
@@ -209,7 +254,15 @@ class CustomerView extends StatelessWidget {
                                               children: [
                                                 Icon(Icons
                                                     .local_shipping_rounded),
-                                                GlobalText('Pick UP'),
+                                                GlobalText(
+                                                  'Pick UP',
+                                                  onTap: () {
+                                                    Get.dialog(CommonDialog(
+                                                        title: 'Pick UP',
+                                                        content:
+                                                            GlobalText('')));
+                                                  },
+                                                ),
                                                 /* GlobalText(
                                               customerController
                                                       .customerModel
@@ -464,10 +517,16 @@ class CustomerView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                GlobalText(
-                  'Information',
-                  fontWeight: FontWeight.w700,
-                  fontSize: Get.height * 0.034,
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: GlobalText(
+                    'Information',
+                    fontWeight: FontWeight.w700,
+                    fontSize: Get.height * 0.034,
+                  ),
+                ),
+                SizedBox(
+                  height: Get.height * 0.002,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -521,6 +580,9 @@ class CustomerView extends StatelessWidget {
                         ),
                       ],
                     ),
+                    SizedBox(
+                      width: Get.width * 0.05,
+                    ),
                     Row(
                       children: [
                         GlobalText(
@@ -542,10 +604,16 @@ class CustomerView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                GlobalText(
-                  'History',
-                  fontWeight: FontWeight.w700,
-                  fontSize: Get.height * 0.034,
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: GlobalText(
+                    'History',
+                    fontWeight: FontWeight.w700,
+                    fontSize: Get.height * 0.034,
+                  ),
+                ),
+                SizedBox(
+                  height: Get.height * 0.001,
                 ),
                 Container(
                   height: Get.height * 0.05,
