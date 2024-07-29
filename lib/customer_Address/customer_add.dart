@@ -170,7 +170,7 @@ class CustomerAdd extends StatelessWidget {
                               customerAddModel
                                       .propertyModel.value?.data?.username
                                       .toString()
-                                      .toUpperCase() ??
+                                      .capitalizeFirst ??
                                   '',
                               fontSize: 16.0,
                               color: Colors.black87,
@@ -182,7 +182,7 @@ class CustomerAdd extends StatelessWidget {
                             GlobalText(
                               customerAddModel.propertyModel.value?.data?.lname
                                       .toString()
-                                      .toUpperCase() ??
+                                      .capitalizeFirst ??
                                   '',
                               fontSize: 16.0,
                               color: Colors.black87,

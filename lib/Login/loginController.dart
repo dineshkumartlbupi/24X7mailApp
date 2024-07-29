@@ -1,10 +1,10 @@
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../Customer/customerView.dart';
 import '../Service/api.dart';
+import '../Utils/SharedPrefrance.dart';
 
 class LoginController extends GetxController {
   var email = ''.obs;
@@ -17,12 +17,13 @@ class LoginController extends GetxController {
 
   @override
   void onClose() {
-    emailController.dispose();
-    passwordController.dispose();
+    emailController.clear();
+    passwordController.clear();
     super.onClose();
   }
 
   void forgotPassword() {
+    changePassword('new', '450');
     log('Forgot Password clicked');
   }
 
@@ -31,12 +32,11 @@ class LoginController extends GetxController {
   }
 
   void submit() async {
-    await login(emailController.text, passwordController.text);
-
-    if (formKey.currentState!.validate()) {
-      Get.to(() => CustomerView());
-      log('Email: ${emailController.text}');
-      log('Password: ${passwordController.text}');
+    var token = SharedPrefs.getString('Token');
+    if (formKey.currentState!.validate() && token.isEmpty) {
+      await login(emailController.text, passwordController.text);
     }
+    log('Email: ${emailController.text}');
+    log('Password: ${passwordController.text}');
   }
 }

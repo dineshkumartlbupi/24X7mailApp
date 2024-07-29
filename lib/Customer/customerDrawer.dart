@@ -1,119 +1,147 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:twentyfourby_seven/Customer/customerController.dart';
+import 'package:twentyfourby_seven/Home/homeController.dart';
+import 'package:twentyfourby_seven/Utils/Mycolor.dart';
+import 'package:twentyfourby_seven/Utils/addImage.dart';
+import 'package:twentyfourby_seven/Utils/globalText.dart';
 
-import '../Utils/Mycolor.dart';
-import '../Utils/addImage.dart';
-import '../Utils/globalText.dart';
+import 'customerController.dart';
 
 class CustomerDrawer extends StatelessWidget {
   CustomerDrawer({super.key});
+  final homeController = Get.put(HomeController());
   final customerController = Get.put(CustomerController());
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView(
+    return Drawer(
+      backgroundColor: MyColor.cardIconColor,
+      elevation: 2.0,
+      child: ListView(
+        padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: MyColor.white,
             ),
-            child: Image.asset(AddImage.homeLogo),
-          ),
-          ListTile(
-            leading: const Icon(Icons.mail),
-            title: GlobalText(
-              'Index',
-              fontWeight: FontWeight.w700,
-              onTap: () {},
+            child: Center(
+              child: Image.asset(AddImage.homeLogo, height: 80),
             ),
           ),
+          _createDrawerItem(
+            icon: Icons.mail,
+            text: 'Index',
+            onTap: () {},
+          ),
           Padding(
-            padding: EdgeInsets.only(left: Get.width * 0.04),
+            padding: EdgeInsets.symmetric(horizontal: Get.width * 0.04),
             child: PopupMenuButton<String>(
-              onSelected: (String newValue) {
-                customerController.selectedOption?.value = newValue;
-              },
+              onSelected: (String newValue) =>
+                  customerController.selectedOption?.value = newValue,
               itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                const PopupMenuItem<String>(
+                PopupMenuItem<String>(
                   value: 'Pending Shipment',
-                  child: GlobalText('Pending Shipment'),
+                  child: GlobalText(
+                    'Pending Shipment',
+                    fontSize: Get.height * 0.02,
+                  ),
                 ),
-                const PopupMenuItem<String>(
+                PopupMenuItem<String>(
                   value: 'Past Shipment',
-                  child: GlobalText('Past Shipment'),
+                  child: GlobalText(
+                    'Past Shipment',
+                    fontSize: Get.height * 0.02,
+                  ),
                 ),
-                const PopupMenuItem<String>(
+                PopupMenuItem<String>(
                   value: 'Picked Up',
-                  child: GlobalText('Picked Up'),
+                  child: GlobalText(
+                    'Picked Up',
+                    fontSize: Get.height * 0.02,
+                  ),
                 ),
               ],
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Icon(Icons.open_in_browser),
-                  SizedBox(
-                    width: Get.width * 0.02,
-                  ),
+                  const Icon(Icons.open_in_browser, color: MyColor.nevyBlue),
+                  SizedBox(width: Get.width * 0.02),
                   GlobalText(
                     'Outgoing Mail',
                     fontWeight: FontWeight.w700,
+                    fontSize: Get.height * 0.02,
                   ),
-                  Icon(Icons.arrow_drop_down),
+                  Spacer(),
+                  const Icon(Icons.arrow_drop_down, color: MyColor.nevyBlue),
                 ],
               ),
             ),
           ),
-          ListTile(
-            leading: const Icon(Icons.view_timeline_outlined),
-            title: GlobalText(
-              'View All',
-              fontWeight: FontWeight.w700,
-              onTap: () {},
-            ),
+          _createDrawerItem(
+            icon: Icons.view_timeline_outlined,
+            text: 'View All',
+            onTap: () {},
           ),
-          ListTile(
-            leading: Icon(Icons.delete),
-            title: GlobalText(
-              'Trace',
-              fontWeight: FontWeight.w700,
-              onTap: () {},
-            ),
+          _createDrawerItem(
+            icon: Icons.delete,
+            text: 'Trace',
+            onTap: () {},
           ),
           Padding(
-            padding: EdgeInsets.only(left: Get.width * 0.04),
+            padding: EdgeInsets.symmetric(horizontal: Get.width * 0.03),
             child: PopupMenuButton<String>(
-              onSelected: (String newValue) {
-                customerController.selectedOption?.value = newValue;
-              },
+              onSelected: (String newValue) =>
+                  customerController.selectedOption?.value = newValue,
               itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                const PopupMenuItem<String>(
+                PopupMenuItem<String>(
                   value: 'read',
-                  child: GlobalText('Read'),
+                  child: GlobalText(
+                    'Read',
+                    fontSize: Get.height * 0.02,
+                  ),
                 ),
-                const PopupMenuItem<String>(
-                  value: 'Past Shipment',
-                  child: GlobalText('Unread'),
+                PopupMenuItem<String>(
+                  value: 'unread',
+                  child: GlobalText(
+                    'Unread',
+                    fontSize: Get.height * 0.02,
+                  ),
                 ),
               ],
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Icon(Icons.filter_alt_rounded),
-                  SizedBox(
-                    width: Get.width * 0.02,
-                  ),
+                  Icon(Icons.filter_alt_rounded, color: MyColor.nevyBlue),
+                  SizedBox(width: Get.width * 0.02),
                   GlobalText(
                     'Filter',
                     fontWeight: FontWeight.w700,
+                    fontSize: Get.height * 0.02,
                   ),
-                  Icon(Icons.arrow_drop_down),
+                  Spacer(),
+                  Icon(Icons.arrow_drop_down, color: MyColor.nevyBlue),
                 ],
               ),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _createDrawerItem({
+    required IconData icon,
+    required String text,
+    required GestureTapCallback onTap,
+  }) {
+    return ListTile(
+      leading: Icon(icon, color: MyColor.nevyBlue),
+      title: GlobalText(
+        text,
+        fontWeight: FontWeight.w700,
+        fontSize: Get.height * 0.02,
+      ),
+      trailing:
+          Icon(Icons.arrow_forward_ios, size: 16, color: MyColor.nevyBlue),
+      onTap: onTap,
     );
   }
 }

@@ -4,10 +4,8 @@ class APIConstants {
 
   ///GetApis Operators
   static const String operatorLink = 'operator/list';
-
   static const String getStateList = 'state/233';
   static const String county = 'feature-country';
-
   static const String addOperator = 'operator/register';
   static const String rejectOperator = 'operator/reject';
   static const String deleteOperator = 'operator/delete';

@@ -43,17 +43,42 @@ Future<void> login(String email, password) async {
       String customerID = jsonResponse['data']['_id'];
       String firstName = jsonResponse['data']['fname'];
       String lastName = jsonResponse['data']['lname'];
+      String email = jsonResponse['data']['email'];
+      String password = jsonResponse['data']['password'];
+      log('emailll $email,$password');
+      SharedPrefs.putString('emailId', email);
+      SharedPrefs.putString('password', password);
       SharedPrefs.putString('Token', token);
       SharedPrefs.putString('cID', customerID);
       SharedPrefs.putString('firstNAme', firstName);
       SharedPrefs.putString('lastNAme', lastName);
       var viewCID = SharedPrefs.getString('cID');
-      //log('jsonResponse==>${jsonResponse['data']}');
+      log('jsonResponse==>${jsonResponse['data']}');
     } else {
       log('Failed to login: ${response.statusCode}');
     }
   } catch (e) {
     log('Error: $e');
+  }
+}
+
+Future<void> changePassword(String currentPassword, String newPassword) async {
+  var token = SharedPrefs.getString('Token');
+  final url = Uri.parse('https://service.24x7mail.com/user/change-password');
+
+  final response = await http.patch(
+    url,
+    headers: {'Content-Type': 'application/json', 'Authorization': token},
+    body: jsonEncode({
+      'currentPassword': currentPassword,
+      'newPassword': newPassword,
+    }),
+  );
+
+  if (response.statusCode == 200) {
+    log('Password changed successfully');
+  } else {
+    log('Failed to change password: ${response.statusCode}');
   }
 }
 
@@ -266,11 +291,10 @@ Future<SubscriptionModel?> subscriptionApi() async {
       },
     );
     if (response.statusCode == 200) {
-      log('subscription ==>${response.body}');
+      //log('subscription ==>${response.body}');
       final jsonResponse =
           SubscriptionModel.fromJson(jsonDecode(response.body));
       log('subscription try==>$jsonResponse');
-
       return jsonResponse;
     } else {
       throw Exception('Failed to load data');

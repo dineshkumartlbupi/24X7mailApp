@@ -16,72 +16,100 @@ class DrawerProperty extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView(
+    return Drawer(
+      child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               color: MyColor.white,
             ),
-            child: Image.asset(AddImage.homeLogo),
-          ),
-          ListTile(
-            leading: const Icon(Icons.login),
-            title: GlobalText(
-              'Login',
-              fontWeight: FontWeight.w700,
-              onTap: () => Get.to(() => LoginScreen()),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(AddImage.homeLogo, height: 80),
+                SizedBox(height: 10),
+                GlobalText(
+                  'Menu',
+                  fontSize: 20,
+                  color: MyColor.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ],
             ),
-            onTap: homeController.closeDrawer,
           ),
-          ListTile(
-            leading: Icon(Icons.account_box),
-            title: GlobalText('sign up', fontWeight: FontWeight.w700,
-                onTap: () async {
+          _createDrawerItem(
+            icon: Icons.login,
+            text: 'Login',
+            onTap: () => Get.to(() => LoginScreen()),
+          ),
+          _createDrawerItem(
+            icon: Icons.account_box,
+            text: 'Sign Up',
+            onTap: () async {
               await getViewState();
               Get.to(() => RequestLocation());
-            }),
-            onTap: homeController.closeDrawer,
+            },
           ),
-          ListTile(
-            leading: Icon(Icons.location_on),
-            title: GlobalText(
-              'Locations',
-              fontWeight: FontWeight.w700,
-              onTap: () => Get.to(() => LoginScreen()),
-            ),
-            onTap: homeController.closeDrawer,
+          _createDrawerItem(
+            icon: Icons.location_on,
+            text: 'Locations',
+            onTap: () => Get.to(() => LoginScreen()),
           ),
-          ListTile(
-            leading: Icon(Icons.backup_table_rounded),
-            title: GlobalText(
-              'Blogs',
-              fontWeight: FontWeight.w700,
-              onTap: () => Get.to(() => LoginScreen()),
-            ),
-            onTap: homeController.closeDrawer,
+          _createDrawerItem(
+            icon: Icons.backup_table_rounded,
+            text: 'Blogs',
+            onTap: () => Get.to(() => LoginScreen()),
           ),
-          ListTile(
-            leading: const Icon(Icons.view_timeline),
-            title: GlobalText(
-              'View Plans',
-              fontWeight: FontWeight.w700,
-              onTap: () => Get.to(() => LoginScreen()),
-            ),
-            onTap: homeController.closeDrawer,
+          _createDrawerItem(
+            icon: Icons.view_timeline,
+            text: 'View Plans',
+            onTap: () => Get.to(() => LoginScreen()),
           ),
-          ListTile(
-            leading: Icon(Icons.people_alt_rounded),
-            title: GlobalText(
-              'Partner Program',
-              fontWeight: FontWeight.w700,
-              onTap: () => Get.to(() => SignUpView()),
+          _createDrawerItem(
+            icon: Icons.people_alt_rounded,
+            text: 'Partner Program',
+            onTap: () => Get.to(() => SignUpView()),
+          ),
+          Divider(),
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: GlobalText(
+              'Other',
+              fontSize: 18,
+              color: MyColor.black,
+              fontWeight: FontWeight.bold,
             ),
-            onTap: homeController.closeDrawer,
+          ),
+          _createDrawerItem(
+            icon: Icons.settings,
+            text: 'Settings',
+            onTap: () {},
+          ),
+          _createDrawerItem(
+            icon: Icons.help,
+            text: 'Help & Feedback',
+            onTap: () {},
           ),
         ],
       ),
+    );
+  }
+
+  Widget _createDrawerItem({
+    required IconData icon,
+    required String text,
+    required GestureTapCallback onTap,
+  }) {
+    return ListTile(
+      leading: Icon(icon, color: MyColor.darkCyan),
+      title: GlobalText(
+        text,
+        fontWeight: FontWeight.w700,
+      ),
+      trailing:
+          Icon(Icons.arrow_forward_ios, size: 16, color: MyColor.deepPurple),
+      onTap: onTap,
     );
   }
 }

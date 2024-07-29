@@ -6,7 +6,9 @@ import 'package:twentyfourby_seven/Utils/Mycolor.dart';
 import 'package:twentyfourby_seven/Utils/addImage.dart';
 import 'package:twentyfourby_seven/Utils/globalText.dart';
 
+import '../Customer/customerView.dart';
 import '../Home/requestLocation.dart';
+import '../Utils/SharedPrefrance.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -74,7 +76,7 @@ class LoginScreen extends StatelessWidget {
                                       onTap: loginController.showPassword,
                                       child:
                                           loginController.isViewPassword.value
-                                              ? Icon(
+                                              ? const Icon(
                                                   Icons.visibility_off,
                                                   color: MyColor.nevyBlue,
                                                 )
@@ -106,6 +108,7 @@ class LoginScreen extends StatelessWidget {
                                         onChanged: (bool? value) {
                                           loginController.rememberMe.value =
                                               value ?? false;
+                                          _saveCredentials;
                                         },
                                       ),
                                     ),
@@ -125,8 +128,42 @@ class LoginScreen extends StatelessWidget {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    loginController.submit();
-                                    //Get.to(() => OperatorView());
+                                    var emailText =
+                                        SharedPrefs.getString('emailId');
+                                    var passwordText =
+                                        SharedPrefs.getString('password');
+                                    if (emailText ==
+                                            loginController
+                                                .emailController.text ||
+                                        passwordText ==
+                                            loginController
+                                                .passwordController.text) {
+                                      loginController.submit();
+
+                                      Get.to(() => CustomerView());
+                                    } else {
+                                      Get.defaultDialog(
+                                          backgroundColor:
+                                              MyColor.backgroundLogin,
+                                          title: 'Login Failed',
+                                          titleStyle: const TextStyle(
+                                              color: MyColor.colorRedHome,
+                                              fontWeight: FontWeight.w700),
+                                          middleText:
+                                              'please! check credentials',
+                                          confirm: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      MyColor.cardIColorIndigo),
+                                              onPressed: () {
+                                                Get.back();
+                                              },
+                                              child: const GlobalText(
+                                                'ok',
+                                                fontWeight: FontWeight.w700,
+                                                color: MyColor.white,
+                                              )));
+                                    }
                                   },
                                   child: Container(
                                     height: Get.height * 0.05,
@@ -183,5 +220,15 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _saveCredentials(bool rememberMe) async {
+    if (rememberMe) {
+      await SharedPrefs.getString('emailId');
+      await SharedPrefs.getString('password');
+    } else {
+      await SharedPrefs.remove('emailId');
+      await SharedPrefs.remove('password');
+    }
   }
 }

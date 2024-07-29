@@ -22,10 +22,12 @@ class SubscriptionModel {
     }
     _total = json['total'];
   }
+
   bool? _status;
   String? _msg;
   List<Data>? _data;
   int? _total;
+
   SubscriptionModel copyWith({
     bool? status,
     String? msg,
@@ -38,6 +40,7 @@ class SubscriptionModel {
         data: data ?? _data,
         total: total ?? _total,
       );
+
   bool? get status => _status;
   String? get msg => _msg;
   List<Data>? get data => _data;
@@ -97,6 +100,7 @@ class Data {
     _updatedAt = json['updatedAt'];
     _v = json['__v'];
   }
+
   String? _id;
   String? _userId;
   PlanId? _planId;
@@ -108,6 +112,7 @@ class Data {
   String? _createdAt;
   String? _updatedAt;
   int? _v;
+
   Data copyWith({
     String? id,
     String? userId,
@@ -134,6 +139,7 @@ class Data {
         updatedAt: updatedAt ?? _updatedAt,
         v: v ?? _v,
       );
+
   String? get id => _id;
   String? get userId => _userId;
   PlanId? get planId => _planId;
@@ -177,13 +183,16 @@ class PlanDetail {
   PlanDetail.fromJson(dynamic json) {
     _name = json['name'];
   }
+
   String? _name;
+
   PlanDetail copyWith({
     String? name,
   }) =>
       PlanDetail(
         name: name ?? _name,
       );
+
   String? get name => _name;
 
   Map<String, dynamic> toJson() {
@@ -255,6 +264,7 @@ class PlanId {
     _updatedAt = json['updatedAt'];
     _v = json['__v'];
   }
+
   IncomingMail? _incomingMail;
   OpenScan? _openScan;
   Recipients? _recipients;
@@ -270,6 +280,7 @@ class PlanId {
   String? _createdAt;
   String? _updatedAt;
   int? _v;
+
   PlanId copyWith({
     IncomingMail? incomingMail,
     OpenScan? openScan,
@@ -304,6 +315,7 @@ class PlanId {
         updatedAt: updatedAt ?? _updatedAt,
         v: v ?? _v,
       );
+
   IncomingMail? get incomingMail => _incomingMail;
   OpenScan? get openScan => _openScan;
   Recipients? get recipients => _recipients;
@@ -358,587 +370,340 @@ class PlanId {
 class PhysicalStorage {
   PhysicalStorage({
     StandardEnvelope? standardEnvelope,
-    LargeEnvelope? largeEnvelope,
-    PaddedMailer? paddedMailer,
-    SmallBox? smallBox,
-    MailingTube? mailingTube,
-    MediumBox? mediumBox,
-    LargeBox? largeBox,
-    ExtraLargeBox? extraLargeBox,
+    ForwardingLetter? forwardingLetter,
   }) {
     _standardEnvelope = standardEnvelope;
-    _largeEnvelope = largeEnvelope;
-    _paddedMailer = paddedMailer;
-    _smallBox = smallBox;
-    _mailingTube = mailingTube;
-    _mediumBox = mediumBox;
-    _largeBox = largeBox;
-    _extraLargeBox = extraLargeBox;
+    _forwardingLetter = forwardingLetter;
   }
 
   PhysicalStorage.fromJson(dynamic json) {
     _standardEnvelope = json['standard_envelope'] != null
         ? StandardEnvelope.fromJson(json['standard_envelope'])
         : null;
-    _largeEnvelope = json['large_envelope'] != null
-        ? LargeEnvelope.fromJson(json['large_envelope'])
-        : null;
-    _paddedMailer = json['padded_mailer'] != null
-        ? PaddedMailer.fromJson(json['padded_mailer'])
-        : null;
-    _smallBox =
-        json['small_box'] != null ? SmallBox.fromJson(json['small_box']) : null;
-    _mailingTube = json['mailing_tube'] != null
-        ? MailingTube.fromJson(json['mailing_tube'])
-        : null;
-    _mediumBox = json['medium_box'] != null
-        ? MediumBox.fromJson(json['medium_box'])
-        : null;
-    _largeBox =
-        json['large_box'] != null ? LargeBox.fromJson(json['large_box']) : null;
-    _extraLargeBox = json['extra_large_box'] != null
-        ? ExtraLargeBox.fromJson(json['extra_large_box'])
+    _forwardingLetter = json['forwarding_letter'] != null
+        ? ForwardingLetter.fromJson(json['forwarding_letter'])
         : null;
   }
+
   StandardEnvelope? _standardEnvelope;
-  LargeEnvelope? _largeEnvelope;
-  PaddedMailer? _paddedMailer;
-  SmallBox? _smallBox;
-  MailingTube? _mailingTube;
-  MediumBox? _mediumBox;
-  LargeBox? _largeBox;
-  ExtraLargeBox? _extraLargeBox;
+  ForwardingLetter? _forwardingLetter;
+
   PhysicalStorage copyWith({
     StandardEnvelope? standardEnvelope,
-    LargeEnvelope? largeEnvelope,
-    PaddedMailer? paddedMailer,
-    SmallBox? smallBox,
-    MailingTube? mailingTube,
-    MediumBox? mediumBox,
-    LargeBox? largeBox,
-    ExtraLargeBox? extraLargeBox,
+    ForwardingLetter? forwardingLetter,
   }) =>
       PhysicalStorage(
         standardEnvelope: standardEnvelope ?? _standardEnvelope,
-        largeEnvelope: largeEnvelope ?? _largeEnvelope,
-        paddedMailer: paddedMailer ?? _paddedMailer,
-        smallBox: smallBox ?? _smallBox,
-        mailingTube: mailingTube ?? _mailingTube,
-        mediumBox: mediumBox ?? _mediumBox,
-        largeBox: largeBox ?? _largeBox,
-        extraLargeBox: extraLargeBox ?? _extraLargeBox,
+        forwardingLetter: forwardingLetter ?? _forwardingLetter,
       );
+
   StandardEnvelope? get standardEnvelope => _standardEnvelope;
-  LargeEnvelope? get largeEnvelope => _largeEnvelope;
-  PaddedMailer? get paddedMailer => _paddedMailer;
-  SmallBox? get smallBox => _smallBox;
-  MailingTube? get mailingTube => _mailingTube;
-  MediumBox? get mediumBox => _mediumBox;
-  LargeBox? get largeBox => _largeBox;
-  ExtraLargeBox? get extraLargeBox => _extraLargeBox;
+  ForwardingLetter? get forwardingLetter => _forwardingLetter;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     if (_standardEnvelope != null) {
       map['standard_envelope'] = _standardEnvelope?.toJson();
     }
-    if (_largeEnvelope != null) {
-      map['large_envelope'] = _largeEnvelope?.toJson();
+    if (_forwardingLetter != null) {
+      map['forwarding_letter'] = _forwardingLetter?.toJson();
     }
-    if (_paddedMailer != null) {
-      map['padded_mailer'] = _paddedMailer?.toJson();
-    }
-    if (_smallBox != null) {
-      map['small_box'] = _smallBox?.toJson();
-    }
-    if (_mailingTube != null) {
-      map['mailing_tube'] = _mailingTube?.toJson();
-    }
-    if (_mediumBox != null) {
-      map['medium_box'] = _mediumBox?.toJson();
-    }
-    if (_largeBox != null) {
-      map['large_box'] = _largeBox?.toJson();
-    }
-    if (_extraLargeBox != null) {
-      map['extra_large_box'] = _extraLargeBox?.toJson();
-    }
-    return map;
-  }
-}
-
-class ExtraLargeBox {
-  ExtraLargeBox({
-    String? charges,
-    int? count,
-  }) {
-    _charges = charges;
-    _count = count;
-  }
-
-  ExtraLargeBox.fromJson(dynamic json) {
-    _charges = json['charges'];
-    _count = json['count'];
-  }
-  String? _charges;
-  int? _count;
-  ExtraLargeBox copyWith({
-    String? charges,
-    int? count,
-  }) =>
-      ExtraLargeBox(
-        charges: charges ?? _charges,
-        count: count ?? _count,
-      );
-  String? get charges => _charges;
-  int? get count => _count;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['charges'] = _charges;
-    map['count'] = _count;
-    return map;
-  }
-}
-
-class LargeBox {
-  LargeBox({
-    String? charges,
-    int? count,
-  }) {
-    _charges = charges;
-    _count = count;
-  }
-
-  LargeBox.fromJson(dynamic json) {
-    _charges = json['charges'];
-    _count = json['count'];
-  }
-  String? _charges;
-  int? _count;
-  LargeBox copyWith({
-    String? charges,
-    int? count,
-  }) =>
-      LargeBox(
-        charges: charges ?? _charges,
-        count: count ?? _count,
-      );
-  String? get charges => _charges;
-  int? get count => _count;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['charges'] = _charges;
-    map['count'] = _count;
-    return map;
-  }
-}
-
-class MediumBox {
-  MediumBox({
-    String? charges,
-    int? count,
-  }) {
-    _charges = charges;
-    _count = count;
-  }
-
-  MediumBox.fromJson(dynamic json) {
-    _charges = json['charges'];
-    _count = json['count'];
-  }
-  String? _charges;
-  int? _count;
-  MediumBox copyWith({
-    String? charges,
-    int? count,
-  }) =>
-      MediumBox(
-        charges: charges ?? _charges,
-        count: count ?? _count,
-      );
-  String? get charges => _charges;
-  int? get count => _count;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['charges'] = _charges;
-    map['count'] = _count;
-    return map;
-  }
-}
-
-class MailingTube {
-  MailingTube({
-    String? charges,
-    int? count,
-  }) {
-    _charges = charges;
-    _count = count;
-  }
-
-  MailingTube.fromJson(dynamic json) {
-    _charges = json['charges'];
-    _count = json['count'];
-  }
-  String? _charges;
-  int? _count;
-  MailingTube copyWith({
-    String? charges,
-    int? count,
-  }) =>
-      MailingTube(
-        charges: charges ?? _charges,
-        count: count ?? _count,
-      );
-  String? get charges => _charges;
-  int? get count => _count;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['charges'] = _charges;
-    map['count'] = _count;
-    return map;
-  }
-}
-
-class SmallBox {
-  SmallBox({
-    String? charges,
-    int? count,
-  }) {
-    _charges = charges;
-    _count = count;
-  }
-
-  SmallBox.fromJson(dynamic json) {
-    _charges = json['charges'];
-    _count = json['count'];
-  }
-  String? _charges;
-  int? _count;
-  SmallBox copyWith({
-    String? charges,
-    int? count,
-  }) =>
-      SmallBox(
-        charges: charges ?? _charges,
-        count: count ?? _count,
-      );
-  String? get charges => _charges;
-  int? get count => _count;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['charges'] = _charges;
-    map['count'] = _count;
-    return map;
-  }
-}
-
-class PaddedMailer {
-  PaddedMailer({
-    String? charges,
-    int? count,
-  }) {
-    _charges = charges;
-    _count = count;
-  }
-
-  PaddedMailer.fromJson(dynamic json) {
-    _charges = json['charges'];
-    _count = json['count'];
-  }
-  String? _charges;
-  int? _count;
-  PaddedMailer copyWith({
-    String? charges,
-    int? count,
-  }) =>
-      PaddedMailer(
-        charges: charges ?? _charges,
-        count: count ?? _count,
-      );
-  String? get charges => _charges;
-  int? get count => _count;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['charges'] = _charges;
-    map['count'] = _count;
-    return map;
-  }
-}
-
-class LargeEnvelope {
-  LargeEnvelope({
-    String? charges,
-    int? count,
-  }) {
-    _charges = charges;
-    _count = count;
-  }
-
-  LargeEnvelope.fromJson(dynamic json) {
-    _charges = json['charges'];
-    _count = json['count'];
-  }
-  String? _charges;
-  int? _count;
-  LargeEnvelope copyWith({
-    String? charges,
-    int? count,
-  }) =>
-      LargeEnvelope(
-        charges: charges ?? _charges,
-        count: count ?? _count,
-      );
-  String? get charges => _charges;
-  int? get count => _count;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['charges'] = _charges;
-    map['count'] = _count;
     return map;
   }
 }
 
 class StandardEnvelope {
   StandardEnvelope({
-    String? charges,
-    int? count,
+    int? price,
+    int? quantity,
   }) {
-    _charges = charges;
-    _count = count;
+    _price = price;
+    _quantity = quantity;
   }
 
   StandardEnvelope.fromJson(dynamic json) {
-    _charges = json['charges'];
-    _count = json['count'];
+    _price = json['price'];
+    _quantity = json['quantity'];
   }
-  String? _charges;
-  int? _count;
+
+  int? _price;
+  int? _quantity;
+
   StandardEnvelope copyWith({
-    String? charges,
-    int? count,
+    int? price,
+    int? quantity,
   }) =>
       StandardEnvelope(
-        charges: charges ?? _charges,
-        count: count ?? _count,
+        price: price ?? _price,
+        quantity: quantity ?? _quantity,
       );
-  String? get charges => _charges;
-  int? get count => _count;
+
+  int? get price => _price;
+  int? get quantity => _quantity;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['charges'] = _charges;
-    map['count'] = _count;
+    map['price'] = _price;
+    map['quantity'] = _quantity;
     return map;
   }
 }
 
-class Recycle {
-  Recycle({
-    int? count,
-    String? charges,
+class ForwardingLetter {
+  ForwardingLetter({
+    int? price,
+    int? quantity,
   }) {
-    _count = count;
-    _charges = charges;
+    _price = price;
+    _quantity = quantity;
   }
 
-  Recycle.fromJson(dynamic json) {
-    _count = json['count'];
-    _charges = json['charges'];
+  ForwardingLetter.fromJson(dynamic json) {
+    _price = json['price'];
+    _quantity = json['quantity'];
   }
-  int? _count;
-  String? _charges;
-  Recycle copyWith({
-    int? count,
-    String? charges,
+
+  int? _price;
+  int? _quantity;
+
+  ForwardingLetter copyWith({
+    int? price,
+    int? quantity,
   }) =>
-      Recycle(
-        count: count ?? _count,
-        charges: charges ?? _charges,
+      ForwardingLetter(
+        price: price ?? _price,
+        quantity: quantity ?? _quantity,
       );
-  int? get count => _count;
-  String? get charges => _charges;
+
+  int? get price => _price;
+  int? get quantity => _quantity;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['count'] = _count;
-    map['charges'] = _charges;
-    return map;
-  }
-}
-
-class LocalPickup {
-  LocalPickup({
-    int? count,
-    String? charges,
-  }) {
-    _count = count;
-    _charges = charges;
-  }
-
-  LocalPickup.fromJson(dynamic json) {
-    _count = json['count'];
-    _charges = json['charges'];
-  }
-  int? _count;
-  String? _charges;
-  LocalPickup copyWith({
-    int? count,
-    String? charges,
-  }) =>
-      LocalPickup(
-        count: count ?? _count,
-        charges: charges ?? _charges,
-      );
-  int? get count => _count;
-  String? get charges => _charges;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['count'] = _count;
-    map['charges'] = _charges;
-    return map;
-  }
-}
-
-class Shred {
-  Shred({
-    int? count,
-    String? charges,
-  }) {
-    _count = count;
-    _charges = charges;
-  }
-
-  Shred.fromJson(dynamic json) {
-    _count = json['count'];
-    _charges = json['charges'];
-  }
-  int? _count;
-  String? _charges;
-  Shred copyWith({
-    int? count,
-    String? charges,
-  }) =>
-      Shred(
-        count: count ?? _count,
-        charges: charges ?? _charges,
-      );
-  int? get count => _count;
-  String? get charges => _charges;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['count'] = _count;
-    map['charges'] = _charges;
-    return map;
-  }
-}
-
-class Recipients {
-  Recipients({
-    int? count,
-    String? charges,
-  }) {
-    _count = count;
-    _charges = charges;
-  }
-
-  Recipients.fromJson(dynamic json) {
-    _count = json['count'];
-    _charges = json['charges'];
-  }
-  int? _count;
-  String? _charges;
-  Recipients copyWith({
-    int? count,
-    String? charges,
-  }) =>
-      Recipients(
-        count: count ?? _count,
-        charges: charges ?? _charges,
-      );
-  int? get count => _count;
-  String? get charges => _charges;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['count'] = _count;
-    map['charges'] = _charges;
-    return map;
-  }
-}
-
-class OpenScan {
-  OpenScan({
-    int? count,
-    String? charges,
-  }) {
-    _count = count;
-    _charges = charges;
-  }
-
-  OpenScan.fromJson(dynamic json) {
-    _count = json['count'];
-    _charges = json['charges'];
-  }
-  int? _count;
-  String? _charges;
-  OpenScan copyWith({
-    int? count,
-    String? charges,
-  }) =>
-      OpenScan(
-        count: count ?? _count,
-        charges: charges ?? _charges,
-      );
-  int? get count => _count;
-  String? get charges => _charges;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['count'] = _count;
-    map['charges'] = _charges;
+    map['price'] = _price;
+    map['quantity'] = _quantity;
     return map;
   }
 }
 
 class IncomingMail {
   IncomingMail({
-    int? count,
-    String? charges,
+    int? quantity,
+    int? used,
   }) {
-    _count = count;
-    _charges = charges;
+    _quantity = quantity;
+    _used = used;
   }
 
   IncomingMail.fromJson(dynamic json) {
-    _count = json['count'];
-    _charges = json['charges'];
+    _quantity = json['quantity'];
+    _used = json['used'];
   }
-  int? _count;
-  String? _charges;
+
+  int? _quantity;
+  int? _used;
+
   IncomingMail copyWith({
-    int? count,
-    String? charges,
+    int? quantity,
+    int? used,
   }) =>
       IncomingMail(
-        count: count ?? _count,
-        charges: charges ?? _charges,
+        quantity: quantity ?? _quantity,
+        used: used ?? _used,
       );
-  int? get count => _count;
-  String? get charges => _charges;
+
+  int? get quantity => _quantity;
+  int? get used => _used;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['count'] = _count;
-    map['charges'] = _charges;
+    map['quantity'] = _quantity;
+    map['used'] = _used;
+    return map;
+  }
+}
+
+class OpenScan {
+  OpenScan({
+    int? quantity,
+    int? used,
+  }) {
+    _quantity = quantity;
+    _used = used;
+  }
+
+  OpenScan.fromJson(dynamic json) {
+    _quantity = json['quantity'];
+    _used = json['used'];
+  }
+
+  int? _quantity;
+  int? _used;
+
+  OpenScan copyWith({
+    int? quantity,
+    int? used,
+  }) =>
+      OpenScan(
+        quantity: quantity ?? _quantity,
+        used: used ?? _used,
+      );
+
+  int? get quantity => _quantity;
+  int? get used => _used;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['quantity'] = _quantity;
+    map['used'] = _used;
+    return map;
+  }
+}
+
+class Recipients {
+  Recipients({
+    int? quantity,
+    int? used,
+  }) {
+    _quantity = quantity;
+    _used = used;
+  }
+
+  Recipients.fromJson(dynamic json) {
+    _quantity = json['quantity'];
+    _used = json['used'];
+  }
+
+  int? _quantity;
+  int? _used;
+
+  Recipients copyWith({
+    int? quantity,
+    int? used,
+  }) =>
+      Recipients(
+        quantity: quantity ?? _quantity,
+        used: used ?? _used,
+      );
+
+  int? get quantity => _quantity;
+  int? get used => _used;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['quantity'] = _quantity;
+    map['used'] = _used;
+    return map;
+  }
+}
+
+class Shred {
+  Shred({
+    int? quantity,
+    int? used,
+  }) {
+    _quantity = quantity;
+    _used = used;
+  }
+
+  Shred.fromJson(dynamic json) {
+    _quantity = json['quantity'];
+    _used = json['used'];
+  }
+
+  int? _quantity;
+  int? _used;
+
+  Shred copyWith({
+    int? quantity,
+    int? used,
+  }) =>
+      Shred(
+        quantity: quantity ?? _quantity,
+        used: used ?? _used,
+      );
+
+  int? get quantity => _quantity;
+  int? get used => _used;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['quantity'] = _quantity;
+    map['used'] = _used;
+    return map;
+  }
+}
+
+class LocalPickup {
+  LocalPickup({
+    int? quantity,
+    int? used,
+  }) {
+    _quantity = quantity;
+    _used = used;
+  }
+
+  LocalPickup.fromJson(dynamic json) {
+    _quantity = json['quantity'];
+    _used = json['used'];
+  }
+
+  int? _quantity;
+  int? _used;
+
+  LocalPickup copyWith({
+    int? quantity,
+    int? used,
+  }) =>
+      LocalPickup(
+        quantity: quantity ?? _quantity,
+        used: used ?? _used,
+      );
+
+  int? get quantity => _quantity;
+  int? get used => _used;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['quantity'] = _quantity;
+    map['used'] = _used;
+    return map;
+  }
+}
+
+class Recycle {
+  Recycle({
+    int? quantity,
+    int? used,
+  }) {
+    _quantity = quantity;
+    _used = used;
+  }
+
+  Recycle.fromJson(dynamic json) {
+    _quantity = json['quantity'];
+    _used = json['used'];
+  }
+
+  int? _quantity;
+  int? _used;
+
+  Recycle copyWith({
+    int? quantity,
+    int? used,
+  }) =>
+      Recycle(
+        quantity: quantity ?? _quantity,
+        used: used ?? _used,
+      );
+
+  int? get quantity => _quantity;
+  int? get used => _used;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['quantity'] = _quantity;
+    map['used'] = _used;
     return map;
   }
 }
