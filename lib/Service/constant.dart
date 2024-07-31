@@ -12,13 +12,13 @@ class APIConstants {
 
   ///Customer
 //  https://service.24x7mail.com/subscription/billing-statement/667d923246b74b03f473b3a7
-  // https://service.24x7mail.com/user/profile
-  // https://service.24x7mail.com/mails
-  //https://service.24x7mail.com/subscription
+  //https://service.24x7mail.com/assign/trash-list
+  // {{local}}/assign/trash-list
   static const String customerStatement = 'subscription/billing-statement/';
   static const String customerProfile = 'user/profile';
   static const String uploadMail = 'mails';
   static const String subscriptions = 'subscription';
+  static const String trashList = 'assign/trash-list';
 }
 
 class ApiURl {
@@ -34,6 +34,7 @@ class ApiURl {
   static const String getProfileApi = baseUrl + APIConstants.customerProfile;
   static const String postUploadMail = baseUrl + APIConstants.uploadMail;
   static const String subscriptionsApi = baseUrl + APIConstants.subscriptions;
+  static const String getTraceList = baseUrl + APIConstants.trashList;
 
   ///Customer
   static const String getStatementUrl =

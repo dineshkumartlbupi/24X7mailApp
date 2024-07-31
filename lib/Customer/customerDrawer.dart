@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:twentyfourby_seven/Home/homeController.dart';
+import 'package:twentyfourby_seven/Service/api.dart';
 import 'package:twentyfourby_seven/Utils/Mycolor.dart';
 import 'package:twentyfourby_seven/Utils/addImage.dart';
 import 'package:twentyfourby_seven/Utils/globalText.dart';
@@ -79,12 +80,16 @@ class CustomerDrawer extends StatelessWidget {
           _createDrawerItem(
             icon: Icons.view_timeline_outlined,
             text: 'View All',
-            onTap: () {},
+            onTap: () async {
+              getViewAll();
+            },
           ),
           _createDrawerItem(
             icon: Icons.delete,
             text: 'Trace',
-            onTap: () {},
+            onTap: () async {
+              await getTrashList();
+            },
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: Get.width * 0.03),

@@ -291,7 +291,7 @@ Future<SubscriptionModel?> subscriptionApi() async {
       },
     );
     if (response.statusCode == 200) {
-      //log('subscription ==>${response.body}');
+      log('subscription ==>${response.body}');
       final jsonResponse =
           SubscriptionModel.fromJson(jsonDecode(response.body));
       log('subscription try==>$jsonResponse');
@@ -303,4 +303,60 @@ Future<SubscriptionModel?> subscriptionApi() async {
     print('Error: $e');
   } finally {}
   return SubscriptionModel();
+}
+
+Future<void> getTrashList() async {
+  var token = SharedPrefs.getString('Token');
+  final response = await http.get(
+    Uri.parse(ApiURl.getTraceList),
+    headers: {
+      'Authorization': token,
+    },
+  );
+  if (response.statusCode == 200) {
+    final traceListDta = jsonDecode(response.body);
+
+    log('traceList===> $traceListDta');
+    return traceListDta;
+  } else {
+    throw Exception('Failed to load traceList');
+  }
+}
+
+Future<void> getViewAll() async {
+  var token = SharedPrefs.getString('Token');
+  final response = await http.get(
+    Uri.parse('https://24x7mail.com/user/inbox/pending-shipment-list'),
+    headers: {
+      'Authorization': token,
+    },
+  );
+  if (response.statusCode == 200) {
+    final getViewAllData = jsonDecode(response.body);
+
+    log('getViewAll===> $getViewAllData');
+    return getViewAllData;
+  } else {
+    throw Exception('Failed to load traceList');
+  }
+}
+
+Future<void> uploadUspsData(Map<String, dynamic> updates) async {
+  var token = SharedPrefs.getString('Token');
+  final url = Uri.parse("https://service.24x7mail.com/user/usps-upload");
+
+  final response = await http.patch(
+    url,
+    headers: {
+      "Content-Type": "application/json",
+      'Authorization': token,
+    },
+    body: jsonEncode(updates),
+  );
+
+  if (response.statusCode == 200) {
+    print('Success: ${response.body}');
+  } else {
+    print('Error: ${response.statusCode} ${response.body}');
+  }
 }

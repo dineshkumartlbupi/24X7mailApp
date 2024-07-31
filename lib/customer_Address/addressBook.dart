@@ -45,27 +45,137 @@ class AddressBook extends StatelessWidget {
   void _showFormDialog() async {
     return Get.defaultDialog(
       title: 'Add Shipment',
-      content: Column(
-        children: [
-          TextField(
-            decoration: InputDecoration(hintText: 'Shipment Name'),
-            onChanged: (value) {
-              customerAddModel.shipmentName.value = value;
-            },
-          ),
-          TextField(
-            decoration: InputDecoration(hintText: 'Shipment Number'),
-            onChanged: (value) {
-              customerAddModel.shipmentNumber.value = value;
-            },
-          ),
-          TextField(
-            decoration: InputDecoration(hintText: 'Shipment Date'),
-            onChanged: (value) {
-              customerAddModel.shipmentDate.value = value;
-            },
-          ),
-        ],
+      content: Container(
+        margin: EdgeInsets.all(10),
+        color: Colors.white24,
+        height: Get.height * 0.65,
+        width: Get.width * 0.95,
+        child: ListView(
+          children: [
+            Divider(
+              color: MyColor.yellowGold,
+              thickness: Get.width * 0.02,
+            ),
+            TextField(
+              controller: customerAddModel.nameController,
+              decoration: const InputDecoration(
+                  hintText: 'Shipment Name', border: OutlineInputBorder()),
+              onChanged: (value) => customerAddModel.shipmentName.value = value,
+            ),
+            SizedBox(
+              height: Get.height * 0.02,
+            ),
+            TextField(
+              controller: customerAddModel.companyController,
+              decoration: const InputDecoration(
+                  hintText: 'Company Name(optional)',
+                  border: OutlineInputBorder()),
+              onChanged: (value) {
+                customerAddModel.shipmentNumber.value = value;
+              },
+            ),
+            SizedBox(
+              height: Get.height * 0.02,
+            ),
+            TextField(
+              controller: customerAddModel.addLineOneController,
+              decoration: InputDecoration(
+                  hintText: 'AddressLine One', border: OutlineInputBorder()),
+              onChanged: (value) {
+                customerAddModel.shipmentDate.value = value;
+              },
+            ),
+            SizedBox(
+              height: Get.height * 0.02,
+            ),
+            TextField(
+              controller: customerAddModel.addLineTwoController,
+              decoration: InputDecoration(
+                  hintText: 'AddressLine2(optional) ',
+                  border: OutlineInputBorder()),
+              onChanged: (value) => customerAddModel.shipmentDate.value = value,
+            ),
+            SizedBox(
+              height: Get.height * 0.02,
+            ),
+            Obx(
+              () => DropdownButton<String>(
+                hint: GlobalText('Select a Country'),
+                value: customerAddModel.countries.value.first,
+                onChanged: (String? newValue) =>
+                    customerAddModel.selectedCountry.value = newValue,
+                items: customerAddModel.countries
+                    .map<DropdownMenuItem<String>>((country) {
+                  return DropdownMenuItem<String>(
+                    value: country,
+                    child: GlobalText(country),
+                  );
+                }).toList(),
+              ),
+            ),
+            SizedBox(
+              width: Get.width * 0.05,
+            ),
+            Obx(
+              () => Container(
+                width: Get.width * 0.23,
+                child: DropdownButton<String>(
+                  hint: GlobalText('Select a State'),
+                  value: customerAddModel.selectedState.value,
+                  onChanged: (String? newValue) =>
+                      customerAddModel.selectedState.value = newValue,
+                  items: customerAddModel.states
+                      .map<DropdownMenuItem<String>>((state) {
+                    return DropdownMenuItem<String>(
+                      value: state,
+                      child: GlobalText(state),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ),
+            SizedBox(height: Get.height * 0.015),
+            Obx(
+              () => DropdownButton<String>(
+                hint: GlobalText('Select a city'),
+                value: customerAddModel.selectedCountry.value,
+                onChanged: (String? newValue) {
+                  customerAddModel.selectedCountry.value = newValue;
+                },
+                items: customerAddModel.countries
+                    .map<DropdownMenuItem<String>>((country) {
+                  return DropdownMenuItem<String>(
+                    value: country,
+                    child: GlobalText(country),
+                  );
+                }).toList(),
+              ),
+            ),
+            SizedBox(
+              width: Get.width * 0.05,
+            ),
+            TextField(
+              controller: customerAddModel.postolController,
+              decoration: InputDecoration(
+                  hintText: 'AddressLine One', border: OutlineInputBorder()),
+              onChanged: (value) => customerAddModel.shipmentDate.value = value,
+            ),
+            SizedBox(
+              height: Get.height * 0.02,
+            ),
+            TextField(
+              controller: customerAddModel.phoneController,
+              decoration: InputDecoration(
+                  hintText: 'AddressLine One', border: OutlineInputBorder()),
+              onChanged: (value) {
+                customerAddModel.shipmentDate.value = value;
+              },
+            ),
+            SizedBox(
+              height: Get.height * 0.02,
+            ),
+          ],
+        ),
       ),
       actions: [
         TextButton(
@@ -75,12 +185,8 @@ class AddressBook extends StatelessWidget {
           },
         ),
         TextButton(
-          child: Text('Submit'),
+          child: Text('ADD'),
           onPressed: () {
-            // Handle the submission of the form
-            print('Shipment Name: ${customerAddModel.shipmentName.value}');
-            print('Shipment Number: ${customerAddModel.shipmentNumber.value}');
-            print('Shipment Date: ${customerAddModel.shipmentDate.value}');
             Get.back();
           },
         ),

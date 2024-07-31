@@ -80,7 +80,7 @@ class LoginScreen extends StatelessWidget {
                                                   Icons.visibility_off,
                                                   color: MyColor.nevyBlue,
                                                 )
-                                              : Icon(Icons.visibility,
+                                              : const Icon(Icons.visibility,
                                                   color: MyColor.nevyBlue),
                                     ),
                                     labelText: 'Enter Password',
@@ -112,16 +112,84 @@ class LoginScreen extends StatelessWidget {
                                         },
                                       ),
                                     ),
-                                    GlobalText('Remember me'),
+                                    GlobalText(
+                                      'Remember me',
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                     SizedBox(
-                                      width: Get.width * 0.1,
+                                      width: Get.width * 0.13,
                                     ),
                                     InkWell(
-                                      onTap: () =>
-                                          loginController.forgotPassword(),
-                                      child: const GlobalText(
+                                      onTap: () {
+                                        Get.defaultDialog(
+                                          title: 'Forgot Password',
+                                          titleStyle: const TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            color: MyColor.black,
+                                            fontSize: 18,
+                                          ),
+                                          content: Column(
+                                            children: [
+                                              Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: GlobalText(
+                                                  'Enter Email:',
+                                                  fontWeight: FontWeight.w700,
+                                                  color: MyColor.black,
+                                                  fontSize: Get.height * 0.02,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                  height: Get.height * 0.01),
+                                              TextField(
+                                                controller: loginController
+                                                    .resetEmailController,
+                                                decoration: InputDecoration(
+                                                  hintText: 'test@gmail.com',
+                                                  suffixIcon: IconButton(
+                                                    icon: Icon(Icons.clear),
+                                                    onPressed: () =>
+                                                        loginController
+                                                            .resetEmailController
+                                                            .clear(),
+                                                  ),
+                                                  border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      borderSide:
+                                                          const BorderSide(
+                                                              style: BorderStyle
+                                                                  .solid,
+                                                              color: MyColor
+                                                                  .black)),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          cancel: ElevatedButton(
+                                            onPressed: () => Get.back(),
+                                            child: const GlobalText(
+                                              color: MyColor.black,
+                                              fontWeight: FontWeight.bold,
+                                              'Close',
+                                            ),
+                                          ),
+                                          confirm: ElevatedButton(
+                                            onPressed: () {},
+                                            child: GlobalText(
+                                              color: MyColor.black,
+                                              fontWeight: FontWeight.bold,
+                                              'Reset Password',
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: GlobalText(
                                         'Forgot your Password?',
                                         color: Colors.black,
+                                        fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                   ],
@@ -139,14 +207,13 @@ class LoginScreen extends StatelessWidget {
                                             loginController
                                                 .passwordController.text) {
                                       loginController.submit();
-
                                       Get.to(() => CustomerView());
                                     } else {
                                       Get.defaultDialog(
                                           backgroundColor:
                                               MyColor.backgroundLogin,
                                           title: 'Login Failed',
-                                          titleStyle: const TextStyle(
+                                          titleStyle: TextStyle(
                                               color: MyColor.colorRedHome,
                                               fontWeight: FontWeight.w700),
                                           middleText:

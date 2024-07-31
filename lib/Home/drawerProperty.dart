@@ -72,7 +72,7 @@ class DrawerProperty extends StatelessWidget {
             onTap: () => Get.to(() => SignUpView()),
           ),
           Divider(),
-          Padding(
+          const Padding(
             padding: EdgeInsets.all(8.0),
             child: GlobalText(
               'Other',

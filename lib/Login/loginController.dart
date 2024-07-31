@@ -13,6 +13,7 @@ class LoginController extends GetxController {
   var isViewPassword = false.obs;
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final resetEmailController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   @override

@@ -12,7 +12,7 @@ class SubscribeView extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          Center(child: GlobalText(subscribe.status.toString() ?? '')),
+          Card(child: GlobalText(subscribe.status.toString() ?? '')),
         ],
       ),
     );
