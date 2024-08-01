@@ -3,10 +3,10 @@ import 'package:get/get.dart';
 import 'package:twentyfourby_seven/Utils/Mycolor.dart';
 import 'package:twentyfourby_seven/Utils/addImage.dart';
 import 'package:twentyfourby_seven/Utils/globalText.dart';
-import 'package:twentyfourby_seven/customer_Address/addressBook.dart';
 import 'package:twentyfourby_seven/customer_Address/customer_AddController.dart';
+import 'package:twentyfourby_seven/customer_Address/shipment_customer/addressBook.dart';
+import 'package:twentyfourby_seven/customer_Address/shipment_customer/subscribeView.dart';
 import 'package:twentyfourby_seven/customer_Address/statement_View.dart';
-import 'package:twentyfourby_seven/customer_Address/subscribeView.dart';
 
 import '../Service/api.dart';
 
@@ -24,9 +24,9 @@ class CustomerAdd extends StatelessWidget {
               PopupMenuButton<String>(
                 onSelected: (String newValue) async {
                   if (newValue == 'My Address') {
-                    Get.to(() => CustomerAdd());
+                    //Get.to(() => CustomerAdd());
                   } else if (newValue == 'Address Book') {
-                    await getShipment();
+                    await getViewState();
                     Get.to(() => AddressBook());
                   }
                 },
@@ -112,7 +112,7 @@ class CustomerAdd extends StatelessWidget {
           children: [
             Row(
               children: [
-                const Icon(Icons.location_city),
+                Icon(Icons.location_city),
                 SizedBox(
                   width: Get.width * 0.025,
                 ),

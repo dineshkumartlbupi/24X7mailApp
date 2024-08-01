@@ -6,7 +6,6 @@ import 'package:twentyfourby_seven/Utils/Mycolor.dart';
 import 'package:twentyfourby_seven/Utils/addImage.dart';
 
 import '../Login/loginScreen.dart';
-import '../Service/api.dart';
 import '../Utils/globalText.dart';
 import 'homeController.dart';
 
@@ -46,8 +45,7 @@ class DrawerProperty extends StatelessWidget {
           _createDrawerItem(
             icon: Icons.account_box,
             text: 'Sign Up',
-            onTap: () async {
-              await getViewState();
+            onTap: () {
               Get.to(() => RequestLocation());
             },
           ),

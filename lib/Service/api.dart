@@ -7,16 +7,19 @@ import 'package:twentyfourby_seven/Operator/operatorController.dart';
 import 'package:twentyfourby_seven/Service/constant.dart';
 import 'package:twentyfourby_seven/SignUp/signUpController.dart';
 import 'package:twentyfourby_seven/Utils/SharedPrefrance.dart';
+import 'package:twentyfourby_seven/customer_Address/shipment_customer/shipmentController.dart';
 import 'package:twentyfourby_seven/models/OperatorModel.dart';
 import 'package:twentyfourby_seven/models/customerMailModel.dart';
 import 'package:twentyfourby_seven/models/profileModel.dart';
 import 'package:twentyfourby_seven/models/statementModell.dart';
 
 import '../models/SubscriptionModel.dart';
+import '../models/shipmentModel.dart';
 
 Map<String, dynamic>? data;
 var operatorController = Get.put(OperatorController());
 var signController = Get.put(SignupController());
+var customerAddCtrl = Get.put(ShipmentController());
 
 Future<void> login(String email, password) async {
   final url = Uri.parse(ApiURl.userLoginUrl);
@@ -258,6 +261,7 @@ Future<void> getViewState() async {
           stateData.map((state) => state['name'] as String).toList();
 
       signController.setStates(stateNames);
+      customerAddCtrl.setStates(stateNames);
       log('stateNames ${stateNames}');
     } else {
       log('Server error: ${response.statusCode}');
@@ -359,4 +363,60 @@ Future<void> uploadUspsData(Map<String, dynamic> updates) async {
   } else {
     print('Error: ${response.statusCode} ${response.body}');
   }
+}
+
+/*void submitShippingAddress() async {
+  var token = SharedPrefs.getString('Token');
+  const String url = "https://service.24x7mail.com/shipping-address";
+  final Map<String, dynamic> body = {
+    "name": customerAddCtrl.nameController.text,
+    "company": "uio",
+    "address1": "At:- shekhpur, ta :-kamrej di:-surat",
+    "address2": "",
+    "country": {"country_id": "233", "name": "United States"},
+    "state": {"country_id": "233", "state_id": 1456, "name": "Alabama"},
+    "city": {"state_id": 1456, "city_id": 111146, "name": "Alexander City"},
+    "postal_code": 394110,
+    "phone": "09714700279",
+    "user_id": "667d923246b74b03f473b3a7"
+  };
+
+  final response = await GetConnect().post(
+    url,
+    body,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': token,
+    },
+  );
+
+  if (response.statusCode == 200) {
+    Get.snackbar("Success", "Shipping address submitted successfully!");
+  } else {
+    Get.snackbar(
+        "Error", "Failed to submit shipping address: ${response.statusText}");
+  }
+}*/
+
+Future<ShipmentModel?> getShipiingList() async {
+  var token = SharedPrefs.getString('Token');
+  const String url =
+      "https://service.24x7mail.com/shipping-address/address-list";
+  final response = await http.get(
+    Uri.parse(url),
+    headers: {
+      'Authorization': token,
+    },
+  );
+  if (response.statusCode == 200) {
+    log('shipmentResponseList ${response.body}');
+    var shipmentData = ShipmentModel.fromJson(jsonDecode(response.body));
+
+    log('shipmentgetList=> $shipmentData');
+    return shipmentData;
+  } else {
+    Get.snackbar(
+        "Error", "Failed to submit shipping address: ${response..statusCode}");
+  }
+  return ShipmentModel();
 }

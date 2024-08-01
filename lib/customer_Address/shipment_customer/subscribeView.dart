@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:twentyfourby_seven/Utils/globalText.dart';
 
-import '../models/SubscriptionModel.dart';
+import '../../models/SubscriptionModel.dart';
 
 class SubscribeView extends StatelessWidget {
   SubscribeView({super.key});

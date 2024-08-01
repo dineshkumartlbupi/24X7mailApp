@@ -117,9 +117,7 @@ class LoginScreen extends StatelessWidget {
                                       color: Colors.black,
                                       fontWeight: FontWeight.w500,
                                     ),
-                                    SizedBox(
-                                      width: Get.width * 0.13,
-                                    ),
+                                    Spacer(),
                                     InkWell(
                                       onTap: () {
                                         Get.defaultDialog(
@@ -196,7 +194,9 @@ class LoginScreen extends StatelessWidget {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    var emailText =
+                                    loginController.submit();
+                                    Get.to(() => CustomerView());
+                                    /* var emailText =
                                         SharedPrefs.getString('emailId');
                                     var passwordText =
                                         SharedPrefs.getString('password');
@@ -206,8 +206,6 @@ class LoginScreen extends StatelessWidget {
                                         passwordText ==
                                             loginController
                                                 .passwordController.text) {
-                                      loginController.submit();
-                                      Get.to(() => CustomerView());
                                     } else {
                                       Get.defaultDialog(
                                           backgroundColor:
@@ -230,7 +228,7 @@ class LoginScreen extends StatelessWidget {
                                                 fontWeight: FontWeight.w700,
                                                 color: MyColor.white,
                                               )));
-                                    }
+                                    }*/
                                   },
                                   child: Container(
                                     height: Get.height * 0.05,
