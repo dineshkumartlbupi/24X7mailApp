@@ -6,6 +6,7 @@ import 'package:twentyfourby_seven/Utils/Mycolor.dart';
 import 'package:twentyfourby_seven/Utils/addImage.dart';
 import 'package:twentyfourby_seven/Utils/globalText.dart';
 
+import '../customer_Address/shipment/pastShipment.dart';
 import 'customerController.dart';
 
 class CustomerDrawer extends StatelessWidget {
@@ -37,8 +38,13 @@ class CustomerDrawer extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: Get.width * 0.04),
             child: PopupMenuButton<String>(
-              onSelected: (String newValue) =>
-                  customerController.selectedOption?.value = newValue,
+              onSelected: (String newValue) async {
+                await pastShipmentList();
+
+                if (newValue == 'Past Shipment') {
+                  Get.to(() => PastShipingList());
+                }
+              },
               itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                 PopupMenuItem<String>(
                   value: 'Pending Shipment',
@@ -80,9 +86,7 @@ class CustomerDrawer extends StatelessWidget {
           _createDrawerItem(
             icon: Icons.view_timeline_outlined,
             text: 'View All',
-            onTap: () async {
-              getViewAll();
-            },
+            onTap: () {},
           ),
           _createDrawerItem(
             icon: Icons.delete,

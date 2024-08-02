@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:twentyfourby_seven/Utils/Mycolor.dart';
@@ -24,7 +26,7 @@ class CustomerAdd extends StatelessWidget {
               PopupMenuButton<String>(
                 onSelected: (String newValue) async {
                   if (newValue == 'My Address') {
-                    //Get.to(() => CustomerAdd());
+                    Get.to(() => CustomerAdd());
                   } else if (newValue == 'Address Book') {
                     await getViewState();
                     Get.to(() => AddressBook());
@@ -65,7 +67,7 @@ class CustomerAdd extends StatelessWidget {
                 height: Get.height * 0.002,
               ),
               PopupMenuButton<String>(
-                onSelected: (String newValue) {
+                onSelected: (String newValue) async {
                   if (newValue == 'Statements') {
                     Get.to(() => StatementView());
                   } else if (newValue == 'Subscription & Billing') {
@@ -232,32 +234,119 @@ class CustomerAdd extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Image.asset(
-                      AddImage.uploadIcon == null
-                          ? customerAddModel.image.toString()
-                          : AddImage.homeLogo,
-                      height: Get.height * 0.065,
-                    ),
+                    Obx(() => customerAddModel.image.value == null
+                        ? Image.asset(
+                            AddImage.uploadIcon,
+                            height: Get.height * 0.05,
+                          )
+                        : Stack(
+                            children: [
+                              Image.file(
+                                File(customerAddModel.image.value?.path
+                                        .toString() ??
+                                    ''),
+                                fit: BoxFit.cover,
+                                height: Get.height * 0.13,
+                                width: Get.width * 0.45,
+                              ),
+                              Positioned(
+                                top: 0,
+                                right: 0,
+                                child: InkWell(
+                                  onTap: () {
+                                    customerAddModel.image.value =
+                                        null; // Remove the image
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.black.withOpacity(0.5),
+                                    ),
+                                    child: Icon(
+                                      Icons.close,
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )),
                     GlobalText('Drag & Drop background image(s)'),
                     GlobalText('or'),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            customerAddModel.pickImage();
+                          },
                           child: GlobalText("Choose file(s)"),
                         ),
                         SizedBox(
                           width: Get.width * 0.01,
                         ),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            await uploadUspsData(
+                                customerAddModel.image as Map<String, dynamic>);
+                          },
                           child: const GlobalText("upload"),
                         ),
                       ],
                     ),
                   ],
                 )),
+            Obx(() => GlobalText(
+                  customerAddModel.image.value?.toString() ?? '',
+                  fontWeight: FontWeight.bold,
+                )),
+            Container(
+              height: Get.height * 0.05,
+              width: Get.width * 0.15,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: MyColor.yellowGold, width: 2.0),
+              ),
+              child: InkWell(
+                  onTap: () {
+                    if (customerAddModel.image.value != null) {
+                      Get.dialog(
+                        Dialog(
+                          backgroundColor: Colors.transparent,
+                          child: Container(
+                            width: Get.width,
+                            height: Get.height,
+                            child: Stack(
+                              children: [
+                                Center(
+                                  child: Image.file(
+                                    customerAddModel.image.value!,
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                                Positioned(
+                                  top: 20,
+                                  right: 20,
+                                  child: IconButton(
+                                    icon:
+                                        Icon(Icons.close, color: Colors.white),
+                                    onPressed: () {
+                                      Get.back();
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    } else {
+                      Get.snackbar("Error", "No image selected.");
+                    }
+                  },
+                  child: Icon(Icons.remove_red_eye_sharp)),
+            )
           ],
         ),
       ),

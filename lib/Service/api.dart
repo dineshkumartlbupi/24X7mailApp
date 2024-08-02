@@ -13,13 +13,16 @@ import 'package:twentyfourby_seven/models/customerMailModel.dart';
 import 'package:twentyfourby_seven/models/profileModel.dart';
 import 'package:twentyfourby_seven/models/statementModell.dart';
 
+import '../customer_Address/customer_AddController.dart';
 import '../models/SubscriptionModel.dart';
 import '../models/shipmentModel.dart';
+import '../models/shipmentstatus_model.dart';
 
 Map<String, dynamic>? data;
 var operatorController = Get.put(OperatorController());
 var signController = Get.put(SignupController());
 var customerAddCtrl = Get.put(ShipmentController());
+var getCustomerAdd = Get.put(CustomerAddController());
 
 Future<void> login(String email, password) async {
   final url = Uri.parse(ApiURl.userLoginUrl);
@@ -208,6 +211,37 @@ Future<void> getShipment() async {
   } finally {}
 }
 
+Future<ShipmentstatusModel?> pastShipmentList() async {
+  try {
+    var userID = SharedPrefs.getString('cID');
+    var token = SharedPrefs.getString('Token');
+
+    final response = await http.get(
+      Uri.parse(
+          'https://service.24x7mail.com/assign?&search=&fromDate=&toDate=&user_id=$userID&page=1&limit=10&current_status=shipment_complete'),
+      // Uri.parse('https://service.24x7mail.com/assign?&search=&fromDate=&toDate=&user_id=$userID&page=1&limit=10&current_status=shipment_complete'),
+      headers: {
+        'Authorization': token,
+      },
+    );
+    log('shipmentpast ${response.statusCode}');
+    log('shipmentpasttt==>${response.body}');
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final jsonResponse =
+          ShipmentstatusModel.fromJson(jsonDecode(response.body));
+      log('past ShipmentModel Response ${jsonResponse.msg?.toString()}');
+      return jsonResponse;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  } catch (e) {
+    print('Error: $e');
+  } finally {}
+}
+//pickup_status
+//https://24x7mail.com/user/inbox/past-shipment-list
+
 Future<OperatorModel?> getOperatorApi() async {
   try {
     final response = await http.get(Uri.parse(ApiURl.operatorUrl));
@@ -262,7 +296,7 @@ Future<void> getViewState() async {
 
       signController.setStates(stateNames);
       customerAddCtrl.setStates(stateNames);
-      log('stateNames ${stateNames}');
+      log('stateNames $stateNames');
     } else {
       log('Server error: ${response.statusCode}');
     }
@@ -327,21 +361,25 @@ Future<void> getTrashList() async {
   }
 }
 
-Future<void> getViewAll() async {
+Future<void> getSOftStatement() async {
   var token = SharedPrefs.getString('Token');
   final response = await http.get(
-    Uri.parse('https://24x7mail.com/user/inbox/pending-shipment-list'),
+    Uri.parse('https://service.24x7mail.com/user/soft-cash'),
     headers: {
       'Authorization': token,
     },
   );
-  if (response.statusCode == 200) {
-    final getViewAllData = jsonDecode(response.body);
+  if (response.statusCode == 200 || response.statusCode == 201) {
+    var responseData = jsonDecode(response.body);
+    if (responseData['status'] == true && responseData['data'] != null) {
+      var softCash = responseData['data']['soft_cash'];
+      getCustomerAdd.softCash.value = softCash;
+      log('Soft Cash: ${softCash}');
 
-    log('getViewAll===> $getViewAllData');
-    return getViewAllData;
-  } else {
-    throw Exception('Failed to load traceList');
+      return responseData;
+    } else {
+      throw Exception('Failed to load traceList');
+    }
   }
 }
 
@@ -365,38 +403,47 @@ Future<void> uploadUspsData(Map<String, dynamic> updates) async {
   }
 }
 
-/*void submitShippingAddress() async {
+void submitShippingAddress() async {
+  var userID = SharedPrefs.getString('cID');
   var token = SharedPrefs.getString('Token');
   const String url = "https://service.24x7mail.com/shipping-address";
+
   final Map<String, dynamic> body = {
     "name": customerAddCtrl.nameController.text,
-    "company": "uio",
-    "address1": "At:- shekhpur, ta :-kamrej di:-surat",
-    "address2": "",
+    "company": customerAddCtrl.companyController.text,
+    "address1": customerAddCtrl.addLineOneController.text,
+    "address2": customerAddCtrl.addLineTwoController.text ?? '',
     "country": {"country_id": "233", "name": "United States"},
     "state": {"country_id": "233", "state_id": 1456, "name": "Alabama"},
     "city": {"state_id": 1456, "city_id": 111146, "name": "Alexander City"},
-    "postal_code": 394110,
-    "phone": "09714700279",
-    "user_id": "667d923246b74b03f473b3a7"
+    "postal_code": customerAddCtrl.postolController.text,
+    "phone": customerAddCtrl.phoneController.text,
+    "user_id": userID
   };
 
-  final response = await GetConnect().post(
-    url,
-    body,
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': token,
-    },
-  );
+  try {
+    final response = await GetConnect().post(
+      url,
+      body,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token,
+      },
+    );
 
-  if (response.statusCode == 200) {
-    Get.snackbar("Success", "Shipping address submitted successfully!");
-  } else {
-    Get.snackbar(
-        "Error", "Failed to submit shipping address: ${response.statusText}");
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      log('Shipment added successfully: ${response.body}');
+      Get.snackbar("Success", "Shipping address submitted successfully!");
+    } else {
+      Get.snackbar(
+          "Error", "Failed to submit shipping address: ${response.statusText}");
+    }
+  } catch (e) {
+    log('Error occurred: $e');
+    Get.snackbar("Error",
+        "An error occurred while submitting the shipping address. Please try again.");
   }
-}*/
+}
 
 Future<ShipmentModel?> getShipiingList() async {
   var token = SharedPrefs.getString('Token');

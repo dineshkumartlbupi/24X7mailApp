@@ -22,6 +22,7 @@ class ShipmentController extends GetxController {
   final countries = ['United States'].obs;
   Rx<String?> selectedCountry = Rx<String?>(null);
   var selectedState = Rx<String?>(null);
+  var selectedCity = Rx<String?>(null);
 
   final states = <String>[].obs;
   final cities = <String>[].obs;
@@ -42,5 +43,6 @@ class ShipmentController extends GetxController {
   Future<void> getshipmentData() async {
     log('shipment value ${shipment.value?.msg.toString()}');
     shipment.value = await getShipiingList();
+    update();
   }
 }

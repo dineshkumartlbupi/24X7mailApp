@@ -25,7 +25,7 @@ class StatementView extends StatelessWidget {
             children: [
               Container(
                 height: Get.height * 0.10,
-                width: Get.width * 0.56,
+                width: Get.width * 0.5,
                 color: MyColor.pastelBlue,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -35,7 +35,7 @@ class StatementView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         GlobalText(
-                          '\$${addStatement.statement.value.data?.length.toDouble()}',
+                          '\$ ${addStatement.softCash.value.toString()}',
                           fontWeight: FontWeight.w700,
                           fontSize: Get.height * 0.04,
                         ),
@@ -46,11 +46,11 @@ class StatementView extends StatelessWidget {
                       ],
                     ),
                     SizedBox(
-                      width: Get.width * 0.12,
+                      width: Get.width * 0.10,
                     ),
                     Icon(
                       Icons.attach_money,
-                      size: Get.height * 0.05,
+                      size: Get.height * 0.06,
                     )
                   ],
                 ),
@@ -84,13 +84,17 @@ class StatementView extends StatelessWidget {
                   ),
                 ],
               ),
+              SizedBox(
+                height: Get.height * 0.002,
+              ),
               Container(
                 height: Get.height * 0.25,
+                margin: EdgeInsets.all(5),
                 child: ListView.builder(
                   itemCount: addStatement.statement.value.data?.length,
                   itemBuilder: (_, index) {
                     return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         GlobalText('${index + 1}'),
