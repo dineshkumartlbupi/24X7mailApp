@@ -7,6 +7,7 @@ import 'package:twentyfourby_seven/Utils/addImage.dart';
 import 'package:twentyfourby_seven/Utils/globalText.dart';
 
 import '../customer_Address/shipment/pastShipment.dart';
+import '../customer_Address/shipment/pendingShipment.dart';
 import 'customerController.dart';
 
 class CustomerDrawer extends StatelessWidget {
@@ -43,6 +44,8 @@ class CustomerDrawer extends StatelessWidget {
 
                 if (newValue == 'Past Shipment') {
                   Get.to(() => PastShipingList());
+                } else if (newValue == 'Pending Shipment') {
+                  Get.to(() => PendingShipment());
                 }
               },
               itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[

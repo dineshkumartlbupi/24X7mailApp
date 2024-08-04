@@ -79,10 +79,11 @@ class CustomerAdd extends StatelessWidget {
                     value: 'Statements',
                     child: GlobalText('Statements'),
                   ),
-                  const PopupMenuItem<String>(
+                  /*   const PopupMenuItem<String>(
                     value: 'Subscription & Billing',
                     child: GlobalText('Subscription & Billing'),
                   ),
+               */
                 ],
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,

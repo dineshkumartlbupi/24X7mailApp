@@ -18,7 +18,7 @@ import 'customerDrawer.dart';
 class CustomerView extends StatelessWidget {
   CustomerView({super.key});
   final customerController = Get.put(CustomerController());
-  final lginctrl = Get.put(LoginController());
+  final loginCtrl = Get.put(LoginController());
   @override
   Widget build(BuildContext context) {
     var firstName = SharedPrefs.getString('firstNAme');
@@ -27,9 +27,9 @@ class CustomerView extends StatelessWidget {
       onWillPop: () async {
         await SharedPrefs.remove('Token');
 
-        lginctrl.rememberMe.value = false;
-        lginctrl.emailController.clear();
-        lginctrl.passwordController.clear();
+        loginCtrl.rememberMe.value = false;
+        loginCtrl.emailController.clear();
+        loginCtrl.passwordController.clear();
 
         return true;
       },
@@ -53,13 +53,13 @@ class CustomerView extends StatelessWidget {
                       if (userType['value'] == 'settings') {
                         Get.to(() => CustomerAdd());
                       } else if (userType['value'] == 'logout') {
-                        if (lginctrl.rememberMe.value == true) {
-                          lginctrl.submit();
+                        if (loginCtrl.rememberMe.value == true) {
+                          loginCtrl.submit();
                         }
                         SharedPrefs.remove('Token');
-                        lginctrl.rememberMe.value = false;
-                        lginctrl.emailController.clear();
-                        lginctrl.passwordController.clear();
+                        loginCtrl.rememberMe.value = false;
+                        loginCtrl.emailController.clear();
+                        loginCtrl.passwordController.clear();
                         Get.to(() => LoginScreen());
                       }
                     },

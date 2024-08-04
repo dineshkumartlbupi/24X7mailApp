@@ -224,22 +224,82 @@ Future<ShipmentstatusModel?> pastShipmentList() async {
         'Authorization': token,
       },
     );
-    log('shipmentpast ${response.statusCode}');
-    log('shipmentpasttt==>${response.body}');
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       final jsonResponse =
           ShipmentstatusModel.fromJson(jsonDecode(response.body));
-      log('past ShipmentModel Response ${jsonResponse.msg?.toString()}');
+
       return jsonResponse;
     } else {
-      throw Exception('Failed to load data');
+      log('Failed to load data: ${response.reasonPhrase}');
+      throw Exception('Failed to load data: ${response.reasonPhrase}');
     }
   } catch (e) {
-    print('Error: $e');
-  } finally {}
+    log('Error: $e');
+    rethrow;
+  }
 }
-//pickup_status
+
+Future<ShipmentstatusModel?> pendingShipmentList() async {
+  try {
+    var userID = SharedPrefs.getString('cID');
+    var token = SharedPrefs.getString('Token');
+
+    final response = await http.get(
+      Uri.parse(
+          'https://service.24x7mail.com/assign?&search=&fromDate=&toDate=&user_id=$userID&page=1&limit=10&current_status=pickup status'),
+      headers: {
+        'Authorization': token,
+      },
+    );
+    log('pendingList ${response.statusCode}');
+    log('==>${response.body}');
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final jsonResponse =
+          ShipmentstatusModel.fromJson(jsonDecode(response.body));
+
+      return jsonResponse;
+    } else {
+      log('Failed to load data: ${response.reasonPhrase}');
+      throw Exception('Failed to load data: ${response.reasonPhrase}');
+    }
+  } catch (e) {
+    log('Error: $e');
+    rethrow;
+  }
+}
+
+Future<ShipmentstatusModel?> pickedUpList() async {
+  try {
+    var userID = SharedPrefs.getString('cID');
+    var token = SharedPrefs.getString('Token');
+
+    final response = await http.get(
+      Uri.parse(
+          'https://service.24x7mail.com/assign?&search=&fromDate=&toDate=&user_id=$userID&page=1&limit=10&current_status=pickup status'),
+      headers: {
+        'Authorization': token,
+      },
+    );
+    log('pendingList ${response.statusCode}');
+    log('==>${response.body}');
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final jsonResponse =
+          ShipmentstatusModel.fromJson(jsonDecode(response.body));
+
+      return jsonResponse;
+    } else {
+      log('Failed to load data: ${response.reasonPhrase}');
+      throw Exception('Failed to load data: ${response.reasonPhrase}');
+    }
+  } catch (e) {
+    log('Error: $e');
+    rethrow;
+  }
+}
+
 //https://24x7mail.com/user/inbox/past-shipment-list
 
 Future<OperatorModel?> getOperatorApi() async {
