@@ -18,13 +18,12 @@ import '../models/SubscriptionModel.dart';
 import '../models/shipmentModel.dart';
 import '../models/shipmentstatus_model.dart';
 
-Map<String, dynamic>? data;
 var operatorController = Get.put(OperatorController());
 var signController = Get.put(SignupController());
 var customerAddCtrl = Get.put(ShipmentController());
 var getCustomerAdd = Get.put(CustomerAddController());
 
-Future<void> login(String email, password) async {
+Future<UserModel?> login(String email, password) async {
   final url = Uri.parse(ApiURl.userLoginUrl);
   final headers = <String, String>{
     'Content-Type': 'application/json',
@@ -44,13 +43,14 @@ Future<void> login(String email, password) async {
     );
 
     if (response.statusCode == 200) {
-      final jsonResponse = jsonDecode(response.body);
-      String token = jsonResponse['token'].toString();
-      String customerID = jsonResponse['data']['_id'];
-      String firstName = jsonResponse['data']['fname'];
-      String lastName = jsonResponse['data']['lname'];
-      String email = jsonResponse['data']['email'];
-      String password = jsonResponse['data']['password'];
+      final loginResponse = UserModel.fromJson(jsonDecode(response.body));
+      log('login==> ${loginResponse.token}');
+      String token = loginResponse.token.toString();
+      String customerID = loginResponse.data?.id.toString() ?? '';
+      String firstName = loginResponse.data?.fname.toString() ?? '';
+      String lastName = loginResponse.data?.lname.toString() ?? '';
+      String email = loginResponse.data?.email.toString() ?? '';
+      String password = loginResponse.data?.password.toString() ?? '';
       log('emailll $email,$password');
       SharedPrefs.putString('emailId', email);
       SharedPrefs.putString('password', password);
@@ -58,8 +58,8 @@ Future<void> login(String email, password) async {
       SharedPrefs.putString('cID', customerID);
       SharedPrefs.putString('firstNAme', firstName);
       SharedPrefs.putString('lastNAme', lastName);
-      var viewCID = SharedPrefs.getString('cID');
-      log('jsonResponse==>${jsonResponse['data']}');
+
+      return loginResponse;
     } else {
       log('Failed to login: ${response.statusCode}');
     }
@@ -68,21 +68,24 @@ Future<void> login(String email, password) async {
   }
 }
 
-Future<void> changePassword(String currentPassword, String newPassword) async {
+Future<void> changePassword(
+  String sendmail,
+) async {
   var token = SharedPrefs.getString('Token');
-  final url = Uri.parse('https://service.24x7mail.com/user/change-password');
+  final url = Uri.parse('https://service.24x7mail.com/user/forgot-password');
 
-  final response = await http.patch(
+  final response = await http.post(
     url,
-    headers: {'Content-Type': 'application/json', 'Authorization': token},
-    body: jsonEncode({
-      'currentPassword': currentPassword,
-      'newPassword': newPassword,
-    }),
+    headers: {'Authorization': token},
+    body: {
+      'email': sendmail,
+    },
   );
 
-  if (response.statusCode == 200) {
-    log('Password changed successfully');
+  if (response.statusCode == 200 || response.statusCode == 201) {
+    var forgetPassword = jsonDecode(response.body);
+    Get.snackbar('${forgetPassword['msg']}', '');
+    return forgetPassword;
   } else {
     log('Failed to change password: ${response.statusCode}');
   }
@@ -119,7 +122,7 @@ Future<StatementModell?> getStatementApi() async {
       log('stat statuscode ${response.statusCode}');
       final jsonResponse = jsonDecode(response.body);
       final statement = StatementModell.fromJson(jsonResponse);
-      //log('statementDATA==>${response.body}');
+
       return statement;
     } else {
       throw Exception('Failed to load data');
@@ -194,7 +197,6 @@ Future<void> getShipment() async {
           'https://service.24x7mail.com/assign/shipment-list?username=customer&id=$userID'),
       headers: {
         'Authorization': token,
-        //'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjdkOTIzMjQ2Yjc0YjAzZjQ3M2IzYTciLCJ1c2VyX3R5cGUiOiJ1c2VyIiwiaWF0IjoxNzIxNTU2Nzk0LCJleHAiOjE3MjE2NDMxOTR9.yNj8S55oN9C287texl_cvsc1_W1nPcYHlNy6V-Snvn4',
       },
     );
     log('shipment ${response.statusCode}');
@@ -247,7 +249,7 @@ Future<ShipmentstatusModel?> pendingShipmentList() async {
 
     final response = await http.get(
       Uri.parse(
-          'https://service.24x7mail.com/assign?&search=&fromDate=&toDate=&user_id=$userID&page=1&limit=10&current_status=pickup status'),
+          'https://service.24x7mail.com/assign?&search=&fromDate=&toDate=&user_id=$userID&page=1&limit=10&current_status=past-shipment-list'),
       headers: {
         'Authorization': token,
       },
@@ -301,6 +303,8 @@ Future<ShipmentstatusModel?> pickedUpList() async {
 }
 
 //https://24x7mail.com/user/inbox/past-shipment-list
+/// Get All customer
+/// https://service.24x7mail.com/assign/shipment-list-added
 
 Future<OperatorModel?> getOperatorApi() async {
   try {
@@ -403,7 +407,7 @@ Future<SubscriptionModel?> subscriptionApi() async {
   return SubscriptionModel();
 }
 
-Future<void> getTrashList() async {
+Future<ShipmentstatusModel> getTrashList() async {
   var token = SharedPrefs.getString('Token');
   final response = await http.get(
     Uri.parse(ApiURl.getTraceList),
@@ -412,10 +416,33 @@ Future<void> getTrashList() async {
     },
   );
   if (response.statusCode == 200) {
-    final traceListDta = jsonDecode(response.body);
+    final traceListDta =
+        ShipmentstatusModel.fromJson(jsonDecode(response.body));
 
     log('traceList===> $traceListDta');
     return traceListDta;
+  } else {
+    throw Exception('Failed to load traceList');
+  }
+}
+
+Future<CustomerMailModel?> getViewIndexData(String? fromDate, toDate) async {
+  var userID = SharedPrefs.getString('cID');
+  var token = SharedPrefs.getString('Token');
+  final response = await http.get(
+    //Uri.parse('https://service.24x7mail.com/assign/shipment-list-added'),
+    Uri.parse(
+        'https://service.24x7mail.com/assign?request_completed=true&&search=&$fromDate=&$toDate=&user_id=$userID&page=1&limit=10'),
+    headers: {
+      'Authorization': token,
+    },
+  );
+
+  if (response.statusCode == 200 || response.statusCode == 201) {
+    var responseData = CustomerMailModel.fromJson(jsonDecode(response.body));
+    log('View Index: $responseData');
+
+    return responseData;
   } else {
     throw Exception('Failed to load traceList');
   }

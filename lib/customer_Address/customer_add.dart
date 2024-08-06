@@ -14,7 +14,7 @@ import '../Service/api.dart';
 
 class CustomerAdd extends StatelessWidget {
   CustomerAdd({super.key});
-  var customerAddModel = Get.put(CustomerAddController());
+  var customerAddView = Get.put(CustomerAddController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,16 +79,15 @@ class CustomerAdd extends StatelessWidget {
                     value: 'Statements',
                     child: GlobalText('Statements'),
                   ),
-                  /*   const PopupMenuItem<String>(
+                  /*const PopupMenuItem<String>(
                     value: 'Subscription & Billing',
                     child: GlobalText('Subscription & Billing'),
-                  ),
-               */
+                  ),*/
                 ],
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.account_balance_rounded,
                       color: MyColor.brightBlue,
                     ),
@@ -148,7 +147,7 @@ class CustomerAdd extends StatelessWidget {
                     color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 1,
                     blurRadius: 5,
-                    offset: Offset(0, 3), // changes position of shadow
+                    offset: Offset(0, 3),
                   ),
                 ],
               ),
@@ -170,7 +169,7 @@ class CustomerAdd extends StatelessWidget {
                         Row(
                           children: [
                             GlobalText(
-                              customerAddModel
+                              customerAddView
                                       .propertyModel.value?.data?.username
                                       .toString()
                                       .capitalizeFirst ??
@@ -183,7 +182,7 @@ class CustomerAdd extends StatelessWidget {
                               width: Get.width * 0.004,
                             ),
                             GlobalText(
-                              customerAddModel.propertyModel.value?.data?.lname
+                              customerAddView.propertyModel.value?.data?.lname
                                       .toString()
                                       .capitalizeFirst ??
                                   '',
@@ -192,7 +191,7 @@ class CustomerAdd extends StatelessWidget {
                               fontWeight: FontWeight.w700,
                             ),
                             GlobalText(
-                              '  #${customerAddModel.propertyModel.value?.data?.mailBoxNum.toString() ?? ''}',
+                              '  #${customerAddView.propertyModel.value?.data?.mailBoxNum.toString() ?? ''}',
                               fontSize: 16.0,
                               color: Colors.black87,
                               fontWeight: FontWeight.w500,
@@ -200,7 +199,7 @@ class CustomerAdd extends StatelessWidget {
                           ],
                         ),
                         GlobalText(
-                          customerAddModel.propertyModel.value?.data?.feature
+                          customerAddView.propertyModel.value?.data?.feature
                                   ?.properties?.featureDetails?.businessAddress
                                   .toString() ??
                               '',
@@ -235,7 +234,7 @@ class CustomerAdd extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Obx(() => customerAddModel.image.value == null
+                    Obx(() => customerAddView.image.value == null
                         ? Image.asset(
                             AddImage.uploadIcon,
                             height: Get.height * 0.05,
@@ -243,7 +242,7 @@ class CustomerAdd extends StatelessWidget {
                         : Stack(
                             children: [
                               Image.file(
-                                File(customerAddModel.image.value?.path
+                                File(customerAddView.image.value?.path
                                         .toString() ??
                                     ''),
                                 fit: BoxFit.cover,
@@ -255,7 +254,7 @@ class CustomerAdd extends StatelessWidget {
                                 right: 0,
                                 child: InkWell(
                                   onTap: () {
-                                    customerAddModel.image.value =
+                                    customerAddView.image.value =
                                         null; // Remove the image
                                   },
                                   child: Container(
@@ -280,7 +279,7 @@ class CustomerAdd extends StatelessWidget {
                       children: [
                         ElevatedButton(
                           onPressed: () {
-                            customerAddModel.pickImage();
+                            customerAddView.pickImage();
                           },
                           child: GlobalText("Choose file(s)"),
                         ),
@@ -290,7 +289,7 @@ class CustomerAdd extends StatelessWidget {
                         ElevatedButton(
                           onPressed: () async {
                             await uploadUspsData(
-                                customerAddModel.image as Map<String, dynamic>);
+                                customerAddView.image as Map<String, dynamic>);
                           },
                           child: const GlobalText("upload"),
                         ),
@@ -299,7 +298,7 @@ class CustomerAdd extends StatelessWidget {
                   ],
                 )),
             Obx(() => GlobalText(
-                  customerAddModel.image.value?.toString() ?? '',
+                  customerAddView.image.value?.toString() ?? '',
                   fontWeight: FontWeight.bold,
                 )),
             Container(
@@ -311,7 +310,7 @@ class CustomerAdd extends StatelessWidget {
               ),
               child: InkWell(
                   onTap: () {
-                    if (customerAddModel.image.value != null) {
+                    if (customerAddView.image.value != null) {
                       Get.dialog(
                         Dialog(
                           backgroundColor: Colors.transparent,
@@ -322,7 +321,7 @@ class CustomerAdd extends StatelessWidget {
                               children: [
                                 Center(
                                   child: Image.file(
-                                    customerAddModel.image.value!,
+                                    customerAddView.image.value!,
                                     fit: BoxFit.contain,
                                   ),
                                 ),

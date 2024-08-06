@@ -1,22 +1,17 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:twentyfourby_seven/Login/loginController.dart';
 import 'package:twentyfourby_seven/Utils/Mycolor.dart';
-import 'package:twentyfourby_seven/Utils/SharedPrefrance.dart';
 import 'package:twentyfourby_seven/Utils/globalText.dart';
-import 'package:twentyfourby_seven/customer_Address/customer_add.dart';
 
-import '../Login/loginScreen.dart';
-import '../Utils/commonDialog.dart';
-import '../models/customerMailModel.dart';
-import 'customerController.dart';
-import 'customerDrawer.dart';
+import '../../Customer/customerController.dart';
+import '../../Login/loginController.dart';
+import '../../Utils/SharedPrefrance.dart';
+import '../../Utils/commonDialog.dart';
+import '../../models/customerMailModel.dart';
 
-class CustomerView extends StatelessWidget {
-  CustomerView({super.key});
+class MailViewAll extends StatelessWidget {
+  MailViewAll({super.key});
   final customerController = Get.put(CustomerController());
   final loginCtrl = Get.put(LoginController());
   @override
@@ -26,6 +21,7 @@ class CustomerView extends StatelessWidget {
     return WillPopScope(
       onWillPop: () async {
         await SharedPrefs.remove('Token');
+
         loginCtrl.rememberMe.value = false;
         loginCtrl.emailController.clear();
         loginCtrl.passwordController.clear();
@@ -33,53 +29,13 @@ class CustomerView extends StatelessWidget {
         return true;
       },
       child: Scaffold(
-        drawer: Drawer(
-          child: CustomerDrawer(),
-        ),
         appBar: AppBar(
           backgroundColor: MyColor.yellowGold,
-          actions: [
-            PopupMenuButton<String>(
-              onSelected: (String newValue) {
-                customerController.selectedUserType = newValue;
-              },
-              itemBuilder: (BuildContext context) {
-                return customerController.listUserType.map((userType) {
-                  return PopupMenuItem<String>(
-                    value: userType['value'],
-                    onTap: () {
-                      log('value ${userType['value']}');
-                      if (userType['value'] == 'settings') {
-                        Get.to(() => CustomerAdd());
-                      } else if (userType['value'] == 'logout') {
-                        if (loginCtrl.rememberMe.value == true) {
-                          loginCtrl.submit();
-                        }
-                        SharedPrefs.remove('Token');
-                        loginCtrl.rememberMe.value = false;
-                        loginCtrl.emailController.clear();
-                        loginCtrl.passwordController.clear();
-                        Get.to(() => LoginScreen());
-                      }
-                    },
-                    child: Row(
-                      children: [
-                        Icon(userType['icon']),
-                        const SizedBox(width: 8),
-                        Text(userType['name']),
-                      ],
-                    ),
-                  );
-                }).toList();
-              },
-              child: Row(
-                children: [
-                  GlobalText('$firstName $lastName'),
-                  const Icon(Icons.manage_accounts),
-                ],
-              ),
-            ),
-          ],
+          title: GlobalText(
+            'ViewAll Mail',
+            color: MyColor.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         body: ListView(
           children: [
@@ -118,8 +74,7 @@ class CustomerView extends StatelessWidget {
                 height: Get.height * 0.5,
                 width: Get.width,
                 child: Obx(
-                  () => customerController
-                              .customerIndexMail.value.data?.length ==
+                  () => customerController.customerModel.value.data?.length ==
                           null
                       ? const Center(
                           child: CircularProgressIndicator(
@@ -127,14 +82,14 @@ class CustomerView extends StatelessWidget {
                         ))
                       : ListView.builder(
                           itemCount: customerController
-                              .customerIndexMail.value.data?.length,
+                              .customerModel.value.data?.length,
                           itemBuilder: (_, index) {
                             return Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                customerController.customerIndexMail.value
+                                customerController.customerModel.value
                                             .data?[index].markAsRead ==
-                                        true
+                                        false
                                     ? Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
@@ -316,13 +271,13 @@ class CustomerView extends StatelessWidget {
                                         children: [
                                           Checkbox(
                                               value: customerController
-                                                  .customerIndexMail
+                                                  .customerModel
                                                   .value
                                                   .data?[index]
                                                   .markAsRead,
                                               onChanged: (bool? value) {
                                                 customerController
-                                                        .customerIndexMail
+                                                        .customerModel
                                                         .value
                                                         .data?[index]
                                                         .markAsRead !=
@@ -330,7 +285,7 @@ class CustomerView extends StatelessWidget {
                                               }),
                                           GlobalText(
                                             customerController
-                                                    .customerIndexMail
+                                                    .customerModel
                                                     .value
                                                     .data?[index]
                                                     .mailId
@@ -343,7 +298,7 @@ class CustomerView extends StatelessWidget {
                                           ),
                                           GlobalText(
                                             customerController
-                                                    .customerIndexMail
+                                                    .customerModel
                                                     .value
                                                     .data?[index]
                                                     .currentStatus
@@ -361,12 +316,12 @@ class CustomerView extends StatelessWidget {
                                         children: [
                                           GlobalText(
                                             customerController
-                                                        .customerIndexMail
+                                                        .customerModel
                                                         .value
                                                         .data?[index]
                                                         .createdAt !=
                                                     null
-                                                ? DateFormat('MM-dd-yyyy')
+                                                ? DateFormat('dd-MM-yyyy')
                                                     .format(DateTime.parse(
                                                         customerController
                                                                 .customerModel
@@ -382,7 +337,7 @@ class CustomerView extends StatelessWidget {
                                             height: Get.height * 0.07,
                                             width: Get.width * 0.25,
                                             child: customerController
-                                                        .customerIndexMail
+                                                        .customerModel
                                                         .value
                                                         .data
                                                         ?.length ==
@@ -394,19 +349,20 @@ class CustomerView extends StatelessWidget {
                                                         MyColor.colorBlueHome,
                                                   ))
                                                 : ListView.builder(
-                                                    itemCount: customerController
-                                                            .customerIndexMail
-                                                            .value
-                                                            .data
-                                                            ?.length ??
-                                                        0,
+                                                    itemCount:
+                                                        customerController
+                                                                .customerModel
+                                                                .value
+                                                                .data
+                                                                ?.length ??
+                                                            0,
                                                     itemBuilder:
                                                         (context, index) {
                                                       String baseUrl =
                                                           'https://service.24x7mail.com/uploads/';
                                                       String imagePath =
                                                           customerController
-                                                                  .customerIndexMail
+                                                                  .customerModel
                                                                   .value
                                                                   .data?[index]
                                                                   .mailId
@@ -427,7 +383,7 @@ class CustomerView extends StatelessWidget {
                                                             _showImageDialog(
                                                                 context,
                                                                 customerController
-                                                                    .customerIndexMail
+                                                                    .customerModel
                                                                     .value
                                                                     .data?[
                                                                         index]
@@ -452,7 +408,7 @@ class CustomerView extends StatelessWidget {
                                           ),
                                           GlobalText(
                                             customerController
-                                                    .customerIndexMail
+                                                    .customerModel
                                                     .value
                                                     .data?[index]
                                                     .mailId
@@ -522,7 +478,7 @@ class CustomerView extends StatelessWidget {
                 fontWeight: FontWeight.w700,
               ),
               GlobalText(
-                  '${customerController.customerIndexMail.value.data?[index].mailId?.mailType.toString().capitalizeFirst}'),
+                  '${customerController.customerModel.value.data?[index].mailId?.mailType.toString().capitalizeFirst}'),
             ],
           ),
           content: Container(
@@ -579,7 +535,7 @@ class CustomerView extends StatelessWidget {
                           'Sender :',
                           fontWeight: FontWeight.w700,
                         ),
-                        GlobalText(customerController.customerIndexMail.value
+                        GlobalText(customerController.customerModel.value
                                 .data?[index].mailId?.mailType
                                 .toString()
                                 .capitalizeFirst ??
@@ -592,7 +548,7 @@ class CustomerView extends StatelessWidget {
                           'Mail ID :',
                           fontWeight: FontWeight.w700,
                         ),
-                        GlobalText(customerController.customerIndexMail.value
+                        GlobalText(customerController.customerModel.value
                                 .data?[index].mailId?.mailBoxId
                                 .toString() ??
                             ''),
@@ -610,11 +566,11 @@ class CustomerView extends StatelessWidget {
                           fontWeight: FontWeight.w700,
                         ),
                         GlobalText(
-                          customerController.customerIndexMail.value
-                                      .data?[index].updatedAt !=
+                          customerController.customerModel.value.data?[index]
+                                      .updatedAt !=
                                   null
                               ? DateFormat('dd-MM-yyyy').format(DateTime.parse(
-                                  customerController.customerIndexMail.value
+                                  customerController.customerModel.value
                                           .data?[index].updatedAt ??
                                       ''))
                               : '',
@@ -663,14 +619,14 @@ class CustomerView extends StatelessWidget {
                     height: Get.height * 0.05,
                     width: Get.width,
                     child: ListView.builder(
-                        itemCount: customerController.customerIndexMail.value
+                        itemCount: customerController.customerModel.value
                             .data?[index].mailHistory?.length,
                         itemBuilder: (context, ind) {
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               GlobalText(customerController
-                                          .customerIndexMail
+                                          .customerModel
                                           .value
                                           .data?[index]
                                           .mailHistory?[ind]
@@ -678,24 +634,20 @@ class CustomerView extends StatelessWidget {
                                       null
                                   ? DateFormat('dd-MM-yyyy').format(
                                       DateTime.parse(customerController
-                                              .customerIndexMail
+                                              .customerModel
                                               .value
                                               .data?[index]
                                               .mailHistory?[ind]
                                               .createdAt ??
                                           ''))
                                   : ''),
-                              GlobalText(customerController
-                                      .customerIndexMail
-                                      .value
-                                      .data?[index]
-                                      .mailHistory?[ind]
-                                      .status
+                              GlobalText(customerController.customerModel.value
+                                      .data?[index].mailHistory?[ind].status
                                       .toString()
                                       .capitalizeFirst ??
                                   ''),
                               GlobalText(customerController
-                                          .customerIndexMail
+                                          .customerModel
                                           .value
                                           .data?[index]
                                           .mailHistory?[ind]
@@ -703,7 +655,7 @@ class CustomerView extends StatelessWidget {
                                       null
                                   ? DateFormat('hh:mm a').format(DateTime.parse(
                                       customerController
-                                              .customerIndexMail
+                                              .customerModel
                                               .value
                                               .data?[index]
                                               .mailHistory?[ind]

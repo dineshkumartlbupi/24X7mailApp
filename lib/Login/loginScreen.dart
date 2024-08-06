@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:twentyfourby_seven/Login/loginController.dart';
@@ -7,7 +6,7 @@ import 'package:twentyfourby_seven/Utils/addImage.dart';
 import 'package:twentyfourby_seven/Utils/globalText.dart';
 
 import '../Customer/customerView.dart';
-import '../Home/requestLocation.dart';
+import '../Service/api.dart';
 import '../Utils/SharedPrefrance.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -20,7 +19,8 @@ class LoginScreen extends StatelessWidget {
         child: Card(
           elevation: 12,
           child: Container(
-            height: Get.height * 0.55,
+            height: Get.height * 0.45,
+            //height: Get.height * 0.55,
             width: Get.width * 0.9,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
@@ -60,6 +60,7 @@ class LoginScreen extends StatelessWidget {
                                     if (value == null || value.isEmpty) {
                                       return 'Please enter an email';
                                     }
+
                                     if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
                                         .hasMatch(value)) {
                                       return 'Please enter a valid email';
@@ -85,7 +86,8 @@ class LoginScreen extends StatelessWidget {
                                     ),
                                     labelText: 'Enter Password',
                                     border: const OutlineInputBorder(),
-                                    errorStyle: TextStyle(color: Colors.red),
+                                    errorStyle:
+                                        const TextStyle(color: Colors.red),
                                   ),
                                   obscureText:
                                       loginController.isViewPassword.value,
@@ -99,7 +101,7 @@ class LoginScreen extends StatelessWidget {
                                     return null;
                                   },
                                 ),
-                                const SizedBox(height: 20),
+                                SizedBox(height: 20),
                                 Row(
                                   children: [
                                     Obx(
@@ -167,7 +169,12 @@ class LoginScreen extends StatelessWidget {
                                             ],
                                           ),
                                           cancel: ElevatedButton(
-                                            onPressed: () => Get.back(),
+                                            onPressed: () {
+                                              Get.back();
+                                              loginController
+                                                  .resetEmailController
+                                                  .clear();
+                                            },
                                             child: const GlobalText(
                                               color: MyColor.black,
                                               fontWeight: FontWeight.bold,
@@ -175,7 +182,12 @@ class LoginScreen extends StatelessWidget {
                                             ),
                                           ),
                                           confirm: ElevatedButton(
-                                            onPressed: () {},
+                                            onPressed: () async {
+                                              await changePassword(
+                                                  loginController
+                                                      .resetEmailController
+                                                      .text);
+                                            },
                                             child: GlobalText(
                                               color: MyColor.black,
                                               fontWeight: FontWeight.bold,
@@ -195,23 +207,27 @@ class LoginScreen extends StatelessWidget {
                                 InkWell(
                                   onTap: () {
                                     loginController.submit();
-                                    Get.to(() => CustomerView());
-                                    /* var emailText =
+                                    var emailText =
                                         SharedPrefs.getString('emailId');
                                     var passwordText =
                                         SharedPrefs.getString('password');
-                                    if (emailText ==
+                                    if (emailText.isNotEmpty ||
+                                        loginController
+                                                .loginModel.value.data?.email ==
                                             loginController
                                                 .emailController.text ||
-                                        passwordText ==
+                                        passwordText.isNotEmpty ||
+                                        loginController.loginModel.value.data
+                                                ?.password ==
                                             loginController
                                                 .passwordController.text) {
+                                      Get.to(() => CustomerView());
                                     } else {
                                       Get.defaultDialog(
                                           backgroundColor:
                                               MyColor.backgroundLogin,
                                           title: 'Login Failed',
-                                          titleStyle: TextStyle(
+                                          titleStyle: const TextStyle(
                                               color: MyColor.colorRedHome,
                                               fontWeight: FontWeight.w700),
                                           middleText:
@@ -220,15 +236,13 @@ class LoginScreen extends StatelessWidget {
                                               style: ElevatedButton.styleFrom(
                                                   backgroundColor:
                                                       MyColor.cardIColorIndigo),
-                                              onPressed: () {
-                                                Get.back();
-                                              },
+                                              onPressed: () => Get.back(),
                                               child: const GlobalText(
                                                 'ok',
                                                 fontWeight: FontWeight.w700,
                                                 color: MyColor.white,
                                               )));
-                                    }*/
+                                    }
                                   },
                                   child: Container(
                                     height: Get.height * 0.05,
@@ -245,7 +259,7 @@ class LoginScreen extends StatelessWidget {
                                     )),
                                   ),
                                 ),
-                                Padding(
+                                /* Padding(
                                   padding: EdgeInsets.all(16.0),
                                   child: RichText(
                                     text: TextSpan(
@@ -274,10 +288,10 @@ class LoginScreen extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                ),
+                                ),*/
                               ],
                             ),
-                          ))
+                          )),
                     ]),
               ),
             ),

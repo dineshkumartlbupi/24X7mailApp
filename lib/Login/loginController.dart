@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:twentyfourby_seven/models/profileModel.dart';
 
 import '../Service/api.dart';
 import '../Utils/SharedPrefrance.dart';
@@ -15,7 +16,7 @@ class LoginController extends GetxController {
   final passwordController = TextEditingController();
   final resetEmailController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-
+  Rx<UserModel> loginModel = UserModel().obs;
   @override
   void onClose() {
     emailController.clear();
@@ -23,19 +24,16 @@ class LoginController extends GetxController {
     super.onClose();
   }
 
-  void forgotPassword() {
-    changePassword('new', '450');
-    log('Forgot Password clicked');
-  }
-
   void showPassword() {
     isViewPassword.value = !isViewPassword.value;
   }
 
-  void submit() async {
+  Future<void> submit() async {
     var token = SharedPrefs.getString('Token');
     if (formKey.currentState!.validate() && token.isEmpty) {
-      await login(emailController.text, passwordController.text);
+      loginModel.value =
+          (await login(emailController.text, passwordController.text) ??
+              loginModel.value);
     }
     log('Email: ${emailController.text}');
     log('Password: ${passwordController.text}');

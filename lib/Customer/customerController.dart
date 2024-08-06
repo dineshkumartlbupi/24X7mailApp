@@ -16,14 +16,15 @@ class CustomerController extends GetxController {
   TextEditingController dateRangeController = TextEditingController();
   final ScrollController scrollController = ScrollController();
   TextEditingController searchController = TextEditingController();
-
   Rx<CustomerMailModel> customerModel = CustomerMailModel().obs;
+  Rx<CustomerMailModel> customerIndexMail = CustomerMailModel().obs;
   String? baseUrl;
   List<Data> filteredList = [];
 
   @override
   void onInit() {
     getCustomerDetails();
+    getIndexDetails();
     super.onInit();
   }
 
@@ -49,6 +50,12 @@ class CustomerController extends GetxController {
     var userID = SharedPrefs.getString('cID');
     log('userID==>$userID');
     customerModel.value = (await getCustomerApi()) ?? customerModel.value;
+  }
+
+  Future<void> getIndexDetails() async {
+    customerIndexMail.value =
+        (await getViewIndexData(fromDate.toString(), toDate.toString())) ??
+            customerIndexMail.value;
   }
 
   final List<Map<String, dynamic>> listUserType = [

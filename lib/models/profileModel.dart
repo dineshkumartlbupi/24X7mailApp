@@ -2,27 +2,32 @@ class UserModel {
   bool? status;
   UserData? data;
   String? msg;
+  String? token;
 
-  UserModel({this.status, this.data, this.msg});
+  UserModel({this.status, this.data, this.msg, this.token});
 
   UserModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     data = json['data'] != null ? UserData.fromJson(json['data']) : null;
     msg = json['msg'];
+    token = json['token'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
+    final Map<String, dynamic> result = {};
     if (status != null) {
-      data['status'] = status;
+      result['status'] = status;
     }
-    if (this.data != null) {
-      data['data'] = this.data!.toJson();
+    if (data != null) {
+      result['data'] = data!.toJson();
     }
     if (msg != null) {
-      data['msg'] = msg;
+      result['msg'] = msg;
     }
-    return data;
+    if (token != null) {
+      result['token'] = token;
+    }
+    return result;
   }
 }
 

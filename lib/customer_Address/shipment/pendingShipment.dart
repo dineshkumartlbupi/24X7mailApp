@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:twentyfourby_seven/Utils/Mycolor.dart';
 
+import '../../Utils/addImage.dart';
 import '../../Utils/globalText.dart';
 import 'indexShipmentController.dart';
 
@@ -24,8 +25,17 @@ class PendingShipment extends StatelessWidget {
         ),
         body: Obx(() => pendingCtrl.pendingShipmentView.value.data == null
             ? Center(
-                child: GlobalText('No Data Found',
-                    fontSize: Get.height * 0.02, color: Colors.grey))
+                child: Column(
+                children: [
+                  Image.asset(AddImage.noMailIcon),
+                  GlobalText(
+                    'No Mail Found',
+                    fontSize: Get.height * 0.03,
+                    color: MyColor.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ],
+              ))
             : pendingCtrl.pendingListLoading.value
                 ? const Center(
                     child: CircularProgressIndicator(

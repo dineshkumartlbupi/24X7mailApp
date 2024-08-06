@@ -8,7 +8,11 @@ import 'package:twentyfourby_seven/Utils/globalText.dart';
 
 import '../customer_Address/shipment/pastShipment.dart';
 import '../customer_Address/shipment/pendingShipment.dart';
+import '../customer_Address/shipment/pickUpView.dart';
+import '../customer_Address/shipment_customer/MailViewAll.dart';
+import '../customer_Address/traceList.dart';
 import 'customerController.dart';
+import 'customerView.dart';
 
 class CustomerDrawer extends StatelessWidget {
   CustomerDrawer({super.key});
@@ -34,7 +38,7 @@ class CustomerDrawer extends StatelessWidget {
           _createDrawerItem(
             icon: Icons.mail,
             text: 'Index',
-            onTap: () {},
+            onTap: () => Get.to(() => CustomerView()),
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: Get.width * 0.04),
@@ -46,6 +50,8 @@ class CustomerDrawer extends StatelessWidget {
                   Get.to(() => PastShipingList());
                 } else if (newValue == 'Pending Shipment') {
                   Get.to(() => PendingShipment());
+                } else if (newValue == 'Picked Up') {
+                  Get.to(() => PickupView());
                 }
               },
               itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
@@ -89,16 +95,18 @@ class CustomerDrawer extends StatelessWidget {
           _createDrawerItem(
             icon: Icons.view_timeline_outlined,
             text: 'View All',
-            onTap: () {},
+            onTap: () async {
+              Get.to(() => MailViewAll());
+            },
           ),
           _createDrawerItem(
             icon: Icons.delete,
             text: 'Trace',
             onTap: () async {
-              await getTrashList();
+              Get.to(() => traceList());
             },
           ),
-          Padding(
+          /* Padding(
             padding: EdgeInsets.symmetric(horizontal: Get.width * 0.03),
             child: PopupMenuButton<String>(
               onSelected: (String newValue) =>
@@ -133,7 +141,7 @@ class CustomerDrawer extends StatelessWidget {
                 ],
               ),
             ),
-          ),
+          ),*/
         ],
       ),
     );
