@@ -21,7 +21,7 @@ class traceList extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        body: Obx(() => traceViewModel.traceView.value.data!.isEmpty
+        body: Obx(() => traceViewModel.traceView.value.data == null
             ? Center(
                 child: Column(
                 children: [
@@ -108,8 +108,7 @@ class traceList extends StatelessWidget {
                                   GlobalText(shipmentIndex
                                           ?.shippedDetails?[0].shipmentCareer
                                           ?.toString() ??
-                                      ''
-                                          ''),
+                                      ''),
                                 ],
                               ),
                               Row(
@@ -138,8 +137,7 @@ class traceList extends StatelessWidget {
                                               ?.shippedDetails?[0]
                                               .trackingNumber
                                               ?.toString() ??
-                                          ''
-                                              ''),
+                                          ''),
                                     ],
                                   ),
                                 ],

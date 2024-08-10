@@ -85,9 +85,8 @@ class LoginScreen extends StatelessWidget {
                                                   color: MyColor.nevyBlue),
                                     ),
                                     labelText: 'Enter Password',
-                                    border: const OutlineInputBorder(),
-                                    errorStyle:
-                                        const TextStyle(color: Colors.red),
+                                    border: OutlineInputBorder(),
+                                    errorStyle: TextStyle(color: Colors.red),
                                   ),
                                   obscureText:
                                       loginController.isViewPassword.value,

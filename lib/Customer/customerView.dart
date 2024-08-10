@@ -66,7 +66,7 @@ class CustomerView extends StatelessWidget {
                       children: [
                         Icon(userType['icon']),
                         const SizedBox(width: 8),
-                        Text(userType['name']),
+                        GlobalText(userType['name']),
                       ],
                     ),
                   );
@@ -88,12 +88,12 @@ class CustomerView extends StatelessWidget {
               child: TextField(
                 controller: customerController.searchController,
                 decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.search),
+                  prefixIcon: const Icon(Icons.search),
                   hintText: 'Search Mail Id or Sender',
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15)),
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                  contentPadding: const EdgeInsets.symmetric(
+                      vertical: 15.0, horizontal: 10.0),
                 ),
                 onChanged: (value) {
                   customerController.filterList();
@@ -179,7 +179,7 @@ class CustomerView extends StatelessWidget {
                                               ),
                                               Row(
                                                 children: [
-                                                  Icon(Icons
+                                                  const Icon(Icons
                                                       .local_shipping_outlined),
                                                   GlobalText(
                                                     'Add to Shipment',
@@ -281,10 +281,12 @@ class CustomerView extends StatelessWidget {
                                                   GlobalText(
                                                     'Pick UP',
                                                     onTap: () {
-                                                      Get.dialog(CommonDialog(
-                                                          title: 'Pick UP',
-                                                          content:
-                                                              GlobalText('')));
+                                                      Get.dialog(
+                                                          const CommonDialog(
+                                                              title: 'Pick UP',
+                                                              content:
+                                                                  GlobalText(
+                                                                      '')));
                                                     },
                                                   ),
                                                   /* GlobalText(
@@ -359,25 +361,34 @@ class CustomerView extends StatelessWidget {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceAround,
                                         children: [
-                                          GlobalText(
-                                            customerController
-                                                        .customerIndexMail
-                                                        .value
-                                                        .data?[index]
-                                                        .createdAt !=
-                                                    null
-                                                ? DateFormat('MM-dd-yyyy')
-                                                    .format(DateTime.parse(
-                                                        customerController
-                                                                .customerModel
-                                                                .value
-                                                                .data?[index]
-                                                                .createdAt ??
-                                                            ''))
-                                                : '',
-                                            fontWeight: FontWeight.w700,
-                                            color: MyColor.black,
-                                          ),
+                                          Obx(() {
+                                            var data = customerController
+                                                .customerModel.value.data;
+                                            if (data == null ||
+                                                index >= data.length) {
+                                              return GlobalText(
+                                                '',
+                                                fontWeight: FontWeight.w700,
+                                                color: MyColor.black,
+                                              );
+                                            }
+
+                                            String? createdAt =
+                                                data[index].createdAt;
+                                            String formattedDate = '';
+                                            if (createdAt != null) {
+                                              formattedDate =
+                                                  DateFormat('MM-dd-yyyy')
+                                                      .format(DateTime.parse(
+                                                          createdAt));
+                                            }
+
+                                            return GlobalText(
+                                              formattedDate,
+                                              fontWeight: FontWeight.w700,
+                                              color: MyColor.black,
+                                            );
+                                          }),
                                           Container(
                                             height: Get.height * 0.07,
                                             width: Get.width * 0.25,
@@ -387,7 +398,7 @@ class CustomerView extends StatelessWidget {
                                                         .data
                                                         ?.length ==
                                                     null
-                                                ? Center(
+                                                ? const Center(
                                                     child:
                                                         CircularProgressIndicator(
                                                     color:
@@ -423,7 +434,6 @@ class CustomerView extends StatelessWidget {
                                                         width: Get.width * 0.25,
                                                         child: GestureDetector(
                                                           onTap: () async {
-                                                            //await getshipment();
                                                             _showImageDialog(
                                                                 context,
                                                                 customerController

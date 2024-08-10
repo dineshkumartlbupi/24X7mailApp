@@ -554,3 +554,11 @@ Future<ShipmentModel?> getShipiingList() async {
   }
   return ShipmentModel();
 }
+//scan request
+///https://service.24x7mail.com/assign/scan-request
+///https://service.24x7mail.com/assign/add-shipment
+///{ids: ["669a168923ba32ee0e468379"]}
+///https://service.24x7mail.com/assign/recycle-request
+///https://service.24x7mail.com/assign/shred-request
+///https://service.24x7mail.com/assign/rescan-request
+///https://service.24x7mail.com/pickup/request
