@@ -10,6 +10,7 @@ import 'package:twentyfourby_seven/Utils/globalText.dart';
 import 'package:twentyfourby_seven/customer_Address/customer_add.dart';
 
 import '../Login/loginScreen.dart';
+import '../Service/api.dart';
 import '../Utils/commonDialog.dart';
 import '../models/customerMailModel.dart';
 import 'customerController.dart';
@@ -158,7 +159,21 @@ class CustomerView extends StatelessWidget {
                                                   GlobalText(
                                                     'Open and Scan',
                                                     onTap: () {
+                                                      //final scan-request;
+
                                                       Get.dialog(CommonDialog(
+                                                          yesLabel: GlobalText(
+                                                            'Yes',
+                                                            onTap: () async {
+                                                              await scanRequestPatchApi(
+                                                                  'scan-request');
+                                                            },
+                                                          ),
+                                                          noLabel: GlobalText(
+                                                            'No',
+                                                            onTap: () =>
+                                                                Get.back(),
+                                                          ),
                                                           title:
                                                               'Open and Scan',
                                                           content:
@@ -166,15 +181,15 @@ class CustomerView extends StatelessWidget {
                                                     },
                                                   ),
                                                   /*GlobalText(
-                                                customerController
-                                                        .customerModel
-                                                        .value
-                                                        .data?[index]
-                                                        .openScan
-                                                        .toString() ??
-                                                    '',
-                                                fontWeight: FontWeight.w700,
-                                              ),*/
+                                                    customerController
+                                                            .customerModel
+                                                            .value
+                                                            .data?[index]
+                                                            .openScan
+                                                            .toString() ??
+                                                        '',
+                                                    fontWeight: FontWeight.w700,
+                                                  ),*/
                                                 ],
                                               ),
                                               Row(
@@ -184,7 +199,17 @@ class CustomerView extends StatelessWidget {
                                                   GlobalText(
                                                     'Add to Shipment',
                                                     onTap: () {
+                                                      //add-shipment
                                                       Get.dialog(CommonDialog(
+                                                        yesLabel: GlobalText(
+                                                          'yes',
+                                                          onTap: () async {
+                                                            await scanRequestPatchApi(
+                                                                'add-shipment');
+                                                          },
+                                                        ),
+                                                        noLabel:
+                                                            GlobalText('no'),
                                                         title:
                                                             'Add to Shipment',
                                                         content: GlobalText(''),
@@ -208,10 +233,18 @@ class CustomerView extends StatelessWidget {
                                                   GlobalText(
                                                     'Recycle',
                                                     onTap: () {
-                                                      Get.dialog(CommonDialog(
-                                                          title: 'Recycle',
-                                                          content:
-                                                              GlobalText('')));
+                                                      Get.dialog(
+                                                          const CommonDialog(
+                                                              yesLabel:
+                                                                  GlobalText(
+                                                                      'yes'),
+                                                              noLabel:
+                                                                  GlobalText(
+                                                                      'no'),
+                                                              title: 'Recycle',
+                                                              content:
+                                                                  GlobalText(
+                                                                      '')));
                                                     },
                                                   ),
                                                   /* GlobalText(
@@ -234,10 +267,18 @@ class CustomerView extends StatelessWidget {
                                                   GlobalText(
                                                     'shared',
                                                     onTap: () {
-                                                      Get.dialog(CommonDialog(
-                                                          title: 'shared',
-                                                          content:
-                                                              GlobalText('')));
+                                                      Get.dialog(
+                                                          const CommonDialog(
+                                                              yesLabel:
+                                                                  GlobalText(
+                                                                      'Yes'),
+                                                              noLabel:
+                                                                  GlobalText(
+                                                                      'No'),
+                                                              title: 'shared',
+                                                              content:
+                                                                  GlobalText(
+                                                                      '')));
                                                     },
                                                   ),
                                                   /* GlobalText(
@@ -257,10 +298,18 @@ class CustomerView extends StatelessWidget {
                                                   GlobalText(
                                                     'Rescan',
                                                     onTap: () {
-                                                      Get.dialog(CommonDialog(
-                                                          title: 'Rescan',
-                                                          content:
-                                                              GlobalText('')));
+                                                      Get.dialog(
+                                                          const CommonDialog(
+                                                              yesLabel:
+                                                                  GlobalText(
+                                                                      'yes'),
+                                                              noLabel:
+                                                                  GlobalText(
+                                                                      'no'),
+                                                              title: 'Rescan',
+                                                              content:
+                                                                  GlobalText(
+                                                                      '')));
                                                     },
                                                   ),
                                                   /* GlobalText(
@@ -283,6 +332,12 @@ class CustomerView extends StatelessWidget {
                                                     onTap: () {
                                                       Get.dialog(
                                                           const CommonDialog(
+                                                              yesLabel:
+                                                                  GlobalText(
+                                                                      'yes'),
+                                                              noLabel:
+                                                                  GlobalText(
+                                                                      'no'),
                                                               title: 'Pick UP',
                                                               content:
                                                                   GlobalText(

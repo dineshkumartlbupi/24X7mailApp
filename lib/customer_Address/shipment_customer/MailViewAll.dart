@@ -108,12 +108,16 @@ class MailViewAll extends StatelessWidget {
                                                   })),
                                               Row(
                                                 children: [
-                                                  Icon(Icons
+                                                  const Icon(Icons
                                                       .open_in_new_rounded),
                                                   GlobalText(
                                                     'Open and Scan',
                                                     onTap: () {
                                                       Get.dialog(CommonDialog(
+                                                          yesLabel:
+                                                              GlobalText('yes'),
+                                                          noLabel:
+                                                              GlobalText('no'),
                                                           title:
                                                               'Open and Scan',
                                                           content:
@@ -140,6 +144,10 @@ class MailViewAll extends StatelessWidget {
                                                     'Add to Shipment',
                                                     onTap: () {
                                                       Get.dialog(CommonDialog(
+                                                        yesLabel:
+                                                            GlobalText('yes'),
+                                                        noLabel:
+                                                            GlobalText('no'),
                                                         title:
                                                             'Add to Shipment',
                                                         content: GlobalText(''),
@@ -164,6 +172,10 @@ class MailViewAll extends StatelessWidget {
                                                     'Recycle',
                                                     onTap: () {
                                                       Get.dialog(CommonDialog(
+                                                          yesLabel:
+                                                              GlobalText('yes'),
+                                                          noLabel:
+                                                              GlobalText('no'),
                                                           title: 'Recycle',
                                                           content:
                                                               GlobalText('')));
@@ -190,6 +202,10 @@ class MailViewAll extends StatelessWidget {
                                                     'shared',
                                                     onTap: () {
                                                       Get.dialog(CommonDialog(
+                                                          yesLabel:
+                                                              GlobalText('yes'),
+                                                          noLabel:
+                                                              GlobalText('no'),
                                                           title: 'shared',
                                                           content:
                                                               GlobalText('')));
@@ -213,6 +229,10 @@ class MailViewAll extends StatelessWidget {
                                                     'Rescan',
                                                     onTap: () {
                                                       Get.dialog(CommonDialog(
+                                                          yesLabel:
+                                                              GlobalText('yes'),
+                                                          noLabel:
+                                                              GlobalText('no'),
                                                           title: 'Rescan',
                                                           content:
                                                               GlobalText('')));
@@ -237,6 +257,10 @@ class MailViewAll extends StatelessWidget {
                                                     'Pick UP',
                                                     onTap: () {
                                                       Get.dialog(CommonDialog(
+                                                          yesLabel:
+                                                              GlobalText('yes'),
+                                                          noLabel:
+                                                              GlobalText('no'),
                                                           title: 'Pick UP',
                                                           content:
                                                               GlobalText('')));

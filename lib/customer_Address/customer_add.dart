@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -288,8 +289,21 @@ class CustomerAdd extends StatelessWidget {
                         ),
                         ElevatedButton(
                           onPressed: () async {
-                            await uploadUspsData(
-                                customerAddView.image as Map<String, dynamic>);
+                            String originalString =
+                                customerAddView.image.toString();
+
+                            RegExp regExp = RegExp(r'^File:\s*');
+                            originalString =
+                                originalString.replaceFirst(regExp, '');
+                            String cleanedString =
+                                originalString.replaceAll("'", "").trim();
+                            log('image==> ${File(cleanedString)},${customerAddView.propertyModel.value?.data?.id?.toString() ?? ''}');
+
+                            await uploadUspsFile(
+                                File(cleanedString),
+                                customerAddView.propertyModel.value?.data?.id
+                                        ?.toString() ??
+                                    '');
                           },
                           child: const GlobalText("upload"),
                         ),
@@ -297,56 +311,90 @@ class CustomerAdd extends StatelessWidget {
                     ),
                   ],
                 )),
-            Obx(() => GlobalText(
-                  customerAddView.image.value?.toString() ?? '',
-                  fontWeight: FontWeight.bold,
-                )),
-            Container(
-              height: Get.height * 0.05,
-              width: Get.width * 0.15,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: MyColor.yellowGold, width: 2.0),
-              ),
-              child: InkWell(
-                  onTap: () {
-                    if (customerAddView.image.value != null) {
-                      Get.dialog(
-                        Dialog(
-                          backgroundColor: Colors.transparent,
-                          child: Container(
-                            width: Get.width,
-                            height: Get.height,
-                            child: Stack(
-                              children: [
-                                Center(
-                                  child: Image.file(
-                                    customerAddView.image.value!,
-                                    fit: BoxFit.contain,
+            SizedBox(
+              height: Get.height * 0.003,
+            ),
+            Obx(() {
+              String originalString =
+                  customerAddView.image.value?.toString() ?? '';
+              RegExp regExp = RegExp(r'^File:\s*');
+              originalString = originalString.replaceFirst(regExp, '');
+              String cleanedString = originalString.replaceAll("'", "").trim();
+
+              String imageName = '';
+
+              if (cleanedString.isNotEmpty) {
+                List<String> pathSegments = cleanedString.split('/');
+                if (pathSegments.length >= 2) {
+                  imageName = pathSegments[pathSegments.length - 2] +
+                      '/' +
+                      pathSegments.last;
+                } else if (pathSegments.isNotEmpty) {
+                  imageName = pathSegments.last;
+                }
+              }
+
+              log('imageViewpath==> $imageName,');
+
+              return GlobalText(
+                customerAddView.image.value == null ? '' : imageName,
+                fontWeight: FontWeight.bold,
+              );
+            }),
+            SizedBox(
+              height: Get.height * 0.003,
+            ),
+            Obx(() => customerAddView.image.value == null
+                ? SizedBox(
+                    height: Get.height * 0.05,
+                    width: Get.width * 0.15,
+                  )
+                : Container(
+                    height: Get.height * 0.05,
+                    width: Get.width * 0.15,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: MyColor.yellowGold, width: 2.0),
+                    ),
+                    child: InkWell(
+                        onTap: () {
+                          if (customerAddView.image.value != null) {
+                            Get.dialog(
+                              Dialog(
+                                backgroundColor: Colors.transparent,
+                                child: Container(
+                                  width: Get.width,
+                                  height: Get.height,
+                                  child: Stack(
+                                    children: [
+                                      Center(
+                                        child: Image.file(
+                                          customerAddView.image.value!,
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: 20,
+                                        right: 20,
+                                        child: IconButton(
+                                          icon: Icon(Icons.close,
+                                              color: Colors.white),
+                                          onPressed: () {
+                                            Get.back();
+                                          },
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                Positioned(
-                                  top: 20,
-                                  right: 20,
-                                  child: IconButton(
-                                    icon:
-                                        Icon(Icons.close, color: Colors.white),
-                                    onPressed: () {
-                                      Get.back();
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    } else {
-                      Get.snackbar("Error", "No image selected.");
-                    }
-                  },
-                  child: Icon(Icons.remove_red_eye_sharp)),
-            )
+                              ),
+                            );
+                          } else {
+                            Get.snackbar("Error", "No image selected.");
+                          }
+                        },
+                        child: Icon(Icons.remove_red_eye_sharp)),
+                  ))
           ],
         ),
       ),

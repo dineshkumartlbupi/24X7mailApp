@@ -123,7 +123,7 @@ class LoginScreen extends StatelessWidget {
                                       onTap: () {
                                         Get.defaultDialog(
                                           title: 'Forgot Password',
-                                          titleStyle: const TextStyle(
+                                          titleStyle: TextStyle(
                                             fontWeight: FontWeight.w700,
                                             color: MyColor.black,
                                             fontSize: 18,
@@ -157,12 +157,11 @@ class LoginScreen extends StatelessWidget {
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               10),
-                                                      borderSide:
-                                                          const BorderSide(
-                                                              style: BorderStyle
-                                                                  .solid,
-                                                              color: MyColor
-                                                                  .black)),
+                                                      borderSide: BorderSide(
+                                                          style:
+                                                              BorderStyle.solid,
+                                                          color:
+                                                              MyColor.black)),
                                                 ),
                                               ),
                                             ],

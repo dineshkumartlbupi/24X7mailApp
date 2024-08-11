@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart';
 import 'package:twentyfourby_seven/Operator/operatorController.dart';
 import 'package:twentyfourby_seven/Service/constant.dart';
 import 'package:twentyfourby_seven/SignUp/signUpController.dart';
@@ -17,6 +19,7 @@ import '../customer_Address/customer_AddController.dart';
 import '../models/SubscriptionModel.dart';
 import '../models/shipmentModel.dart';
 import '../models/shipmentstatus_model.dart';
+import '../models/uploadImageModel.dart';
 
 var operatorController = Get.put(OperatorController());
 var signController = Get.put(SignupController());
@@ -327,7 +330,6 @@ Future<void> postOperatorRejectApi(String uId) async {
         .post(Uri.parse(ApiURl.postOperatorReject), body: {'user_id': uId});
     if (response.statusCode == 200) {
       var checkStatus = jsonDecode(response.body);
-      log('checkStatus $checkStatus');
       return checkStatus;
     } else {
       log('Server error: ${response.statusCode}');
@@ -342,7 +344,6 @@ Future<void> deleteOperator() async {
     final response = await http.delete(Uri.parse(ApiURl.deleteOperatorApi));
     if (response.statusCode == 200) {
       var deleteResponse = jsonDecode(response.body);
-      log('deleteResponse=>$deleteResponse');
     }
   } catch (e) {
     log('manage $e');
@@ -360,7 +361,6 @@ Future<void> getViewState() async {
 
       signController.setStates(stateNames);
       customerAddCtrl.setStates(stateNames);
-      log('stateNames $stateNames');
     } else {
       log('Server error: ${response.statusCode}');
     }
@@ -393,10 +393,9 @@ Future<SubscriptionModel?> subscriptionApi() async {
       },
     );
     if (response.statusCode == 200) {
-      log('subscription ==>${response.body}');
+      // log('subscription ==>${response.body}');
       final jsonResponse =
           SubscriptionModel.fromJson(jsonDecode(response.body));
-      log('subscription try==>$jsonResponse');
       return jsonResponse;
     } else {
       throw Exception('Failed to load data');
@@ -419,7 +418,6 @@ Future<ShipmentstatusModel> getTrashList() async {
     final traceListDta =
         ShipmentstatusModel.fromJson(jsonDecode(response.body));
 
-    log('traceList===> $traceListDta');
     return traceListDta;
   } else {
     throw Exception('Failed to load traceList');
@@ -440,7 +438,7 @@ Future<CustomerMailModel?> getViewIndexData(String? fromDate, toDate) async {
 
   if (response.statusCode == 200 || response.statusCode == 201) {
     var responseData = CustomerMailModel.fromJson(jsonDecode(response.body));
-    log('View Index: $responseData');
+    //log('View Index: $responseData');
 
     return responseData;
   } else {
@@ -554,7 +552,79 @@ Future<ShipmentModel?> getShipiingList() async {
   }
   return ShipmentModel();
 }
-//scan request
+
+///scan request patch
+Future<void> scanRequestPatchApi(String scanRequest) async {
+  try {
+    var userID = SharedPrefs.getString('cID');
+    var token = SharedPrefs.getString('Token');
+//scan-request
+    final Map<String, dynamic> payload = {
+      "ids": ["669a168923ba32ee0e468379"]
+    };
+
+    final response = await http.patch(
+      Uri.parse('https://service.24x7mail.com/assign/$scanRequest'),
+      headers: {
+        'Authorization': token,
+        'Content-Type': 'application/json',
+      },
+      body: json.encode(payload),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final patchResponse = jsonDecode(response.body);
+
+      return patchResponse;
+    } else {
+      log('Failed to load patchRequest: ${response.reasonPhrase}');
+      throw Exception('Failed to load data: ${response.reasonPhrase}');
+    }
+  } catch (e) {
+    log('Error: $e');
+    rethrow;
+  }
+}
+
+Future<UploadImageModel?> uploadUspsFile(File file, String userId) async {
+  try {
+    var token = SharedPrefs.getString('Token');
+
+    var request = http.MultipartRequest(
+      'PATCH',
+      Uri.parse('https://service.24x7mail.com/user/usps-upload'),
+    );
+
+    request.headers['Authorization'] = token;
+    request.headers['Content-Type'] = 'multipart/form-data';
+
+    request.files.add(await http.MultipartFile.fromPath(
+      'file',
+      file.path,
+      filename: basename(file.path),
+    ));
+
+    request.fields['user_id'] = userId;
+
+    var response = await request.send();
+    log('image upload review ${response.statusCode}');
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      var responseBody = await http.Response.fromStream(response);
+
+      var jsonResponse = json.decode(responseBody.body);
+      var uploaded = UploadImageModel.fromJson(jsonResponse);
+      Get.snackbar('file upload', uploaded.msg.toString());
+      return uploaded;
+    } else {
+      var responseBody = await http.Response.fromStream(response);
+      throw Exception('Failed to upload file: ${responseBody.reasonPhrase}');
+    }
+  } catch (e) {
+    print('Error: $e');
+    return null;
+  }
+}
+
 ///https://service.24x7mail.com/assign/scan-request
 ///https://service.24x7mail.com/assign/add-shipment
 ///{ids: ["669a168923ba32ee0e468379"]}
@@ -562,3 +632,10 @@ Future<ShipmentModel?> getShipiingList() async {
 ///https://service.24x7mail.com/assign/shred-request
 ///https://service.24x7mail.com/assign/rescan-request
 ///https://service.24x7mail.com/pickup/request
+///upload api payload
+//file: (binary)
+// user_id: 667d923246b74b03f473b3a7
+
+///upload Api
+//patch method
+//https://service.24x7mail.com/user/usps-upload
