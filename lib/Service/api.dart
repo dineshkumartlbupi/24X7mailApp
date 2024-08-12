@@ -17,6 +17,7 @@ import 'package:twentyfourby_seven/models/statementModell.dart';
 
 import '../customer_Address/customer_AddController.dart';
 import '../models/SubscriptionModel.dart';
+import '../models/operatorHomeModel.dart';
 import '../models/shipmentModel.dart';
 import '../models/shipmentstatus_model.dart';
 import '../models/uploadImageModel.dart';
@@ -387,7 +388,8 @@ Future<SubscriptionModel?> subscriptionApi() async {
     var token = SharedPrefs.getString('Token');
 
     final response = await http.get(
-      Uri.parse(ApiURl.subscriptionsApi),
+      Uri.parse('https://service.24x7mail.com/package'),
+      //Uri.parse(ApiURl.subscriptionsApi),
       headers: {
         'Authorization': token,
       },
@@ -421,6 +423,26 @@ Future<ShipmentstatusModel> getTrashList() async {
     return traceListDta;
   } else {
     throw Exception('Failed to load traceList');
+  }
+}
+
+Future<ShipmentstatusModel> getReadList(String? fromDate, toDate) async {
+  var token = SharedPrefs.getString('Token');
+  var userID = SharedPrefs.getString('cID');
+
+  final response = await http.get(
+    Uri.parse(
+        'https://service.24x7mail.com/assign?request_completed=true&&search=&$fromDate=&$toDate=&user_id=$userID&page=1&limit=10&read=true'),
+    headers: {
+      'Authorization': token,
+    },
+  );
+  if (response.statusCode == 200) {
+    final readListDta = ShipmentstatusModel.fromJson(jsonDecode(response.body));
+
+    return readListDta;
+  } else {
+    throw Exception('Failed to load readList');
   }
 }
 
@@ -553,6 +575,9 @@ Future<ShipmentModel?> getShipiingList() async {
   return ShipmentModel();
 }
 
+/// readView
+/// https://service.24x7mail.com/assign?&search=&fromDate=&toDate=&user_id=667d923246b74b03f473b3a7&page=1&limit=10&read=true
+/// https://service.24x7mail.com/assign?&search=&fromDate=&toDate=&user_id=667d923246b74b03f473b3a7&page=1&limit=10&read=false
 ///scan request patch
 Future<void> scanRequestPatchApi(String scanRequest) async {
   try {
@@ -636,6 +661,29 @@ Future<UploadImageModel?> uploadUspsFile(File file, String userId) async {
 //file: (binary)
 // user_id: 667d923246b74b03f473b3a7
 
-///upload Api
-//patch method
-//https://service.24x7mail.com/user/usps-upload
+///OpertorApi Data
+Future<OperatorHomeModel?> getOperatorRequestApi() async {
+  var token =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjdjMDNiNTRmMTljNzMzYTAxYmNiOWMiLCJ1c2VyX3R5cGUiOiJvcGVyYXRvciIsImlhdCI6MTcyMzQ1ODc5NywiZXhwIjoxNzIzNTQ1MTk3fQ.6V_rC9tIcmtED9pXJDViKymeWEl4KSewM2NpQEZ3lTQ';
+
+  final response = await http.get(
+    // Uri.parse('${ApiURl.operatorHomeApi}+${'667c03b54f19c733a01bcb9c'}'),
+    Uri.parse(
+        'https://service.24x7mail.com/assign/status-count/667c03b54f19c733a01bcb9c'),
+    headers: {
+      'Authorization': token,
+    },
+  );
+  log('shipmentResponseList ${response.body}');
+
+  if (response.statusCode == 200 || response.statusCode == 201) {
+    var OperatorData = OperatorHomeModel.fromJson(jsonDecode(response.body));
+
+    log('shipmentgetList=> $OperatorData');
+    return OperatorData;
+  } else {
+    Get.snackbar(
+        "Error", "Failed to submit shipping address: ${response..statusCode}");
+  }
+  return OperatorHomeModel();
+}

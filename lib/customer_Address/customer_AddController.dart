@@ -15,7 +15,7 @@ class CustomerAddController extends GetxController {
   Rx<SubscriptionModel?> subscribeView = SubscriptionModel().obs;
   var image = Rx<File?>(null);
   var softCash = "".obs;
-
+  var subscribeLoading = false.obs;
   @override
   void onInit() {
     getStatementDetails();
@@ -41,12 +41,13 @@ class CustomerAddController extends GetxController {
   }
 
   Future<void> getAddressDetails() async {
-    log('getAddress');
     propertyModel.value = await getProfileApi() ?? propertyModel.value;
     log(propertyModel.value?.data?.username.toString() ?? '');
   }
 
   Future<void> getSubscribeData() async {
+    subscribeLoading.value = true;
     subscribeView.value = await subscriptionApi();
+    subscribeLoading.value = false;
   }
 }

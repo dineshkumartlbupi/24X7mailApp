@@ -106,7 +106,7 @@ class CustomerDrawer extends StatelessWidget {
               Get.to(() => traceList());
             },
           ),
-          /* Padding(
+          Padding(
             padding: EdgeInsets.symmetric(horizontal: Get.width * 0.03),
             child: PopupMenuButton<String>(
               onSelected: (String newValue) =>
@@ -136,12 +136,12 @@ class CustomerDrawer extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                     fontSize: Get.height * 0.02,
                   ),
-                  Spacer(),
-                  Icon(Icons.arrow_drop_down, color: MyColor.nevyBlue),
+                  const Spacer(),
+                  const Icon(Icons.arrow_drop_down, color: MyColor.nevyBlue),
                 ],
               ),
             ),
-          ),*/
+          ),
         ],
       ),
     );

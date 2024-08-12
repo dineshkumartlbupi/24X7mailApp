@@ -86,19 +86,19 @@ class Data {
   }
 
   Data.fromJson(dynamic json) {
-    _id = json['_id'];
-    _userId = json['user_id'];
+    _id = json['_id'] ?? '';
+    _userId = json['user_id'] ?? '';
     _planId = json['plan_id'] != null ? PlanId.fromJson(json['plan_id']) : null;
     _planDetail = json['plan_detail'] != null
         ? PlanDetail.fromJson(json['plan_detail'])
         : null;
-    _amount = json['amount'];
-    _paymentMode = json['payment_mode'];
-    _description = json['description'];
-    _paymentStatus = json['payment_status'];
-    _createdAt = json['createdAt'];
-    _updatedAt = json['updatedAt'];
-    _v = json['__v'];
+    _amount = json['amount'] ?? '0';
+    _paymentMode = json['payment_mode'] ?? '';
+    _description = json['description'] ?? "";
+    _paymentStatus = json['payment_status'] ?? "";
+    _createdAt = json['createdAt'] ?? '';
+    _updatedAt = json['updatedAt'] ?? '';
+    _v = json['__v'] ?? '';
   }
 
   String? _id;

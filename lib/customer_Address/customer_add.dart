@@ -80,15 +80,15 @@ class CustomerAdd extends StatelessWidget {
                     value: 'Statements',
                     child: GlobalText('Statements'),
                   ),
-                  /*const PopupMenuItem<String>(
+                  const PopupMenuItem<String>(
                     value: 'Subscription & Billing',
                     child: GlobalText('Subscription & Billing'),
-                  ),*/
+                  ),
                 ],
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.account_balance_rounded,
                       color: MyColor.brightBlue,
                     ),
@@ -377,7 +377,7 @@ class CustomerAdd extends StatelessWidget {
                                         top: 20,
                                         right: 20,
                                         child: IconButton(
-                                          icon: Icon(Icons.close,
+                                          icon: const Icon(Icons.close,
                                               color: Colors.white),
                                           onPressed: () {
                                             Get.back();

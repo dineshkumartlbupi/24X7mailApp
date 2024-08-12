@@ -3,9 +3,11 @@ import 'package:get/get.dart';
 import 'package:twentyfourby_seven/models/OperatorModel.dart';
 
 import '../Service/api.dart';
+import '../models/operatorHomeModel.dart';
 
 class OperatorController extends GetxController {
   Rx<OperatorModel> operatorView = OperatorModel().obs;
+  Rx<OperatorHomeModel> operatorHome = OperatorHomeModel().obs;
   var selectedValue = 'All'.obs;
   String? _selectedCountry;
   List<dynamic> countries = [].obs;
@@ -16,6 +18,10 @@ class OperatorController extends GetxController {
 
   Future<void> getOperatorList() async {
     operatorView.value = await getOperatorApi() ?? operatorView.value;
+  }
+
+  Future<void> getOperatorHome() async {
+    operatorHome.value = (await getOperatorRequestApi()) ?? operatorHome.value;
   }
 
   void showAddOperatorDialog(BuildContext context) {
@@ -150,6 +156,7 @@ class OperatorController extends GetxController {
   @override
   void onInit() {
     getOperatorList();
+    getOperatorHome();
     super.onInit();
   }
 }
