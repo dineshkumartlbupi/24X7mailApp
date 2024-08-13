@@ -11,6 +11,7 @@ class OperatorController extends GetxController {
   var selectedValue = 'All'.obs;
   String? _selectedCountry;
   List<dynamic> countries = [].obs;
+  RxString selectedMenuValue = ''.obs;
 
   void updateValue(String newValue) {
     selectedValue.value = newValue;
@@ -153,6 +154,12 @@ class OperatorController extends GetxController {
     );
   }
 
+  final List<Map<String, dynamic>> listUserType = [
+    {'name': 'Customers', 'value': 'Customers', 'icon': Icons.mail},
+    {'name': 'Reports', 'value': 'Reports', 'icon': Icons.report},
+    {'name': 'Setting', 'value': 'settings', 'icon': Icons.settings},
+    {'name': 'logout', 'value': 'logout', 'icon': Icons.logout},
+  ];
   @override
   void onInit() {
     getOperatorList();

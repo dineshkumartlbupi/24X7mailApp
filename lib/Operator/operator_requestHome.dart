@@ -1,8 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:twentyfourby_seven/Utils/Mycolor.dart';
 
+import '../Login/loginScreen.dart';
+import '../Utils/SharedPrefrance.dart';
 import '../Utils/globalText.dart';
+import 'OperatorDrawer.dart';
 import 'operatorController.dart';
 
 class OperatorRequestHome extends StatelessWidget {
@@ -12,13 +17,65 @@ class OperatorRequestHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(),
+      drawer: Drawer(
+        child: OperatorDrawer(),
+      ),
       appBar: AppBar(
-        title: GlobalText("Request by Operator"),
+        backgroundColor: MyColor.deepPurple,
+        title: GlobalText(
+          "Request",
+          color: MyColor.white,
+          fontWeight: FontWeight.w700,
+          fontSize: Get.height * 0.03,
+        ),
+        actions: [
+          PopupMenuButton<String>(
+            onSelected: (String newValue) {
+              homeOperatorController.selectedMenuValue.value = newValue;
+            },
+            itemBuilder: (BuildContext context) {
+              return homeOperatorController.listUserType.map((userType) {
+                return PopupMenuItem<String>(
+                  value: userType['value'],
+                  onTap: () {
+                    log('value ${userType['value']}');
+                    if (userType['value'] == 'settings') {
+                    } else if (userType['value'] == 'Customers') {
+                    } else if (userType['value'] == 'Reports') {
+                    } else if (userType['value'] == 'logout') {
+                      SharedPrefs.remove('Token');
+
+                      Get.to(() => LoginScreen());
+                    }
+                  },
+                  child: Row(
+                    children: [
+                      Icon(userType['icon']),
+                      const SizedBox(width: 8),
+                      GlobalText(userType['name']),
+                    ],
+                  ),
+                );
+              }).toList();
+            },
+            child: const Row(
+              children: [
+                GlobalText(
+                  'Operator Dev',
+                  color: MyColor.white,
+                ),
+                Icon(
+                  Icons.manage_accounts,
+                  color: MyColor.white,
+                ),
+              ],
+            ),
+          )
+        ],
       ),
       body: Obx(() {
         if (homeOperatorController.operatorHome.value.data == null) {
-          return Center(
+          return const Center(
               child: CircularProgressIndicator(
             color: MyColor.brightBlue,
           ));
@@ -29,29 +86,151 @@ class OperatorRequestHome extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              GlobalText(
-                  'Scan Request: ${homeOperatorController.operatorHome.value.data?.scanRequest ?? 0}',
-                  fontSize: 18),
+              Row(
+                children: [
+                  Expanded(child: Divider()),
+                  GlobalText(
+                    'By Operation',
+                    fontWeight: FontWeight.w700,
+                    fontSize: Get.height * 0.020,
+                  ),
+                  Expanded(child: Divider()),
+                ],
+              ),
+              SizedBox(
+                height: Get.height * 0.02,
+              ),
+              Row(
+                children: [
+                  Icon(Icons.circle, size: 8), // Bullet point
+                  SizedBox(width: 8),
+                  GlobalText(
+                    'Scan Request:',
+                    fontSize: Get.height * 0.025,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  SizedBox(
+                    width: Get.width * 0.02,
+                  ),
+                  CircleAvatar(
+                    backgroundColor: MyColor.colorBlueHome,
+                    child: GlobalText(
+                        '${homeOperatorController.operatorHome.value.data?.scanRequest ?? 0}',
+                        color: MyColor.white,
+                        fontSize: 18),
+                  ),
+                ],
+              ),
               SizedBox(height: 8),
-              Text(
-                  'Rescan Request: ${homeOperatorController.operatorHome.value.data?.rescanRequest ?? 0}',
-                  style: TextStyle(fontSize: 18)),
+              Row(
+                children: [
+                  Icon(Icons.circle, size: 8), // Bullet point
+                  SizedBox(width: 8),
+                  GlobalText(
+                    'Rescan Request:',
+                    fontSize: Get.height * 0.025,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  SizedBox(
+                    width: Get.width * 0.02,
+                  ),
+                  CircleAvatar(
+                    backgroundColor: MyColor.colorBlueHome,
+                    child: GlobalText(
+                        '${homeOperatorController.operatorHome.value.data?.rescanRequest ?? 0}',
+                        color: MyColor.white,
+                        fontSize: 18),
+                  ),
+                ],
+              ),
               SizedBox(height: 8),
-              Text(
-                  'Shred Request: ${homeOperatorController.operatorHome.value.data?.shredRequest ?? 0}',
-                  style: TextStyle(fontSize: 18)),
+              Row(
+                children: [
+                  Icon(Icons.circle, size: 8), // Bullet point
+                  SizedBox(width: 8),
+                  GlobalText(
+                    'Shred Request:',
+                    fontSize: Get.height * 0.025,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  SizedBox(
+                    width: Get.width * 0.02,
+                  ),
+                  CircleAvatar(
+                    backgroundColor: MyColor.colorBlueHome,
+                    child: GlobalText(
+                        '${homeOperatorController.operatorHome.value.data?.shredRequest ?? 0}',
+                        color: MyColor.white,
+                        fontSize: 18),
+                  ),
+                ],
+              ),
               SizedBox(height: 8),
-              Text(
-                  'Recycle Request: ${homeOperatorController.operatorHome.value.data?.recycleRequest ?? 0}',
-                  style: TextStyle(fontSize: 18)),
+              Row(
+                children: [
+                  Icon(Icons.circle, size: 8), // Bullet point
+                  SizedBox(width: 8),
+                  GlobalText(
+                    'Recycle Request: ',
+                    fontSize: Get.height * 0.025,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  SizedBox(
+                    width: Get.width * 0.02,
+                  ),
+                  CircleAvatar(
+                    backgroundColor: MyColor.colorBlueHome,
+                    child: GlobalText(
+                        '${homeOperatorController.operatorHome.value.data?.recycleRequest ?? 0}',
+                        color: MyColor.white,
+                        fontSize: 18),
+                  ),
+                ],
+              ),
               SizedBox(height: 8),
-              Text(
-                  'Forward Shipment: ${homeOperatorController.operatorHome.value.data?.forwardShipment ?? 0}',
-                  style: TextStyle(fontSize: 18)),
-              SizedBox(height: 8),
-              Text(
-                  'Local Pickup Request: ${homeOperatorController.operatorHome.value.data?.localPickupRequest ?? 0}',
-                  style: TextStyle(fontSize: 18)),
+              Row(
+                children: [
+                  Icon(Icons.circle, size: 8), // Bullet point
+                  SizedBox(width: 8),
+                  GlobalText(
+                    'Forward Shipment:',
+                    fontSize: Get.height * 0.025,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  SizedBox(
+                    width: Get.width * 0.02,
+                  ),
+                  CircleAvatar(
+                    backgroundColor: MyColor.colorBlueHome,
+                    child: GlobalText(
+                        ' ${homeOperatorController.operatorHome.value.data?.forwardShipment ?? 0}',
+                        color: MyColor.white,
+                        fontSize: 18),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Icon(Icons.circle, size: 8), // Bullet point
+                  SizedBox(width: 8),
+                  GlobalText(
+                    'Local Pickup Request:',
+                    fontSize: Get.height * 0.025,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  SizedBox(
+                    width: Get.width * 0.02,
+                  ),
+                  CircleAvatar(
+                    backgroundColor: MyColor.colorBlueHome,
+                    child: GlobalText(
+                        '${homeOperatorController.operatorHome.value.data?.localPickupRequest ?? 0}',
+                        color: MyColor.white,
+                        fontSize: 18),
+                  ),
+                ],
+              ),
             ],
           ),
         );

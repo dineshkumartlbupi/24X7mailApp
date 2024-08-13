@@ -664,7 +664,7 @@ Future<UploadImageModel?> uploadUspsFile(File file, String userId) async {
 ///OpertorApi Data
 Future<OperatorHomeModel?> getOperatorRequestApi() async {
   var token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjdjMDNiNTRmMTljNzMzYTAxYmNiOWMiLCJ1c2VyX3R5cGUiOiJvcGVyYXRvciIsImlhdCI6MTcyMzQ1ODc5NywiZXhwIjoxNzIzNTQ1MTk3fQ.6V_rC9tIcmtED9pXJDViKymeWEl4KSewM2NpQEZ3lTQ';
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjdjMDNiNTRmMTljNzMzYTAxYmNiOWMiLCJ1c2VyX3R5cGUiOiJvcGVyYXRvciIsImlhdCI6MTcyMzU2MzY2MCwiZXhwIjoxNzIzNjUwMDYwfQ.Pvf0t8KOwpqa-cjT0DvioOz6tsRPIpGncTivu3XbpJ4';
 
   final response = await http.get(
     // Uri.parse('${ApiURl.operatorHomeApi}+${'667c03b54f19c733a01bcb9c'}'),
@@ -674,16 +674,40 @@ Future<OperatorHomeModel?> getOperatorRequestApi() async {
       'Authorization': token,
     },
   );
-  log('shipmentResponseList ${response.body}');
+  log('operatorHome ${response.body}');
 
   if (response.statusCode == 200 || response.statusCode == 201) {
     var OperatorData = OperatorHomeModel.fromJson(jsonDecode(response.body));
 
-    log('shipmentgetList=> $OperatorData');
+    log('operatorHomeList=> $OperatorData');
     return OperatorData;
   } else {
     Get.snackbar(
-        "Error", "Failed to submit shipping address: ${response..statusCode}");
+        "Error", "Failed to submit operator Request: ${response..statusCode}");
   }
   return OperatorHomeModel();
+}
+
+Future<UploadImageModel?> getNewMailOperator() async {
+  var token =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjdjMDNiNTRmMTljNzMzYTAxYmNiOWMiLCJ1c2VyX3R5cGUiOiJvcGVyYXRvciIsImlhdCI6MTcyMzU2MzY2MCwiZXhwIjoxNzIzNjUwMDYwfQ.Pvf0t8KOwpqa-cjT0DvioOz6tsRPIpGncTivu3XbpJ4';
+
+  final response = await http.get(
+    Uri.parse(
+        'https://service.24x7mail.com/user/customer-list-by-feature/667c046a9503bee4ce480c04?search='),
+    headers: {
+      'Authorization': token,
+    },
+  );
+  log('mailNewMail response ${response.body}');
+
+  if (response.statusCode == 200 || response.statusCode == 201) {
+    var OperatorNewData = UploadImageModel.fromJson(jsonDecode(response.body));
+
+    log('OperatorNewDataList=> $OperatorNewData');
+    return OperatorNewData;
+  } else {
+    Get.snackbar("Error", "Failed to requestMail: ${response..statusCode}");
+  }
+  return UploadImageModel();
 }
