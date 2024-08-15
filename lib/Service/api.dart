@@ -394,17 +394,19 @@ Future<SubscriptionModel?> subscriptionApi() async {
         'Authorization': token,
       },
     );
-    if (response.statusCode == 200) {
-      // log('subscription ==>${response.body}');
-      final jsonResponse =
-          SubscriptionModel.fromJson(jsonDecode(response.body));
-      return jsonResponse;
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final jsonResponse = jsonDecode(response.body);
+
+      final subscriptionModel = SubscriptionModel.fromJson(jsonResponse);
+      log('Parsed SubscriptionModel: ${subscriptionModel.toJson()}');
+      return subscriptionModel;
     } else {
+      log('Failed to load data, Status Code: ${response.statusCode}');
       throw Exception('Failed to load data');
     }
   } catch (e) {
-    print('Error: $e');
-  } finally {}
+    log('Error: $e');
+  }
   return SubscriptionModel();
 }
 
@@ -426,21 +428,25 @@ Future<ShipmentstatusModel> getTrashList() async {
   }
 }
 
-Future<ShipmentstatusModel> getReadList(String? fromDate, toDate) async {
+Future<CustomerMailModel> getReadList(bool isRead) async {
+  //  String? fromDate, String? toDate, bool isRead) async {
   var token = SharedPrefs.getString('Token');
   var userID = SharedPrefs.getString('cID');
 
+  String readValue = isRead ? 'true' : 'false';
+  var url =
+      'https://service.24x7mail.com/assign?&search=&fromDate=&toDate=&user_id=$userID&page=1&limit=10&read=$isRead';
   final response = await http.get(
-    Uri.parse(
-        'https://service.24x7mail.com/assign?request_completed=true&&search=&$fromDate=&$toDate=&user_id=$userID&page=1&limit=10&read=true'),
+    Uri.parse(url),
+    // 'https://service.24x7mail.com/assign?request_completed=true&search=&from_date=$fromDate&to_date=$toDate&user_id=$userID&page=1&limit=10&read=$readValue'),
     headers: {
       'Authorization': token,
     },
   );
-  if (response.statusCode == 200) {
-    final readListDta = ShipmentstatusModel.fromJson(jsonDecode(response.body));
 
-    return readListDta;
+  if (response.statusCode == 200) {
+    final readListData = CustomerMailModel.fromJson(jsonDecode(response.body));
+    return readListData;
   } else {
     throw Exception('Failed to load readList');
   }

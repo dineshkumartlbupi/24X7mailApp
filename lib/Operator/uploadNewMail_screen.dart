@@ -40,7 +40,7 @@ class UploadNewMailScreen extends StatelessWidget {
                 onTap: () async {
                   await getNewMailOperator();
                 },
-                child: Text('Upload By Customer Content'),
+                child: const GlobalText('Upload By Customer Content'),
               ),
             ),
           ],

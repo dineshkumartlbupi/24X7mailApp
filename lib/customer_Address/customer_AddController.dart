@@ -46,8 +46,8 @@ class CustomerAddController extends GetxController {
   }
 
   Future<void> getSubscribeData() async {
-    subscribeLoading.value = true;
+    //subscribeLoading.value = true;
     subscribeView.value = await subscriptionApi();
-    subscribeLoading.value = false;
+    //subscribeLoading.value = false;
   }
 }

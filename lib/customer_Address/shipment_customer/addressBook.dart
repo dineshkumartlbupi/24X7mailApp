@@ -141,128 +141,163 @@ class AddressBook extends StatelessWidget {
       content: SingleChildScrollView(
         child: ConstrainedBox(
           constraints: BoxConstraints(
-            maxHeight: Get.height * 0.7, // Adjust this value to fit your UI
+            maxHeight: Get.height * 0.85,
           ),
           child: IntrinsicHeight(
-            child: Column(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: shipmentData.nameController,
-                    decoration: InputDecoration(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Shipment Name
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: TextField(
+                      controller: shipmentData.nameController,
+                      decoration: InputDecoration(
                         hintText: 'Shipment Name',
-                        border: OutlineInputBorder()),
-                    onChanged: (value) =>
-                        shipmentData.shipmentName.value = value,
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (value) =>
+                          shipmentData.shipmentName.value = value,
+                    ),
                   ),
-                ),
-                SizedBox(height: Get.height * 0.02),
-                Expanded(
-                  child: TextField(
-                    controller: shipmentData.companyController,
-                    decoration: const InputDecoration(
+
+                  // Company Name
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: TextField(
+                      controller: shipmentData.companyController,
+                      decoration: InputDecoration(
                         hintText: 'Company Name (optional)',
-                        border: OutlineInputBorder()),
-                    onChanged: (value) {
-                      shipmentData.shipmentNumber.value = value;
-                    },
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (value) =>
+                          shipmentData.shipmentNumber.value = value,
+                    ),
                   ),
-                ),
-                SizedBox(height: Get.height * 0.02),
-                Expanded(
-                  child: TextField(
-                    controller: shipmentData.addLineOneController,
-                    decoration: const InputDecoration(
+
+                  // Address Line 1
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: TextField(
+                      controller: shipmentData.addLineOneController,
+                      decoration: InputDecoration(
                         hintText: 'Address Line One',
-                        border: OutlineInputBorder()),
-                    onChanged: (value) {
-                      shipmentData.shipmentDate.value = value;
-                    },
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (value) =>
+                          shipmentData.shipmentDate.value = value,
+                    ),
                   ),
-                ),
-                SizedBox(height: Get.height * 0.02),
-                Expanded(
-                  child: TextField(
-                    controller: shipmentData.addLineTwoController,
-                    decoration: const InputDecoration(
+
+                  // Address Line 2
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: TextField(
+                      controller: shipmentData.addLineTwoController,
+                      decoration: InputDecoration(
                         hintText: 'Address Line 2 (optional)',
-                        border: OutlineInputBorder()),
-                    onChanged: (value) {
-                      shipmentData.shipmentDate.value = value;
-                    },
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (value) =>
+                          shipmentData.shipmentDate.value = value,
+                    ),
                   ),
-                ),
-                SizedBox(height: Get.height * 0.02),
-                Obx(
-                  () => DropdownButton<String>(
-                    hint: GlobalText('Select a Country'),
-                    value: shipmentData.selectedCountry.value,
-                    onChanged: (String? newValue) =>
-                        shipmentData.selectedCountry.value = newValue,
-                    items: shipmentData.countries
-                        .map<DropdownMenuItem<String>>((country) {
-                      return DropdownMenuItem<String>(
-                        value: country,
-                        child: GlobalText(country),
-                      );
-                    }).toList(),
+
+                  // Country Dropdown
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Obx(
+                      () => DropdownButton<String>(
+                        isExpanded: true,
+                        hint: GlobalText('Select a Country'),
+                        value: shipmentData.selectedCountry.value,
+                        onChanged: (String? newValue) =>
+                            shipmentData.selectedCountry.value = newValue,
+                        items: shipmentData.countries
+                            .map<DropdownMenuItem<String>>((country) {
+                          return DropdownMenuItem<String>(
+                            value: country,
+                            child: GlobalText(country),
+                          );
+                        }).toList(),
+                      ),
+                    ),
                   ),
-                ),
-                Obx(
-                  () => DropdownButton<String>(
-                    hint: GlobalText('Select a State'),
-                    value: shipmentData.selectedState.value,
-                    onChanged: (String? newValue) =>
-                        shipmentData.selectedState.value = newValue,
-                    items: shipmentData.states
-                        .toSet()
-                        .map<DropdownMenuItem<String>>((state) {
-                      return DropdownMenuItem<String>(
-                        value: state,
-                        child: GlobalText(state),
-                      );
-                    }).toList(),
+
+                  // State Dropdown
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Obx(
+                      () => DropdownButton<String>(
+                        isExpanded: true,
+                        hint: GlobalText('Select a State'),
+                        value: shipmentData.selectedState.value,
+                        onChanged: (String? newValue) =>
+                            shipmentData.selectedState.value = newValue,
+                        items: shipmentData.states
+                            .toSet()
+                            .map<DropdownMenuItem<String>>((state) {
+                          return DropdownMenuItem<String>(
+                            value: state,
+                            child: GlobalText(state),
+                          );
+                        }).toList(),
+                      ),
+                    ),
                   ),
-                ),
-                Obx(
-                  () => DropdownButton<String>(
-                    hint: GlobalText('Select a City'),
-                    value: shipmentData.selectedCity.value,
-                    onChanged: (String? newValue) {
-                      shipmentData.selectedCity.value = newValue;
-                    },
-                    items: shipmentData.cities
-                        .map<DropdownMenuItem<String>>((city) {
-                      return DropdownMenuItem<String>(
-                        value: city,
-                        child: GlobalText(city),
-                      );
-                    }).toList(),
+
+                  // City Dropdown
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Obx(
+                      () => DropdownButton<String>(
+                        isExpanded: true,
+                        hint: GlobalText('Select a City'),
+                        value: shipmentData.selectedCity.value,
+                        onChanged: (String? newValue) {
+                          shipmentData.selectedCity.value = newValue;
+                        },
+                        items: shipmentData.cities
+                            .map<DropdownMenuItem<String>>((city) {
+                          return DropdownMenuItem<String>(
+                            value: city,
+                            child: GlobalText(city),
+                          );
+                        }).toList(),
+                      ),
+                    ),
                   ),
-                ),
-                SizedBox(height: Get.height * 0.02),
-                Expanded(
-                  child: TextField(
-                    controller: shipmentData.postolController,
-                    decoration: InputDecoration(
-                        hintText: 'Postal Code', border: OutlineInputBorder()),
-                    onChanged: (value) =>
-                        shipmentData.shipmentDate.value = value,
+
+                  // Postal Code
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: TextField(
+                      controller: shipmentData.postolController,
+                      decoration: InputDecoration(
+                        hintText: 'Postal Code',
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (value) =>
+                          shipmentData.shipmentDate.value = value,
+                    ),
                   ),
-                ),
-                SizedBox(height: Get.height * 0.02),
-                Expanded(
-                  child: TextField(
-                    controller: shipmentData.phoneController,
-                    decoration: const InputDecoration(
-                        hintText: 'Phone Number', border: OutlineInputBorder()),
-                    onChanged: (value) {
-                      shipmentData.shipmentDate.value = value;
-                    },
+
+                  // Phone Number
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: TextField(
+                      controller: shipmentData.phoneController,
+                      decoration: InputDecoration(
+                        hintText: 'Phone Number',
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (value) =>
+                          shipmentData.shipmentDate.value = value,
+                    ),
                   ),
-                ),
-                SizedBox(height: Get.height * 0.02),
-              ],
+                ],
+              ),
             ),
           ),
         ),

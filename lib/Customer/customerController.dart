@@ -12,12 +12,15 @@ class CustomerController extends GetxController {
   DateTime? fromDate;
   DateTime? toDate;
   var isMailChecked = false.obs;
+  var isMailRead = false.obs;
   final RxString? selectedOption = 'Option 1'.obs;
   TextEditingController dateRangeController = TextEditingController();
   final ScrollController scrollController = ScrollController();
   TextEditingController searchController = TextEditingController();
   Rx<CustomerMailModel> customerModel = CustomerMailModel().obs;
   Rx<CustomerMailModel> customerIndexMail = CustomerMailModel().obs;
+  Rx<CustomerMailModel> readListData = CustomerMailModel().obs;
+  Rx<CustomerMailModel> UnreadListData = CustomerMailModel().obs;
   String? baseUrl;
   List<Data> filteredList = [];
 
@@ -25,6 +28,8 @@ class CustomerController extends GetxController {
   void onInit() {
     getCustomerDetails();
     getIndexDetails();
+    getReadDetails();
+    getUnReadDetails();
     super.onInit();
   }
 
@@ -57,6 +62,19 @@ class CustomerController extends GetxController {
         (await getViewIndexData(fromDate.toString(), toDate.toString())) ??
             customerIndexMail.value;
   }
+
+  Future<void> getReadDetails() async {
+    readListData.value =
+        //await getReadList(fromDate.toString(), toDate.toString(), true);
+        await getReadList(true);
+  }
+
+  Future<void> getUnReadDetails() async {
+    UnreadListData.value = await getReadList(false);
+  }
+
+  //final readListTrue = await getReadList('2024-01-01', '2024-01-31', true);
+  //final readListFalse = await getReadList('2024-01-01', '2024-01-31', false);
 
   final List<Map<String, dynamic>> listUserType = [
     {'name': 'index', 'value': 'index', 'icon': Icons.mail},

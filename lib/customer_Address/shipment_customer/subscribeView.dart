@@ -1,8 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:twentyfourby_seven/Utils/Mycolor.dart';
 import 'package:twentyfourby_seven/Utils/globalText.dart';
 import 'package:twentyfourby_seven/customer_Address/customer_AddController.dart';
+
+enum SubscriptionType { monthly, annual }
 
 class SubscribeView extends StatelessWidget {
   SubscribeView({super.key});
@@ -30,19 +34,19 @@ class SubscribeView extends StatelessWidget {
       ),
       body: Obx(
         () {
-          if (subscribe.subscribeLoading.value) {
-            return Center(
+          /* if (subscribe.subscribeLoading.value) {
+            return const Center(
                 child: CircularProgressIndicator(
               color: MyColor.colorBlueHome,
             ));
           }
 
           if (subscribe.subscribeView.value == null) {
-            return Center(child: GlobalText('Error loading data'));
-          }
+            return const Center(child: GlobalText('Error loading data'));
+          }*/
 
           final subscribeData = subscribe.subscribeView.value?.data;
-
+          log('subscribeData ${subscribeData}');
           return Column(
             children: [
               ...?subscribeData?.map((item) {
@@ -64,5 +68,3 @@ class SubscribeView extends StatelessWidget {
     );
   }
 }
-
-enum SubscriptionType { monthly, annual }

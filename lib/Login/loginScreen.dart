@@ -6,7 +6,6 @@ import 'package:twentyfourby_seven/Utils/addImage.dart';
 import 'package:twentyfourby_seven/Utils/globalText.dart';
 
 import '../Customer/customerView.dart';
-import '../Operator/operator_requestHome.dart';
 import '../Service/api.dart';
 import '../Utils/SharedPrefrance.dart';
 
@@ -210,25 +209,21 @@ class LoginScreen extends StatelessWidget {
                                         SharedPrefs.getString('emailId');
                                     var passwordText =
                                         SharedPrefs.getString('password');
-                                    if (emailText.isEmpty ||
-                                        loginController
-                                                .loginModel.value.data?.email ==
-                                            loginController
-                                                .emailController.text ||
-                                        passwordText.isEmpty ||
-                                        loginController.loginModel.value.data
-                                                ?.password ==
+                                    if (loginController.emailController.text ==
+                                            emailText ||
+                                        passwordText ==
                                             loginController
                                                 .passwordController.text) {
                                       Get.to(() => CustomerView());
-                                    } else if (loginController
+                                    } /*else if (loginController
                                                 .emailController.text ==
                                             'operator@gmail.com' ||
                                         loginController
                                                 .passwordController.text ==
                                             '123456') {
                                       Get.to(() => OperatorRequestHome());
-                                    } else {
+                                    }*/
+                                    else {
                                       Get.defaultDialog(
                                           backgroundColor:
                                               MyColor.backgroundLogin,

@@ -6,11 +6,13 @@ import 'package:twentyfourby_seven/Utils/Mycolor.dart';
 import 'package:twentyfourby_seven/Utils/addImage.dart';
 import 'package:twentyfourby_seven/Utils/globalText.dart';
 
+import '../customer_Address/readMailView.dart';
 import '../customer_Address/shipment/pastShipment.dart';
 import '../customer_Address/shipment/pendingShipment.dart';
 import '../customer_Address/shipment/pickUpView.dart';
 import '../customer_Address/shipment_customer/MailViewAll.dart';
 import '../customer_Address/traceList.dart';
+import '../customer_Address/unreadMailView.dart';
 import 'customerController.dart';
 import 'customerView.dart';
 
@@ -109,8 +111,14 @@ class CustomerDrawer extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: Get.width * 0.03),
             child: PopupMenuButton<String>(
-              onSelected: (String newValue) =>
-                  customerController.selectedOption?.value = newValue,
+              onSelected: (String newValue) {
+                customerController.selectedOption?.value = newValue;
+                if (newValue == 'read') {
+                  Get.to(() => ReadMailView());
+                } else if (newValue == 'unread') {
+                  Get.to(() => UnreadMailView());
+                }
+              },
               itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                 PopupMenuItem<String>(
                   value: 'read',

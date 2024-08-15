@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -45,7 +43,6 @@ class traceList extends StatelessWidget {
                     itemBuilder: (_, inx) {
                       var shipmentIndex =
                           traceViewModel.traceView.value.data?[inx];
-                      log('shipment123 ${shipmentIndex?.reciver}');
                       return Card(
                         margin: const EdgeInsets.all(8),
                         elevation: 2,
