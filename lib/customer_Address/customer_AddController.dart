@@ -5,17 +5,19 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:twentyfourby_seven/Service/api.dart';
-import 'package:twentyfourby_seven/models/SubscriptionModel.dart';
 import 'package:twentyfourby_seven/models/profileModel.dart';
 import 'package:twentyfourby_seven/models/statementModell.dart';
+
+import '../models/packageModel.dart';
 
 class CustomerAddController extends GetxController {
   Rx<StatementModell> statement = StatementModell().obs;
   Rx<UserModel?> propertyModel = UserModel().obs;
-  Rx<SubscriptionModel?> subscribeView = SubscriptionModel().obs;
+  Rx<PackageModel?> subscribeView = PackageModel().obs;
   var image = Rx<File?>(null);
   var softCash = "".obs;
   var subscribeLoading = false.obs;
+
   @override
   void onInit() {
     getStatementDetails();

@@ -30,6 +30,8 @@ class CustomerAdd extends StatelessWidget {
                     Get.to(() => CustomerAdd());
                   } else if (newValue == 'Address Book') {
                     await getViewState();
+
+                    //await fetchCityList();
                     Get.to(() => AddressBook());
                   }
                 },
@@ -53,7 +55,7 @@ class CustomerAdd extends StatelessWidget {
                     SizedBox(
                       width: Get.width * 0.055,
                     ),
-                    GlobalText(
+                    const GlobalText(
                       'User Setting',
                       fontWeight: FontWeight.w700,
                     ),

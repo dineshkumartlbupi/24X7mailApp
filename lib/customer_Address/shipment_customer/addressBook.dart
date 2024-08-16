@@ -20,7 +20,7 @@ class AddressBook extends StatelessWidget {
               SizedBox(
                 width: Get.width * 0.02,
               ),
-              GlobalText(
+              const GlobalText(
                 'Address Book',
                 fontWeight: FontWeight.w700,
                 color: MyColor.colorRedHome,

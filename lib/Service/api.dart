@@ -16,8 +16,8 @@ import 'package:twentyfourby_seven/models/profileModel.dart';
 import 'package:twentyfourby_seven/models/statementModell.dart';
 
 import '../customer_Address/customer_AddController.dart';
-import '../models/SubscriptionModel.dart';
 import '../models/operatorHomeModel.dart';
+import '../models/packageModel.dart';
 import '../models/shipmentModel.dart';
 import '../models/shipmentstatus_model.dart';
 import '../models/uploadImageModel.dart';
@@ -360,6 +360,13 @@ Future<void> getViewState() async {
       final List<String> stateNames =
           stateData.map((state) => state['name'] as String).toList();
 
+      final List<Map<String, String>> statDetails = stateData.map((state) {
+        return {
+          'name': state['name'] as String,
+          'state_id': state['state_id'] as String,
+        };
+      }).toList();
+      log('stateDetails==> $statDetails');
       signController.setStates(stateNames);
       customerAddCtrl.setStates(stateNames);
     } else {
@@ -370,26 +377,69 @@ Future<void> getViewState() async {
   }
 }
 
-Future<void> fetchCountries() async {
-  final response = await http.get(Uri.parse(ApiURl.getCountryApi));
-  if (response.statusCode == 200) {
-    final Map<String, dynamic> data = json.decode(response.body);
-    if (data['status'] == true) {
-      operatorController.countries = data['data'];
+Future<ShipmentModel?> getSTatedata() async {
+  const String apiUrl = 'https://service.24x7mail.com/state/233';
+  try {
+    final response = await http.get(Uri.parse(apiUrl));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final jsonResponse = jsonDecode(response.body);
+
+      final stateModel = ShipmentModel.fromJson(jsonResponse);
+      log('json Response of GetState==> ${stateModel}');
+
+      return stateModel;
+
+      log('stateModel ${stateModel.data}');
+      return stateModel;
+
+      /*final List<dynamic> cityData = jsonDecode(response.body);
+
+      List<String> cityList = cityData.map((city) {
+        return city['name'].toString();
+      }).toList();
+      log('cityList==> $cityList');
+      return cityList;*/
+    } else {
+      throw Exception('Failed to load city list');
     }
-  } else {
-    throw Exception('Failed to load countries');
+  } catch (e) {
+    log('Error: $e');
+    return ShipmentModel();
   }
 }
 
-Future<SubscriptionModel?> subscriptionApi() async {
+Future<List<String>> fetchCityList() async {
+//Future<List<String>> fetchCityList(int stateId) async {
+  final String apiUrl = 'https://service.24x7mail.com/city/1400';
+
+  try {
+    final response = await http.get(Uri.parse(apiUrl));
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      log(response.body);
+      final List<dynamic> cityData = jsonDecode(response.body);
+
+      List<String> cityList = cityData.map((city) {
+        return city['name'].toString();
+      }).toList();
+      log('cityList==> $cityList');
+      return cityList;
+    } else {
+      throw Exception('Failed to load city list');
+    }
+  } catch (e) {
+    log('Error: $e');
+    return [];
+  }
+}
+
+Future<PackageModel?> subscriptionApi() async {
   try {
     var userID = SharedPrefs.getString('cID');
     var token = SharedPrefs.getString('Token');
 
     final response = await http.get(
       Uri.parse('https://service.24x7mail.com/package'),
-      //Uri.parse(ApiURl.subscriptionsApi),
       headers: {
         'Authorization': token,
       },
@@ -397,8 +447,7 @@ Future<SubscriptionModel?> subscriptionApi() async {
     if (response.statusCode == 200 || response.statusCode == 201) {
       final jsonResponse = jsonDecode(response.body);
 
-      final subscriptionModel = SubscriptionModel.fromJson(jsonResponse);
-      log('Parsed SubscriptionModel: ${subscriptionModel.toJson()}');
+      final subscriptionModel = PackageModel.fromJson(jsonResponse);
       return subscriptionModel;
     } else {
       log('Failed to load data, Status Code: ${response.statusCode}');
@@ -407,7 +456,7 @@ Future<SubscriptionModel?> subscriptionApi() async {
   } catch (e) {
     log('Error: $e');
   }
-  return SubscriptionModel();
+  return PackageModel();
 }
 
 Future<ShipmentstatusModel> getTrashList() async {
@@ -429,7 +478,6 @@ Future<ShipmentstatusModel> getTrashList() async {
 }
 
 Future<CustomerMailModel> getReadList(bool isRead) async {
-  //  String? fromDate, String? toDate, bool isRead) async {
   var token = SharedPrefs.getString('Token');
   var userID = SharedPrefs.getString('cID');
 
@@ -569,10 +617,8 @@ Future<ShipmentModel?> getShipiingList() async {
     },
   );
   if (response.statusCode == 200) {
-    log('shipmentResponseList ${response.body}');
     var shipmentData = ShipmentModel.fromJson(jsonDecode(response.body));
 
-    log('shipmentgetList=> $shipmentData');
     return shipmentData;
   } else {
     Get.snackbar(
