@@ -103,7 +103,7 @@ class UserData {
     lname = json['lname'];
     username = json['username'];
     email = json['email'];
-    phone = json['phone'];
+    phone = json['phone'].toString();
     userType = json['user_type'];
     businessName = json['business_name'];
     userStatus = json['user_status'];
@@ -229,7 +229,6 @@ class UserData {
 }
 
 class Subscription {
-  // Define the properties and methods for the Subscription class
   String? id;
   String? name;
 

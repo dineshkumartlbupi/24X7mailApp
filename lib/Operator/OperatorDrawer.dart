@@ -5,8 +5,8 @@ import 'package:twentyfourby_seven/Utils/Mycolor.dart';
 import 'package:twentyfourby_seven/Utils/addImage.dart';
 import 'package:twentyfourby_seven/Utils/globalText.dart';
 
-import '../customer_Address/shipment_customer/MailViewAll.dart';
 import 'assign_mail_Screen.dart';
+import 'mailMaanagement_Screen.dart';
 
 class OperatorDrawer extends StatelessWidget {
   OperatorDrawer({super.key});
@@ -50,7 +50,7 @@ class OperatorDrawer extends StatelessWidget {
             icon: Icons.people,
             text: 'Mail Management',
             onTap: () async {
-              Get.to(() => MailViewAll());
+              Get.to(() => MailManagementScreen());
             },
           ),
         ],

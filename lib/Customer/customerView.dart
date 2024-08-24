@@ -56,7 +56,8 @@ class CustomerView extends StatelessWidget {
                         if (loginCtrl.rememberMe.value == true) {
                           loginCtrl.submit();
                         }
-                        SharedPrefs.remove('Token');
+                        var token = SharedPrefs.getString('Token');
+                        SharedPrefs.remove(token);
                         loginCtrl.rememberMe.value = false;
                         loginCtrl.emailController.clear();
                         loginCtrl.passwordController.clear();

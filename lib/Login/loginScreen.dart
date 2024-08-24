@@ -5,7 +5,6 @@ import 'package:twentyfourby_seven/Utils/Mycolor.dart';
 import 'package:twentyfourby_seven/Utils/addImage.dart';
 import 'package:twentyfourby_seven/Utils/globalText.dart';
 
-import '../Customer/customerView.dart';
 import '../Service/api.dart';
 import '../Utils/SharedPrefrance.dart';
 
@@ -81,11 +80,11 @@ class LoginScreen extends StatelessWidget {
                                                   Icons.visibility_off,
                                                   color: MyColor.nevyBlue,
                                                 )
-                                              : const Icon(Icons.visibility,
+                                              : Icon(Icons.visibility,
                                                   color: MyColor.nevyBlue),
                                     ),
                                     labelText: 'Enter Password',
-                                    border: OutlineInputBorder(),
+                                    border: const OutlineInputBorder(),
                                     errorStyle: TextStyle(color: Colors.red),
                                   ),
                                   obscureText:
@@ -186,7 +185,7 @@ class LoginScreen extends StatelessWidget {
                                                       .resetEmailController
                                                       .text);
                                             },
-                                            child: GlobalText(
+                                            child: const GlobalText(
                                               color: MyColor.black,
                                               fontWeight: FontWeight.bold,
                                               'Reset Password',
@@ -194,7 +193,7 @@ class LoginScreen extends StatelessWidget {
                                           ),
                                         );
                                       },
-                                      child: GlobalText(
+                                      child: const GlobalText(
                                         'Forgot your Password?',
                                         color: Colors.black,
                                         fontWeight: FontWeight.w500,
@@ -203,46 +202,25 @@ class LoginScreen extends StatelessWidget {
                                   ],
                                 ),
                                 InkWell(
-                                  onTap: () {
-                                    loginController.submit();
+                                  onTap: () async {
+                                    await loginController.submit();
+
                                     var emailText =
                                         SharedPrefs.getString('emailId');
                                     var passwordText =
                                         SharedPrefs.getString('password');
                                     if (loginController.emailController.text ==
                                             emailText ||
-                                        passwordText ==
-                                            loginController
-                                                .passwordController.text) {
-                                      Get.to(() => CustomerView());
-                                    } /*else if (loginController
-                                                .emailController.text ==
-                                            'operator@gmail.com' ||
                                         loginController
                                                 .passwordController.text ==
-                                            '123456') {
-                                      Get.to(() => OperatorRequestHome());
-                                    }*/
-                                    else {
-                                      Get.defaultDialog(
-                                          backgroundColor:
-                                              MyColor.backgroundLogin,
-                                          title: 'Login Failed',
-                                          titleStyle: const TextStyle(
-                                              color: MyColor.colorRedHome,
-                                              fontWeight: FontWeight.w700),
-                                          middleText:
-                                              'please! check credentials',
-                                          confirm: ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                      MyColor.cardIColorIndigo),
-                                              onPressed: () => Get.back(),
-                                              child: const GlobalText(
-                                                'ok',
-                                                fontWeight: FontWeight.w700,
-                                                color: MyColor.white,
-                                              )));
+                                            passwordText) {
+                                      /*handleUserType(loginController
+                                          .loginModel.value.data?.userType
+                                          .toString());*/
+                                    } else {
+                                      showLoginErrorDialog(loginController
+                                          .loginModel.value.msg
+                                          .toString());
                                     }
                                   },
                                   child: Container(

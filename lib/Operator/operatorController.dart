@@ -1,17 +1,44 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:twentyfourby_seven/models/OperatorModel.dart';
 
 import '../Service/api.dart';
 import '../models/operatorHomeModel.dart';
+import '../models/uploadImageModel.dart';
 
 class OperatorController extends GetxController {
   Rx<OperatorModel> operatorView = OperatorModel().obs;
   Rx<OperatorHomeModel> operatorHome = OperatorHomeModel().obs;
+  Rx<UploadImageModel> customerList = UploadImageModel().obs;
   var selectedValue = 'All'.obs;
   String? _selectedCountry;
   List<dynamic> countries = [].obs;
   RxString selectedMenuValue = ''.obs;
+  var selectedMailType = ''.obs;
+  var selectedImages = <File>[].obs;
+
+  final List<String> mailTypes = [
+    'Envelope',
+    'Large Envelope',
+    'Package',
+    'Postcard',
+    'Magazine',
+    'Other',
+  ];
+
+  void updateMailType(String? value) {
+    selectedMailType.value = value ?? '';
+  }
+
+  void addImage(File image) {
+    selectedImages.add(image);
+  }
+
+  void removeImage(File image) {
+    selectedImages.remove(image);
+  }
 
   void updateValue(String newValue) {
     selectedValue.value = newValue;
@@ -23,6 +50,10 @@ class OperatorController extends GetxController {
 
   Future<void> getOperatorHome() async {
     operatorHome.value = (await getOperatorRequestApi()) ?? operatorHome.value;
+  }
+
+  Future<void> getCustomerList() async {
+    customerList.value = await operatorCustomerList() ?? customerList.value;
   }
 
   void showAddOperatorDialog(BuildContext context) {
@@ -164,6 +195,7 @@ class OperatorController extends GetxController {
   void onInit() {
     getOperatorList();
     getOperatorHome();
+    getCustomerList();
     super.onInit();
   }
 }

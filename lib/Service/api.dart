@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
@@ -15,6 +16,10 @@ import 'package:twentyfourby_seven/models/customerMailModel.dart';
 import 'package:twentyfourby_seven/models/profileModel.dart';
 import 'package:twentyfourby_seven/models/statementModell.dart';
 
+import '../Customer/customerView.dart';
+import '../Operator/operator_requestHome.dart';
+import '../Utils/Mycolor.dart';
+import '../Utils/globalText.dart';
 import '../customer_Address/customer_AddController.dart';
 import '../models/operatorHomeModel.dart';
 import '../models/packageModel.dart';
@@ -26,8 +31,30 @@ var operatorController = Get.put(OperatorController());
 var signController = Get.put(SignupController());
 var customerAddCtrl = Get.put(ShipmentController());
 var getCustomerAdd = Get.put(CustomerAddController());
+void showLoginErrorDialog(String mes) {
+  Get.defaultDialog(
+    backgroundColor: MyColor.backgroundLogin,
+    title: 'Please check your credentials',
+    titleStyle: const TextStyle(
+      color: MyColor.colorRedHome,
+      fontWeight: FontWeight.w700,
+    ),
+    middleText: mes,
+    confirm: ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: MyColor.cardIColorIndigo,
+      ),
+      onPressed: () => Get.back(),
+      child: const GlobalText(
+        'Ok',
+        fontWeight: FontWeight.w700,
+        color: MyColor.white,
+      ),
+    ),
+  );
+}
 
-Future<UserModel?> login(String email, password) async {
+Future<UserModel?> login(String email, String password) async {
   final url = Uri.parse(ApiURl.userLoginUrl);
   final headers = <String, String>{
     'Content-Type': 'application/json',
@@ -35,40 +62,46 @@ Future<UserModel?> login(String email, password) async {
   final body = jsonEncode({
     'email': email,
     'password': password,
-    //'email': 'ashutosh@yopmail.com',
-    //'password': '123456',
   });
 
   try {
-    final response = await http.post(
-      url,
-      headers: headers,
-      body: body,
-    );
-
-    if (response.statusCode == 200) {
+    final response = await http.post(url, headers: headers, body: body);
+    log('response without model ${response.body}');
+    if (response.statusCode == 200 || response.statusCode == 201) {
       final loginResponse = UserModel.fromJson(jsonDecode(response.body));
-      log('login==> ${loginResponse.token}');
-      String token = loginResponse.token.toString();
-      String customerID = loginResponse.data?.id.toString() ?? '';
-      String firstName = loginResponse.data?.fname.toString() ?? '';
-      String lastName = loginResponse.data?.lname.toString() ?? '';
-      String email = loginResponse.data?.email.toString() ?? '';
-      String password = loginResponse.data?.password.toString() ?? '';
-      log('emailll $email,$password');
-      SharedPrefs.putString('emailId', email);
-      SharedPrefs.putString('password', password);
-      SharedPrefs.putString('Token', token);
-      SharedPrefs.putString('cID', customerID);
-      SharedPrefs.putString('firstNAme', firstName);
-      SharedPrefs.putString('lastNAme', lastName);
+      log('login response ${loginResponse.data?.userType}');
+      if (loginResponse.token != null && loginResponse.data != null) {
+        SharedPrefs.putString('emailId', loginResponse.data?.email ?? '');
+        SharedPrefs.putString('password', loginResponse.data?.password ?? '');
+        SharedPrefs.putString('Token', loginResponse.token ?? '');
+        SharedPrefs.putString('cID', loginResponse.data?.id ?? '');
+        SharedPrefs.putString('firstNAme', loginResponse.data?.fname ?? '');
+        SharedPrefs.putString('lastNAme', loginResponse.data?.lname ?? '');
 
-      return loginResponse;
+        if (loginResponse.data?.userType.toString() == 'operator') {
+          //if (loginResponse.data?.userType.toString() == 'user') {
+          Get.offAll(() => CustomerView());
+        } else if (loginResponse.data?.userType.toString() == 'user') {
+          // } else if (loginResponse.data?.userType.toString() == 'operator') {
+          Get.offAll(() => OperatorRequestHome());
+        } else {
+          Get.snackbar('Error', 'Invalid user type');
+        }
+        return loginResponse;
+      } else {
+        log('Invalid response data');
+        showLoginErrorDialog(loginResponse.msg.toString() ?? "");
+        return null;
+      }
     } else {
       log('Failed to login: ${response.statusCode}');
+      showLoginErrorDialog(response.statusCode.toString());
+      return null;
     }
   } catch (e) {
     log('Error: $e');
+    showLoginErrorDialog(e.toString());
+    return null;
   }
 }
 
@@ -714,9 +747,9 @@ Future<UploadImageModel?> uploadUspsFile(File file, String userId) async {
 // user_id: 667d923246b74b03f473b3a7
 
 ///OpertorApi Data
+///https://service.24x7mail.com/user/customer-list-by-feature/667c046a9503bee4ce480c04?search=&page=1&limit=10
 Future<OperatorHomeModel?> getOperatorRequestApi() async {
-  var token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjdjMDNiNTRmMTljNzMzYTAxYmNiOWMiLCJ1c2VyX3R5cGUiOiJvcGVyYXRvciIsImlhdCI6MTcyMzU2MzY2MCwiZXhwIjoxNzIzNjUwMDYwfQ.Pvf0t8KOwpqa-cjT0DvioOz6tsRPIpGncTivu3XbpJ4';
+  var token = SharedPrefs.getString('Token');
 
   final response = await http.get(
     // Uri.parse('${ApiURl.operatorHomeApi}+${'667c03b54f19c733a01bcb9c'}'),
@@ -740,24 +773,23 @@ Future<OperatorHomeModel?> getOperatorRequestApi() async {
   return OperatorHomeModel();
 }
 
-Future<UploadImageModel?> getNewMailOperator() async {
-  var token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjdjMDNiNTRmMTljNzMzYTAxYmNiOWMiLCJ1c2VyX3R5cGUiOiJvcGVyYXRvciIsImlhdCI6MTcyMzU2MzY2MCwiZXhwIjoxNzIzNjUwMDYwfQ.Pvf0t8KOwpqa-cjT0DvioOz6tsRPIpGncTivu3XbpJ4';
+Future<UploadImageModel?> operatorCustomerList() async {
+  var token = SharedPrefs.getString('Token');
 
   final response = await http.get(
     Uri.parse(
-        'https://service.24x7mail.com/user/customer-list-by-feature/667c046a9503bee4ce480c04?search='),
+        'https://service.24x7mail.com/user/customer-list-by-feature/667c046a9503bee4ce480c04?search=&page=1&limit=10'),
     headers: {
       'Authorization': token,
     },
   );
-  log('mailNewMail response ${response.body}');
+  log('upload by customer response===> ${response.body}');
 
   if (response.statusCode == 200 || response.statusCode == 201) {
-    var OperatorNewData = UploadImageModel.fromJson(jsonDecode(response.body));
+    var operatorNewData = UploadImageModel.fromJson(jsonDecode(response.body));
+    log('upload by customer response===>=> ${operatorNewData.data}');
 
-    log('OperatorNewDataList=> $OperatorNewData');
-    return OperatorNewData;
+    return operatorNewData;
   } else {
     Get.snackbar("Error", "Failed to requestMail: ${response..statusCode}");
   }

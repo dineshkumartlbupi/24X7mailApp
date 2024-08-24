@@ -17,6 +17,7 @@ class LoginController extends GetxController {
   final resetEmailController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   Rx<UserModel> loginModel = UserModel().obs;
+
   @override
   void onClose() {
     emailController.clear();
@@ -30,12 +31,12 @@ class LoginController extends GetxController {
 
   Future<void> submit() async {
     var token = SharedPrefs.getString('Token');
-    if (formKey.currentState!.validate() && token.isEmpty) {
-      loginModel.value =
-          (await login(emailController.text, passwordController.text) ??
-              loginModel.value);
+
+    // if (formKey.currentState!.validate() && (token == null || token.isEmpty)) {
+    if (formKey.currentState!.validate()) {
+      await login(emailController.text, passwordController.text);
+    } else {
+      log('User already logged in or invalid form');
     }
-    log('Email: ${emailController.text}');
-    log('Password: ${passwordController.text}');
   }
 }
