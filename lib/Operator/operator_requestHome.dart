@@ -7,6 +7,7 @@ import 'package:twentyfourby_seven/Utils/Mycolor.dart';
 import '../Login/loginScreen.dart';
 import '../Utils/SharedPrefrance.dart';
 import '../Utils/globalText.dart';
+import '../operator_settings/operator_setting_View.dart';
 import 'OperatorDrawer.dart';
 import 'operatorController.dart';
 
@@ -40,6 +41,7 @@ class OperatorRequestHome extends StatelessWidget {
                   onTap: () {
                     log('value ${userType['value']}');
                     if (userType['value'] == 'settings') {
+                      Get.to(() => OperatorSettingView());
                     } else if (userType['value'] == 'Customers') {
                     } else if (userType['value'] == 'Reports') {
                     } else if (userType['value'] == 'logout') {

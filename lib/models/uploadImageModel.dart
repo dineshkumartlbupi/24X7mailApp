@@ -125,7 +125,7 @@ class Data {
     _createdAt = json['createdAt'];
     _updatedAt = json['updatedAt'];
     _v = json['__v'];
-    _id = json['id'];
+    _id = json['id'].toString();
   }
   Plan? _plan;
   String? _id;

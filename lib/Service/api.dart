@@ -26,6 +26,7 @@ import '../models/packageModel.dart';
 import '../models/shipmentModel.dart';
 import '../models/shipmentstatus_model.dart';
 import '../models/uploadImageModel.dart';
+import '../operator_models/operator_settings.dart';
 
 var operatorController = Get.put(OperatorController());
 var signController = Get.put(SignupController());
@@ -130,7 +131,6 @@ Future<void> changePassword(
 
 Future<CustomerMailModel?> getCustomerApi() async {
   var userID = SharedPrefs.getString('cID');
-  var token = SharedPrefs.getString('Token');
 
   final url = Uri.parse(
       'https://service.24x7mail.com/assign?request_comple%E2%80%A6&user_id=$userID&page=1&limit=10');
@@ -172,7 +172,6 @@ Future<StatementModell?> getStatementApi() async {
 
 Future<UserModel?> getProfileApi() async {
   try {
-    var userID = SharedPrefs.getString('cID');
     var token = SharedPrefs.getString('Token');
     log('profileURl ${ApiURl.getProfileApi}');
     final response = await http.get(
@@ -200,7 +199,6 @@ Future<UserModel?> getProfileApi() async {
 
 Future<void> uploadImage() async {
   try {
-    var userID = SharedPrefs.getString('cID');
     var token = SharedPrefs.getString('Token');
 
     final response = await http.post(
@@ -376,9 +374,7 @@ Future<void> postOperatorRejectApi(String uId) async {
 Future<void> deleteOperator() async {
   try {
     final response = await http.delete(Uri.parse(ApiURl.deleteOperatorApi));
-    if (response.statusCode == 200) {
-      var deleteResponse = jsonDecode(response.body);
-    }
+    if (response.statusCode == 200) {}
   } catch (e) {
     log('manage $e');
   }
@@ -421,17 +417,6 @@ Future<ShipmentModel?> getSTatedata() async {
       log('json Response of GetState==> ${stateModel}');
 
       return stateModel;
-
-      log('stateModel ${stateModel.data}');
-      return stateModel;
-
-      /*final List<dynamic> cityData = jsonDecode(response.body);
-
-      List<String> cityList = cityData.map((city) {
-        return city['name'].toString();
-      }).toList();
-      log('cityList==> $cityList');
-      return cityList;*/
     } else {
       throw Exception('Failed to load city list');
     }
@@ -468,7 +453,6 @@ Future<List<String>> fetchCityList() async {
 
 Future<PackageModel?> subscriptionApi() async {
   try {
-    var userID = SharedPrefs.getString('cID');
     var token = SharedPrefs.getString('Token');
 
     final response = await http.get(
@@ -519,7 +503,6 @@ Future<CustomerMailModel> getReadList(bool isRead) async {
       'https://service.24x7mail.com/assign?&search=&fromDate=&toDate=&user_id=$userID&page=1&limit=10&read=$isRead';
   final response = await http.get(
     Uri.parse(url),
-    // 'https://service.24x7mail.com/assign?request_completed=true&search=&from_date=$fromDate&to_date=$toDate&user_id=$userID&page=1&limit=10&read=$readValue'),
     headers: {
       'Authorization': token,
     },
@@ -666,7 +649,6 @@ Future<ShipmentModel?> getShipiingList() async {
 ///scan request patch
 Future<void> scanRequestPatchApi(String scanRequest) async {
   try {
-    var userID = SharedPrefs.getString('cID');
     var token = SharedPrefs.getString('Token');
 //scan-request
     final Map<String, dynamic> payload = {
@@ -748,6 +730,7 @@ Future<UploadImageModel?> uploadUspsFile(File file, String userId) async {
 
 ///OpertorApi Data
 ///https://service.24x7mail.com/user/customer-list-by-feature/667c046a9503bee4ce480c04?search=&page=1&limit=10
+///https://service.24x7mail.com/operator/single?id=667c03b54f19c733a01bcb9c
 Future<OperatorHomeModel?> getOperatorRequestApi() async {
   var token = SharedPrefs.getString('Token');
 
@@ -783,7 +766,6 @@ Future<UploadImageModel?> operatorCustomerList() async {
       'Authorization': token,
     },
   );
-  log('upload by customer response===> ${response.body}');
 
   if (response.statusCode == 200 || response.statusCode == 201) {
     var operatorNewData = UploadImageModel.fromJson(jsonDecode(response.body));
@@ -794,4 +776,43 @@ Future<UploadImageModel?> operatorCustomerList() async {
     Get.snackbar("Error", "Failed to requestMail: ${response..statusCode}");
   }
   return UploadImageModel();
+}
+
+Future<OperatorAddModel?> getOperatorSettingApi() async {
+  var token = SharedPrefs.getString('Token');
+
+  final response = await http.get(
+    Uri.parse(
+        'https://service.24x7mail.com/operator/single?id=667c03b54f19c733a01bcb9c'),
+    headers: {
+      'Authorization': token,
+    },
+  );
+  if (response.statusCode == 200 || response.statusCode == 201) {
+    var OperatorData = OperatorAddModel.fromJson(jsonDecode(response.body));
+
+    log('Operator setting with model=> ${OperatorData.msg}');
+    return OperatorData;
+  } else {
+    Get.snackbar("Error",
+        "Failed to submit operator setting View: ${response..statusCode}");
+  }
+  return OperatorAddModel();
+}
+
+Future<void> operatorChangePassword() async {
+  var token = SharedPrefs.getString('Token');
+  final url = Uri.parse('https://api.24x7mail.com/user/change-password');
+
+  final response = await http.post(url,
+      headers: {'Authorization': token},
+      body: {"currentPassword": "1234", "newPassword": "1234"});
+
+  if (response.statusCode == 200 || response.statusCode == 201) {
+    var forgetPassword = jsonDecode(response.body);
+    Get.snackbar(' Operator password ${forgetPassword['msg']}', '');
+    return forgetPassword;
+  } else {
+    log('Failed to change password: ${response.statusCode}');
+  }
 }

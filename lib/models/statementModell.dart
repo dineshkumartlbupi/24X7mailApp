@@ -31,7 +31,7 @@ class Data {
   String? id;
   String? userId;
   PlanId? planId;
-  dynamic planDetail; // Note: planDetail can be String or Map
+  dynamic planDetail;
   String? amount;
   String? paymentMode;
   String? description;
