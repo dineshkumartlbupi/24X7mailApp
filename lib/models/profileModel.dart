@@ -103,7 +103,7 @@ class UserData {
     lname = json['lname'];
     username = json['username'];
     email = json['email'];
-    phone = json['phone'].toString();
+    phone = json['phone'] as String;
     userType = json['user_type'];
     businessName = json['business_name'];
     userStatus = json['user_status'];

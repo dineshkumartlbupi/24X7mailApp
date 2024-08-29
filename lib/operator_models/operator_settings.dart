@@ -424,7 +424,6 @@ class Location {
   }
 }
 
-// Viewport model class
 class Viewport {
   final Location? south;
   final Location? west;

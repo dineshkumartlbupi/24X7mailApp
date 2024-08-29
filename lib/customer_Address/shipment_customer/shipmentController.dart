@@ -32,11 +32,17 @@ class ShipmentController extends GetxController {
   @override
   void onInit() {
     getshipmentData();
+
     super.onInit();
   }
 
   void setStates(List<String> stateNames) {
     states.addAll(stateNames);
+    update();
+  }
+
+  void setStatesCities(List<String> cityName) {
+    cities.addAll(cityName);
     update();
   }
 

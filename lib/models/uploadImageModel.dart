@@ -101,7 +101,7 @@ class Data {
 
   Data.fromJson(dynamic json) {
     _plan = json['plan'] != null ? Plan.fromJson(json['plan']) : null;
-    _id = json['_id'];
+    _id = json['_id'].toString();
     _accountType = json['accountType'];
     _mailBoxNum = json['mail_box_num'];
     _fname = json['fname'];

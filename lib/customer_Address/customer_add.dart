@@ -31,7 +31,7 @@ class CustomerAdd extends StatelessWidget {
                   } else if (newValue == 'Address Book') {
                     await getViewState();
 
-                    //await fetchCityList();
+                    await fetchCityList();
                     Get.to(() => AddressBook());
                   }
                 },

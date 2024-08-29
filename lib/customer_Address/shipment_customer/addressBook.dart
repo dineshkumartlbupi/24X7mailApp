@@ -148,9 +148,8 @@ class AddressBook extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Shipment Name
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    padding: EdgeInsets.symmetric(vertical: 8.0),
                     child: TextField(
                       controller: shipmentData.nameController,
                       decoration: InputDecoration(
@@ -247,7 +246,6 @@ class AddressBook extends StatelessWidget {
                     ),
                   ),
 
-                  // City Dropdown
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Obx(
@@ -259,6 +257,7 @@ class AddressBook extends StatelessWidget {
                           shipmentData.selectedCity.value = newValue;
                         },
                         items: shipmentData.cities
+                            .toSet()
                             .map<DropdownMenuItem<String>>((city) {
                           return DropdownMenuItem<String>(
                             value: city,
@@ -304,7 +303,7 @@ class AddressBook extends StatelessWidget {
       ),
       actions: [
         TextButton(
-          child: Text('Cancel'),
+          child: GlobalText('Cancel'),
           onPressed: () {
             Get.back();
           },

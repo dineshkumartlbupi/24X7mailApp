@@ -9,7 +9,9 @@ import '../Utils/SharedPrefrance.dart';
 import '../Utils/globalText.dart';
 import '../operator_settings/operator_setting_View.dart';
 import 'OperatorDrawer.dart';
+import 'custmerView_operator.dart';
 import 'operatorController.dart';
+import 'operator_report/operator_reports.dart';
 
 class OperatorRequestHome extends StatelessWidget {
   OperatorRequestHome({super.key});
@@ -43,7 +45,9 @@ class OperatorRequestHome extends StatelessWidget {
                     if (userType['value'] == 'settings') {
                       Get.to(() => OperatorSettingView());
                     } else if (userType['value'] == 'Customers') {
+                      Get.to(() => OperatorCustomerView());
                     } else if (userType['value'] == 'Reports') {
+                      Get.to(() => const OperatorReports());
                     } else if (userType['value'] == 'logout') {
                       SharedPrefs.remove('Token');
 

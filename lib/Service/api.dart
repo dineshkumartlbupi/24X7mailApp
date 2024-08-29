@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:twentyfourby_seven/Operator/operatorController.dart';
+import 'package:twentyfourby_seven/Operator/operator_requestHome.dart';
 import 'package:twentyfourby_seven/Service/constant.dart';
 import 'package:twentyfourby_seven/SignUp/signUpController.dart';
 import 'package:twentyfourby_seven/Utils/SharedPrefrance.dart';
@@ -16,8 +17,6 @@ import 'package:twentyfourby_seven/models/customerMailModel.dart';
 import 'package:twentyfourby_seven/models/profileModel.dart';
 import 'package:twentyfourby_seven/models/statementModell.dart';
 
-import '../Customer/customerView.dart';
-import '../Operator/operator_requestHome.dart';
 import '../Utils/Mycolor.dart';
 import '../Utils/globalText.dart';
 import '../customer_Address/customer_AddController.dart';
@@ -57,20 +56,19 @@ void showLoginErrorDialog(String mes) {
 
 Future<UserModel?> login(String email, String password) async {
   final url = Uri.parse(ApiURl.userLoginUrl);
-  final headers = <String, String>{
-    'Content-Type': 'application/json',
-  };
-  final body = jsonEncode({
+
+  final body = {
     'email': email,
     'password': password,
-  });
+  };
 
   try {
-    final response = await http.post(url, headers: headers, body: body);
-    log('response without model ${response.body}');
+    final response = await http.post(url, body: body);
     if (response.statusCode == 200 || response.statusCode == 201) {
       final loginResponse = UserModel.fromJson(jsonDecode(response.body));
-      log('login response ${loginResponse.data?.userType}');
+      log('login response ${loginResponse.data?.userType.runtimeType}');
+      log('response withs model ${response.body}');
+
       if (loginResponse.token != null && loginResponse.data != null) {
         SharedPrefs.putString('emailId', loginResponse.data?.email ?? '');
         SharedPrefs.putString('password', loginResponse.data?.password ?? '');
@@ -79,25 +77,20 @@ Future<UserModel?> login(String email, String password) async {
         SharedPrefs.putString('firstNAme', loginResponse.data?.fname ?? '');
         SharedPrefs.putString('lastNAme', loginResponse.data?.lname ?? '');
 
-        if (loginResponse.data?.userType.toString() == 'operator') {
-          //if (loginResponse.data?.userType.toString() == 'user') {
-          Get.offAll(() => CustomerView());
-        } else if (loginResponse.data?.userType.toString() == 'user') {
-          // } else if (loginResponse.data?.userType.toString() == 'operator') {
+        if (loginResponse.data?.userType == 'user') {
+          //Get.offAll(() => CustomerView());
           Get.offAll(() => OperatorRequestHome());
+        } else if (loginResponse.data?.userType == 'operator') {
+          // Get.offAll(() => OperatorRequestHome());
         } else {
           Get.snackbar('Error', 'Invalid user type');
         }
         return loginResponse;
       } else {
         log('Invalid response data');
-        showLoginErrorDialog(loginResponse.msg.toString() ?? "");
+        showLoginErrorDialog(loginResponse.msg.toString());
         return null;
       }
-    } else {
-      log('Failed to login: ${response.statusCode}');
-      showLoginErrorDialog(response.statusCode.toString());
-      return null;
     }
   } catch (e) {
     log('Error: $e');
@@ -146,8 +139,9 @@ Future<CustomerMailModel?> getCustomerApi() async {
       throw Exception('Failed to load data');
     }
   } catch (e) {
-    print('Error: $e');
+    log('Error: $e');
   } finally {}
+  return null;
 }
 
 Future<StatementModell?> getStatementApi() async {
@@ -165,7 +159,7 @@ Future<StatementModell?> getStatementApi() async {
       throw Exception('Failed to load data');
     }
   } catch (e) {
-    print('Error: $e');
+    log('Error: $e');
   } finally {}
   return StatementModell();
 }
@@ -192,7 +186,7 @@ Future<UserModel?> getProfileApi() async {
       throw Exception('Failed to load data');
     }
   } catch (e) {
-    print('Error: $e');
+    log('Error: $e');
   } finally {}
   return UserModel();
 }
@@ -218,7 +212,7 @@ Future<void> uploadImage() async {
       throw Exception('Failed to load data');
     }
   } catch (e) {
-    print('Error: $e');
+    log('Error: $e');
   } finally {}
 }
 
@@ -244,7 +238,7 @@ Future<void> getShipment() async {
       throw Exception('Failed to load data');
     }
   } catch (e) {
-    print('Error: $e');
+    log('Error: $e');
   } finally {}
 }
 
@@ -389,13 +383,11 @@ Future<void> getViewState() async {
       final List<String> stateNames =
           stateData.map((state) => state['name'] as String).toList();
 
-      final List<Map<String, String>> statDetails = stateData.map((state) {
-        return {
-          'name': state['name'] as String,
-          'state_id': state['state_id'] as String,
-        };
-      }).toList();
-      log('stateDetails==> $statDetails');
+      final List<String> stateIds =
+          stateData.map((state) => state['state_id'] as String).toList();
+
+      log('stateDetails==> $stateNames');
+      //log('stateIds==> $stateIds');
       signController.setStates(stateNames);
       customerAddCtrl.setStates(stateNames);
     } else {
@@ -426,28 +418,26 @@ Future<ShipmentModel?> getSTatedata() async {
   }
 }
 
-Future<List<String>> fetchCityList() async {
+Future<void> fetchCityList() async {
 //Future<List<String>> fetchCityList(int stateId) async {
-  final String apiUrl = 'https://service.24x7mail.com/city/1400';
+  const String apiUrl = 'https://service.24x7mail.com/city/1400';
 
   try {
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      log(response.body);
-      final List<dynamic> cityData = jsonDecode(response.body);
-
+      final Map<String, dynamic> parsedCityJson = json.decode(response.body);
+      final List<dynamic> cityData = parsedCityJson['data'];
       List<String> cityList = cityData.map((city) {
         return city['name'].toString();
       }).toList();
-      log('cityList==> $cityList');
-      return cityList;
+
+      customerAddCtrl.setStatesCities(cityList);
     } else {
       throw Exception('Failed to load city list');
     }
   } catch (e) {
     log('Error: $e');
-    return [];
   }
 }
 
@@ -574,9 +564,9 @@ Future<void> uploadUspsData(Map<String, dynamic> updates) async {
   );
 
   if (response.statusCode == 200) {
-    print('Success: ${response.body}');
+    log('Success: ${response.body}');
   } else {
-    print('Error: ${response.statusCode} ${response.body}');
+    log('Error: ${response.statusCode} ${response.body}');
   }
 }
 
@@ -589,7 +579,7 @@ void submitShippingAddress() async {
     "name": customerAddCtrl.nameController.text,
     "company": customerAddCtrl.companyController.text,
     "address1": customerAddCtrl.addLineOneController.text,
-    "address2": customerAddCtrl.addLineTwoController.text ?? '',
+    "address2": customerAddCtrl.addLineTwoController.text,
     "country": {"country_id": "233", "name": "United States"},
     "state": {"country_id": "233", "state_id": 1456, "name": "Alabama"},
     "city": {"state_id": 1456, "city_id": 111146, "name": "Alexander City"},
@@ -609,7 +599,6 @@ void submitShippingAddress() async {
     );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      log('Shipment added successfully: ${response.body}');
       Get.snackbar("Success", "Shipping address submitted successfully!");
     } else {
       Get.snackbar(
@@ -666,7 +655,7 @@ Future<void> scanRequestPatchApi(String scanRequest) async {
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       final patchResponse = jsonDecode(response.body);
-
+      Get.snackbar(' Operator password ${patchResponse['msg']}', '');
       return patchResponse;
     } else {
       log('Failed to load patchRequest: ${response.reasonPhrase}');
@@ -712,7 +701,7 @@ Future<UploadImageModel?> uploadUspsFile(File file, String userId) async {
       throw Exception('Failed to upload file: ${responseBody.reasonPhrase}');
     }
   } catch (e) {
-    print('Error: $e');
+    log('Error: $e');
     return null;
   }
 }
@@ -733,6 +722,7 @@ Future<UploadImageModel?> uploadUspsFile(File file, String userId) async {
 ///https://service.24x7mail.com/operator/single?id=667c03b54f19c733a01bcb9c
 Future<OperatorHomeModel?> getOperatorRequestApi() async {
   var token = SharedPrefs.getString('Token');
+  var userID = SharedPrefs.getString('cID');
 
   final response = await http.get(
     // Uri.parse('${ApiURl.operatorHomeApi}+${'667c03b54f19c733a01bcb9c'}'),
@@ -789,10 +779,10 @@ Future<OperatorAddModel?> getOperatorSettingApi() async {
     },
   );
   if (response.statusCode == 200 || response.statusCode == 201) {
-    var OperatorData = OperatorAddModel.fromJson(jsonDecode(response.body));
+    var operatorData = OperatorAddModel.fromJson(jsonDecode(response.body));
 
-    log('Operator setting with model=> ${OperatorData.msg}');
-    return OperatorData;
+    log('Operator setting with model=> ${operatorData.msg}');
+    return operatorData;
   } else {
     Get.snackbar("Error",
         "Failed to submit operator setting View: ${response..statusCode}");
@@ -806,7 +796,7 @@ Future<void> operatorChangePassword() async {
 
   final response = await http.post(url,
       headers: {'Authorization': token},
-      body: {"currentPassword": "1234", "newPassword": "1234"});
+      body: jsonEncode({"currentPassword": "1234", "newPassword": "1234"}));
 
   if (response.statusCode == 200 || response.statusCode == 201) {
     var forgetPassword = jsonDecode(response.body);
@@ -815,4 +805,108 @@ Future<void> operatorChangePassword() async {
   } else {
     log('Failed to change password: ${response.statusCode}');
   }
+}
+
+Future<void> updateOperatorProfile(
+  String fname,
+  String lName,
+  String bName,
+  String buAdd,
+  String phoneN,
+  String zipNumber,
+) async {
+  const String baseUrl = 'https://service.24x7mail.com/operator/profile-update';
+  var token = SharedPrefs.getString('Token');
+
+  var body = {
+    "f_name": fname,
+    "l_name": lName,
+    "business_name": bName,
+    "business_address": buAdd,
+    "phone": phoneN,
+    "zip_code": zipNumber,
+  };
+
+  try {
+    var response = await http.patch(
+      Uri.parse(baseUrl),
+      headers: {
+        'Authorization': token,
+      },
+      body: body,
+    );
+
+    log('Response: ${response.body}');
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      log('Profile updated successfully: ${response.body}');
+      Get.snackbar('Success', 'Profile updated successfully');
+    } else {
+      log('Failed to update profile: ${response.statusCode} - ${response.body}');
+      Get.snackbar('Error', 'Failed to update profile: ${response.statusCode}');
+    }
+  } catch (e) {
+    log('Error updating profile: $e');
+    Get.snackbar('Error', 'An error occurred: $e');
+  }
+}
+
+Future<void> addRange() async {
+  const String baseUrl = 'https://service.24x7mail.com/operator/add-range';
+
+  ///view status get Api  https://service.24x7mail.com/operator/single?id=667c04004f19c733a01bcba3
+
+  var token = SharedPrefs.getString('Token');
+
+  var body = {
+    "id": "667c04004f19c733a01bcba3",
+    "range": {"from": 4, "to": 6}
+  };
+
+  try {
+    var response = await http.post(
+      Uri.parse(baseUrl),
+      headers: {
+        'Authorization': token,
+      },
+      body: jsonEncode(body),
+    );
+
+    log('Response status: ${response.statusCode}');
+    log('Response body: ${response.body}');
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      log('Range added successfully: ${response.body}');
+      Get.snackbar('Success', 'Range added successfully');
+    } else {
+      log('Failed to add range: ${response.statusCode}');
+      Get.snackbar('Error', 'Failed to add range: ${response.statusCode}');
+    }
+  } catch (e) {
+    log('Error adding range: $e');
+    Get.snackbar('Error', 'An error occurred: $e');
+  }
+}
+
+//https://service.24x7mail.com/operator/customer-operation/667c03b54f19c733a01bcb9c?limit=10&page_no=1
+Future<OperatorAddModel?> getOperatorReportOperationApi() async {
+  var token = SharedPrefs.getString('Token');
+
+  final response = await http.get(
+    Uri.parse(
+        'https://service.24x7mail.com/operator/customer-operation/667c03b54f19c733a01bcb9c?limit=10&page_no=1'),
+    headers: {
+      'Authorization': token,
+    },
+  );
+  if (response.statusCode == 200 || response.statusCode == 201) {
+    var operatorData = OperatorAddModel.fromJson(jsonDecode(response.body));
+
+    log('Operator report with model=> ${operatorData.msg}');
+    return operatorData;
+  } else {
+    Get.snackbar("Error",
+        "Failed to submit operator setting View: ${response..statusCode}");
+  }
+  return OperatorAddModel();
 }
