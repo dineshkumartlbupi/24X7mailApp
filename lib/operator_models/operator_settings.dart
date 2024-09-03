@@ -345,7 +345,6 @@ class LocationAddress {
   }
 }
 
-// AddressComponent model class
 class AddressComponent {
   final String? longName;
   final String? shortName;

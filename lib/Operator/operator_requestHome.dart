@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:twentyfourby_seven/Utils/Mycolor.dart';
@@ -41,13 +39,12 @@ class OperatorRequestHome extends StatelessWidget {
                 return PopupMenuItem<String>(
                   value: userType['value'],
                   onTap: () {
-                    log('value ${userType['value']}');
                     if (userType['value'] == 'settings') {
                       Get.to(() => OperatorSettingView());
                     } else if (userType['value'] == 'Customers') {
                       Get.to(() => OperatorCustomerView());
                     } else if (userType['value'] == 'Reports') {
-                      Get.to(() => const OperatorReports());
+                      Get.to(() => OperatorReports());
                     } else if (userType['value'] == 'logout') {
                       SharedPrefs.remove('Token');
 

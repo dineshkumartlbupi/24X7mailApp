@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:twentyfourby_seven/Operator/operatorController.dart';
-import 'package:twentyfourby_seven/Operator/operator_requestHome.dart';
 import 'package:twentyfourby_seven/Service/constant.dart';
 import 'package:twentyfourby_seven/SignUp/signUpController.dart';
 import 'package:twentyfourby_seven/Utils/SharedPrefrance.dart';
@@ -17,6 +16,7 @@ import 'package:twentyfourby_seven/models/customerMailModel.dart';
 import 'package:twentyfourby_seven/models/profileModel.dart';
 import 'package:twentyfourby_seven/models/statementModell.dart';
 
+import '../Operator/operator_requestHome.dart';
 import '../Utils/Mycolor.dart';
 import '../Utils/globalText.dart';
 import '../customer_Address/customer_AddController.dart';
@@ -25,7 +25,13 @@ import '../models/packageModel.dart';
 import '../models/shipmentModel.dart';
 import '../models/shipmentstatus_model.dart';
 import '../models/uploadImageModel.dart';
+import '../operator_models/AssignMailModel.dart';
+import '../operator_models/closeAccountModel.dart';
+import '../operator_models/mailManagementModelOP.dart';
+import '../operator_models/operationModel.dart';
+import '../operator_models/operatorOperationModel.dart';
 import '../operator_models/operator_settings.dart';
+import '../operator_models/statementReportModel.dart';
 
 var operatorController = Get.put(OperatorController());
 var signController = Get.put(SignupController());
@@ -76,9 +82,9 @@ Future<UserModel?> login(String email, String password) async {
         SharedPrefs.putString('cID', loginResponse.data?.id ?? '');
         SharedPrefs.putString('firstNAme', loginResponse.data?.fname ?? '');
         SharedPrefs.putString('lastNAme', loginResponse.data?.lname ?? '');
-
+        //Get.offAll(() => CustomerView());
         if (loginResponse.data?.userType == 'user') {
-          //Get.offAll(() => CustomerView());
+          // Get.offAll(() => CustomerView());
           Get.offAll(() => OperatorRequestHome());
         } else if (loginResponse.data?.userType == 'operator') {
           // Get.offAll(() => OperatorRequestHome());
@@ -748,24 +754,39 @@ Future<OperatorHomeModel?> getOperatorRequestApi() async {
 
 Future<UploadImageModel?> operatorCustomerList() async {
   var token = SharedPrefs.getString('Token');
+  try {
+    final response = await http.get(
+      Uri.parse(
+          'https://service.24x7mail.com/user/customer-list-by-feature/667c046a9503bee4ce480c04?search=&page=1&limit=10'),
+      headers: {
+        'Authorization': token ?? '', // Use the token for Authorization
+      },
+    );
 
-  final response = await http.get(
-    Uri.parse(
-        'https://service.24x7mail.com/user/customer-list-by-feature/667c046a9503bee4ce480c04?search=&page=1&limit=10'),
-    headers: {
-      'Authorization': token,
-    },
-  );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      // Parse the JSON response
+      final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
 
-  if (response.statusCode == 200 || response.statusCode == 201) {
-    var operatorNewData = UploadImageModel.fromJson(jsonDecode(response.body));
-    log('upload by customer response===>=> ${operatorNewData.data}');
+      // Log the raw JSON response
+      log('jsonResponse: $jsonResponse');
 
-    return operatorNewData;
-  } else {
-    Get.snackbar("Error", "Failed to requestMail: ${response..statusCode}");
+      // Convert JSON response to UploadImageModel
+      var modelParsed = UploadImageModel.fromJson(jsonResponse);
+
+      // Log the parsed model data
+      log('Parsed UploadImageModel: ${modelParsed.msg} items found.');
+
+      return modelParsed;
+    } else {
+      // Handle HTTP errors
+      log('Failed to load customer list: ${response.statusCode}');
+      return null;
+    }
+  } catch (e) {
+    // Handle exceptions
+    log('Exception occurred: $e');
+    return null;
   }
-  return UploadImageModel();
 }
 
 Future<OperatorAddModel?> getOperatorSettingApi() async {
@@ -888,7 +909,6 @@ Future<void> addRange() async {
   }
 }
 
-//https://service.24x7mail.com/operator/customer-operation/667c03b54f19c733a01bcb9c?limit=10&page_no=1
 Future<OperatorAddModel?> getOperatorReportOperationApi() async {
   var token = SharedPrefs.getString('Token');
 
@@ -909,4 +929,184 @@ Future<OperatorAddModel?> getOperatorReportOperationApi() async {
         "Failed to submit operator setting View: ${response..statusCode}");
   }
   return OperatorAddModel();
+}
+
+Future<OperationModel?> getOperatorReportCustomerApi() async {
+  var token = SharedPrefs.getString('Token');
+  var userID = SharedPrefs.getString('cID');
+
+  final response = await http.get(
+    Uri.parse(
+        'https://service.24x7mail.com/operator/customer-operation/667c03b54f19c733a01bcb9c?limit=10&page_no=1'),
+    headers: {
+      'Authorization': token,
+    },
+  );
+  log('operatorHome ${response.body}');
+
+  if (response.statusCode == 200 || response.statusCode == 201) {
+    var OperatorData = OperationModel.fromJson(jsonDecode(response.body));
+
+    log('operatorHomeList=> $OperatorData');
+    return OperatorData;
+  } else {
+    Get.snackbar(
+        "Error", "Failed to submit operator Request: ${response..statusCode}");
+  }
+  return OperationModel();
+}
+
+Future<OperatorOperationModel?> getOperatorReportOperationHOmeApi() async {
+  var token = SharedPrefs.getString('Token');
+  var userID = SharedPrefs.getString('cID');
+
+  final response = await http.get(
+    Uri.parse(
+        'https://service.24x7mail.com/operator/operator-operation/667c03b54f19c733a01bcb9c'),
+    headers: {
+      'Authorization': token,
+    },
+  );
+  log('operatorHome ${response.body}');
+
+  if (response.statusCode == 200 || response.statusCode == 201) {
+    var OperatorData =
+        OperatorOperationModel.fromJson(jsonDecode(response.body));
+
+    log('operatorOperation=> $OperatorData');
+    return OperatorData;
+  } else {
+    Get.snackbar(
+        "Error", "Failed to submit operator Request: ${response..statusCode}");
+  }
+  return OperatorOperationModel();
+}
+
+Future<StatementReportModel?> statementReport() async {
+  var token = SharedPrefs.getString('Token');
+  var userID = SharedPrefs.getString('cID');
+
+  final response = await http.get(
+    Uri.parse(
+        'https://service.24x7mail.com/monthly-report/get-report/667c03b54f19c733a01bcb9c'),
+    headers: {
+      'Authorization': token,
+    },
+  );
+  log('operatorHome ${response.body}');
+
+  if (response.statusCode == 200 || response.statusCode == 201) {
+    var OperatorData = StatementReportModel.fromJson(jsonDecode(response.body));
+
+    log('sttementReport=> $OperatorData');
+    return OperatorData;
+  } else {
+    Get.snackbar(
+        "Error", "Failed to submit operator Request: ${response..statusCode}");
+  }
+  return StatementReportModel();
+}
+
+Future<CloseAccountModel?> getDeleteCustomerList() async {
+  var token = SharedPrefs.getString('Token');
+  var userID = SharedPrefs.getString('cID');
+
+  final response = await http.get(
+    Uri.parse(
+        'https://service.24x7mail.com/operator/delete-customer-list/667c03b54f19c733a01bcb9c'),
+    headers: {
+      'Authorization': token,
+    },
+  );
+  log('deleteCustomer ${response.body}');
+
+  if (response.statusCode == 200 || response.statusCode == 201) {
+    var OperatorData = CloseAccountModel.fromJson(jsonDecode(response.body));
+
+    log('deleteCustomerList=> $OperatorData');
+    return OperatorData;
+  } else {
+    Get.snackbar(
+        "Error", "Failed to submit operator Request: ${response..statusCode}");
+  }
+  return CloseAccountModel();
+}
+
+Future<AssignMailModel?> getAssignMailPending(String mailStatus) async {
+  var token = SharedPrefs.getString('Token');
+  var userID = SharedPrefs.getString('cID');
+  final response = await http.get(
+    Uri.parse(
+        'https://service.24x7mail.com/mails?operator=667c03b54f19c733a01bcb9c&mail_status=$mailStatus&page=1&limit=9'),
+    headers: {
+      'Authorization': token,
+    },
+  );
+  log('assignPending ${response.body}');
+
+  if (response.statusCode == 200 || response.statusCode == 201) {
+    var assignPending = AssignMailModel.fromJson(jsonDecode(response.body));
+
+    log('deleteCustomerList=> $assignPending');
+    return assignPending;
+  } else {
+    Get.snackbar(
+        "Error", "Failed to submit assign Pending: ${response..statusCode}");
+  }
+  return AssignMailModel();
+}
+
+//https://service.24x7mail.com/assign?operator=667c03b54f19c733a01bcb9c&current_status=shipment_complete&search=&fromDate=&toDate=&page=1&limit=100
+Future<MailManagementModelOp?> mailManagementOp() async {
+  var token = SharedPrefs.getString('Token');
+  var userID = SharedPrefs.getString('cID');
+  final response = await http.get(
+    Uri.parse(
+        'https://service.24x7mail.com/assign?operator=667c03b54f19c733a01bcb9c&current_status=shipment_complete&search=&fromDate=&toDate=&page=1&limit=100'),
+    headers: {
+      'Authorization': token,
+    },
+  );
+  log('MailManagementModelOp ${response.body}');
+
+  if (response.statusCode == 200 || response.statusCode == 201) {
+    var mailManagementModelOpData =
+        MailManagementModelOp.fromJson(jsonDecode(response.body));
+
+    log('MailManagementModelOp=> $mailManagementModelOpData');
+    return mailManagementModelOpData;
+  } else {
+    Get.snackbar(
+        "Error", "Failed to submit assign Pending: ${response..statusCode}");
+  }
+  return MailManagementModelOp();
+}
+//https://service.24x7mail.com/mails?mail_id=operator@gmail.com
+
+Future<void> searchMail(String mailId) async {
+  String baseUrl = 'https://service.24x7mail.com/mails?mail_id=$mailId';
+
+  var token = SharedPrefs.getString('Token');
+
+  try {
+    var response = await http.get(
+      Uri.parse(baseUrl),
+      headers: {
+        'Authorization': token,
+      },
+    );
+
+    log('Search mail: ${response.body}');
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      log('mail successfully: ${response.body}');
+      Get.snackbar('Success', 'Range added successfully');
+    } else {
+      log('Failed to search mail: ${response.statusCode}');
+      Get.snackbar('Error', 'Failed to search mail: ${response.statusCode}');
+    }
+  } catch (e) {
+    log('Error adding range: $e');
+    Get.snackbar('Error', 'An error occurred: $e');
+  }
 }

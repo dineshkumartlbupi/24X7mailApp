@@ -7,11 +7,14 @@ import 'package:twentyfourby_seven/models/OperatorModel.dart';
 import '../Service/api.dart';
 import '../models/operatorHomeModel.dart';
 import '../models/uploadImageModel.dart';
+import '../operator_models/AssignMailModel.dart';
 
 class OperatorController extends GetxController {
   Rx<OperatorModel> operatorView = OperatorModel().obs;
   Rx<OperatorHomeModel> operatorHome = OperatorHomeModel().obs;
   Rx<UploadImageModel> customerList = UploadImageModel().obs;
+  Rx<AssignMailModel> assignList = AssignMailModel().obs;
+  Rx<AssignMailModel> flaggedAssignList = AssignMailModel().obs;
   var selectedValue = 'All'.obs;
   String? _selectedCountry;
   List<dynamic> countries = [].obs;
@@ -54,6 +57,16 @@ class OperatorController extends GetxController {
 
   Future<void> getCustomerList() async {
     customerList.value = await operatorCustomerList() ?? customerList.value;
+  }
+
+  Future<void> getAssignMailPendingData() async {
+    assignList.value =
+        await getAssignMailPending('pending') ?? assignList.value;
+  }
+
+  Future<void> getAssignMailFlaggedData() async {
+    flaggedAssignList.value =
+        await getAssignMailPending('flagged') ?? flaggedAssignList.value;
   }
 
   void showAddOperatorDialog(BuildContext context) {
@@ -196,6 +209,8 @@ class OperatorController extends GetxController {
     getOperatorList();
     getOperatorHome();
     getCustomerList();
+    getAssignMailPendingData();
+    getAssignMailFlaggedData();
     super.onInit();
   }
 }
