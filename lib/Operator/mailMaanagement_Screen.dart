@@ -277,7 +277,7 @@ class MailManagementScreen extends StatelessWidget {
                         ],
                       ),
                       SizedBox(height: 16.0),
-                      Center(
+                      const Center(
                         child: Column(
                           children: [
                             GlobalText(

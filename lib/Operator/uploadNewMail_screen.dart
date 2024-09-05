@@ -31,9 +31,7 @@ class UploadNewMailScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            // Bulk Upload Tab
             _buildBulkUploadTab(),
-
             _buildUploadByCustomerTab(),
           ],
         ),
@@ -125,10 +123,8 @@ class UploadNewMailScreen extends StatelessWidget {
                                             child: IconButton(
                                               icon: const Icon(Icons.close,
                                                   color: Colors.red),
-                                              onPressed: () {
-                                                mailController
-                                                    .removeImage(file);
-                                              },
+                                              onPressed: () => mailController
+                                                  .removeImage(file),
                                             ),
                                           ),
                                         ],
@@ -137,10 +133,9 @@ class UploadNewMailScreen extends StatelessWidget {
                                   );
                                 }),
                           const SizedBox(height: 10),
-                          const Text(
+                          const GlobalText(
                             'Drag & Drop background image(s) \nor',
                             textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 14),
                           ),
                           const SizedBox(height: 10),
                           ElevatedButton(
@@ -155,9 +150,7 @@ class UploadNewMailScreen extends StatelessWidget {
                   ),
                   SizedBox(height: Get.height * 0.02),
                   ElevatedButton(
-                    onPressed: () {
-                      // Handle Upload Action
-                    },
+                    onPressed: () {},
                     child: const GlobalText(
                       'Upload',
                       color: MyColor.cardIColorIndigo,

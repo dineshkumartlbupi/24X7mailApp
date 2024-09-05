@@ -14,6 +14,7 @@ class traceList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.blueAccent,
           title: const GlobalText(
             'Trace List',
             fontWeight: FontWeight.bold,

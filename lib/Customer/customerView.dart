@@ -11,6 +11,7 @@ import 'package:twentyfourby_seven/customer_Address/customer_add.dart';
 
 import '../Login/loginScreen.dart';
 import '../Service/api.dart';
+import '../Utils/addImage.dart';
 import '../Utils/commonDialog.dart';
 import '../models/customerMailModel.dart';
 import 'customerController.dart';
@@ -34,11 +35,13 @@ class CustomerView extends StatelessWidget {
         return true;
       },
       child: Scaffold(
+        backgroundColor: Colors.grey.shade200,
         drawer: Drawer(
           child: CustomerDrawer(),
         ),
         appBar: AppBar(
-          backgroundColor: MyColor.yellowGold,
+          backgroundColor: Colors.blueAccent,
+          elevation: 4,
           actions: [
             PopupMenuButton<String>(
               onSelected: (String newValue) {
@@ -76,8 +79,71 @@ class CustomerView extends StatelessWidget {
               },
               child: Row(
                 children: [
-                  GlobalText('$firstName $lastName'),
+                  GlobalText(
+                    '$firstName $lastName',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
                   const Icon(Icons.manage_accounts),
+                  SizedBox(
+                    width: Get.width * 0.02,
+                  ),
+                  CircleAvatar(
+                    child: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        Get.defaultDialog(
+                          title: "Delete Account",
+                          middleText:
+                              "Are you sure you want to delete the account?",
+                          titleStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                          middleTextStyle: TextStyle(
+                            fontSize: 16,
+                          ),
+                          backgroundColor: Colors.white,
+                          radius: 10,
+                          contentPadding: EdgeInsets.all(20),
+                          barrierDismissible: false,
+                          confirm: ElevatedButton.icon(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            icon: const Icon(Icons.delete, color: Colors.white),
+                            label:
+                                const GlobalText("Delete", color: Colors.white),
+                            onPressed: () async {
+                              await deleteAccountCustomer();
+
+                              Get.back();
+                              Get.to(LoginScreen());
+                            },
+                          ),
+                          cancel: OutlinedButton.icon(
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(color: Colors.grey),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            icon: Icon(Icons.cancel, color: Colors.grey),
+                            label: GlobalText(
+                              "Cancel",
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              Get.back();
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  )
                 ],
               ),
             ),
@@ -93,7 +159,8 @@ class CustomerView extends StatelessWidget {
                   prefixIcon: const Icon(Icons.search),
                   hintText: 'Search Mail Id or Sender',
                   border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15)),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
                   contentPadding: const EdgeInsets.symmetric(
                       vertical: 15.0, horizontal: 10.0),
                 ),
@@ -108,7 +175,10 @@ class CustomerView extends StatelessWidget {
               child: TextField(
                 controller: customerController.dateRangeController,
                 decoration: InputDecoration(
-                    icon: Icon(Icons.calendar_today),
+                    icon: Icon(
+                      Icons.calendar_today,
+                      color: MyColor.brightBlue,
+                    ),
                     hintText: 'Select Date Range',
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15))),
@@ -120,68 +190,93 @@ class CustomerView extends StatelessWidget {
                 height: Get.height * 0.5,
                 width: Get.width,
                 child: Obx(
-                  () => customerController
-                              .customerIndexMail.value.data?.length ==
-                          null
-                      ? const Center(
-                          child: CircularProgressIndicator(
-                          color: MyColor.colorBlueHome,
+                  () => customerController.customerIndexMail.value.data == null
+                      ? Center(
+                          child: Column(
+                          children: [
+                            Image.asset(
+                              AddImage.noMailIcon,
+                              height: Get.height * 0.35,
+                            ),
+                            GlobalText(
+                              'No Mail Found',
+                              fontSize: Get.height * 0.03,
+                              color: MyColor.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ],
                         ))
-                      : ListView.builder(
-                          itemCount: customerController
-                              .customerIndexMail.value.data?.length,
-                          itemBuilder: (_, index) {
-                            return Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                customerController.customerIndexMail.value
-                                            .data?[index].markAsRead ==
-                                        true
-                                    ? Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Row(
+                      : customerController
+                                  .customerIndexMail.value.data?.length ==
+                              null
+                          ? const Center(
+                              child: CircularProgressIndicator(
+                              color: MyColor.colorBlueHome,
+                            ))
+                          : ListView.builder(
+                              itemCount: customerController
+                                  .customerIndexMail.value.data?.length,
+                              itemBuilder: (_, index) {
+                                return Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    customerController.customerIndexMail.value
+                                                .data?[index].markAsRead ==
+                                            true
+                                        ? Column(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
+                                                MainAxisAlignment.start,
                                             children: [
-                                              Obx(() => Checkbox(
-                                                  value: customerController
-                                                      .isMailChecked.value,
-                                                  onChanged: (bool? value) {
-                                                    customerController
-                                                        .isMailChecked
-                                                        .value = value!;
-                                                  })),
                                               Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
                                                 children: [
-                                                  Icon(Icons
-                                                      .open_in_new_rounded),
-                                                  GlobalText(
-                                                    'Open and Scan',
-                                                    onTap: () {
-                                                      //final scan-request;
+                                                  Obx(() => Checkbox(
+                                                      value: customerController
+                                                          .isMailChecked.value,
+                                                      onChanged: (bool? value) {
+                                                        customerController
+                                                            .isMailChecked
+                                                            .value = value!;
+                                                      })),
+                                                  Row(
+                                                    children: [
+                                                      Icon(Icons
+                                                          .open_in_new_rounded),
+                                                      GlobalText(
+                                                        'Open and Scan',
+                                                        onTap: () {
+                                                          //final scan-request;
 
-                                                      Get.dialog(CommonDialog(
-                                                          yesLabel: GlobalText(
-                                                            'Yes',
-                                                            onTap: () async {
-                                                              await scanRequestPatchApi(
-                                                                  'scan-request');
-                                                            },
-                                                          ),
-                                                          noLabel: GlobalText(
-                                                            'No',
-                                                            onTap: () =>
-                                                                Get.back(),
-                                                          ),
-                                                          title:
-                                                              'Open and Scan',
-                                                          content:
-                                                              GlobalText('')));
-                                                    },
-                                                  ),
-                                                  /*GlobalText(
+                                                          Get.dialog(
+                                                              CommonDialog(
+                                                                  yesLabel:
+                                                                      GlobalText(
+                                                                    'Yes',
+                                                                    onTap:
+                                                                        () async {
+                                                                      await scanRequestPatchApi(
+                                                                          'scan-request');
+                                                                      Get.back();
+                                                                      Get.back();
+                                                                    },
+                                                                  ),
+                                                                  noLabel:
+                                                                      GlobalText(
+                                                                    'No',
+                                                                    onTap: () =>
+                                                                        Get.back(),
+                                                                  ),
+                                                                  title:
+                                                                      'Open and Scan',
+                                                                  content:
+                                                                      GlobalText(
+                                                                          '')));
+                                                        },
+                                                      ),
+                                                      /*GlobalText(
                                                     customerController
                                                             .customerModel
                                                             .value
@@ -191,33 +286,36 @@ class CustomerView extends StatelessWidget {
                                                         '',
                                                     fontWeight: FontWeight.w700,
                                                   ),*/
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  const Icon(Icons
-                                                      .local_shipping_outlined),
-                                                  GlobalText(
-                                                    'Add to Shipment',
-                                                    onTap: () {
-                                                      //add-shipment
-                                                      Get.dialog(CommonDialog(
-                                                        yesLabel: GlobalText(
-                                                          'yes',
-                                                          onTap: () async {
-                                                            await scanRequestPatchApi(
-                                                                'add-shipment');
-                                                          },
-                                                        ),
-                                                        noLabel:
-                                                            GlobalText('no'),
-                                                        title:
-                                                            'Add to Shipment',
-                                                        content: GlobalText(''),
-                                                      ));
-                                                    },
+                                                    ],
                                                   ),
-                                                  /* GlobalText(
+                                                  Row(
+                                                    children: [
+                                                      const Icon(Icons
+                                                          .local_shipping_outlined),
+                                                      GlobalText(
+                                                        'Add to Shipment',
+                                                        onTap: () {
+                                                          //add-shipment
+                                                          Get.dialog(
+                                                              CommonDialog(
+                                                            yesLabel:
+                                                                GlobalText(
+                                                              'yes',
+                                                              onTap: () async {
+                                                                await scanRequestPatchApi(
+                                                                    'add-shipment');
+                                                              },
+                                                            ),
+                                                            noLabel: GlobalText(
+                                                                'no'),
+                                                            title:
+                                                                'Add to Shipment',
+                                                            content:
+                                                                GlobalText(''),
+                                                          ));
+                                                        },
+                                                      ),
+                                                      /* GlobalText(
                                                 customerController
                                                         .customerModel
                                                         .value
@@ -226,63 +324,81 @@ class CustomerView extends StatelessWidget {
                                                         .toString() ??
                                                     '',
                                               ),*/
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Icon(Icons.recycling),
-                                                  GlobalText(
-                                                    'Recycle',
-                                                    onTap: () {
-                                                      Get.dialog(
-                                                          const CommonDialog(
-                                                              yesLabel:
-                                                                  GlobalText(
-                                                                      'yes'),
-                                                              noLabel:
-                                                                  GlobalText(
-                                                                      'no'),
-                                                              title: 'Recycle',
-                                                              content:
-                                                                  GlobalText(
-                                                                      '')));
-                                                    },
+                                                    ],
                                                   ),
-                                                  /* GlobalText(
+                                                  Row(
+                                                    children: [
+                                                      Icon(Icons.recycling),
+                                                      GlobalText(
+                                                        'Recycle',
+                                                        onTap: () {
+                                                          Get.dialog(
+                                                              CommonDialog(
+                                                                  yesLabel:
+                                                                      GlobalText(
+                                                                    'yes',
+                                                                    onTap:
+                                                                        () async {
+                                                                      await scanRequestPatchApi(
+                                                                          'recycle-request');
+                                                                      Get.back();
+                                                                    },
+                                                                  ),
+                                                                  noLabel:
+                                                                      GlobalText(
+                                                                    'no',
+                                                                  ),
+                                                                  title:
+                                                                      'Recycle',
+                                                                  content:
+                                                                      GlobalText(
+                                                                          '')));
+                                                        },
+                                                      ),
+                                                      /* GlobalText(
                                                 customerController.customerModel.value
                                                         .data?[index].recycle
                                                         .toString() ??
                                                     '',
                                               ),*/
+                                                    ],
+                                                  ),
                                                 ],
                                               ),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
                                               Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
                                                 children: [
-                                                  Icon(Icons.share),
-                                                  GlobalText(
-                                                    'shared',
-                                                    onTap: () {
-                                                      Get.dialog(
-                                                          const CommonDialog(
-                                                              yesLabel:
-                                                                  GlobalText(
-                                                                      'Yes'),
-                                                              noLabel:
-                                                                  GlobalText(
-                                                                      'No'),
-                                                              title: 'shared',
-                                                              content:
-                                                                  GlobalText(
-                                                                      '')));
-                                                    },
-                                                  ),
-                                                  /* GlobalText(
+                                                  Row(
+                                                    children: [
+                                                      Icon(Icons.share),
+                                                      GlobalText(
+                                                        'shared',
+                                                        onTap: () {
+                                                          Get.dialog(
+                                                              CommonDialog(
+                                                                  yesLabel:
+                                                                      GlobalText(
+                                                                    'Yes',
+                                                                    onTap:
+                                                                        () async {
+                                                                      await scanRequestPatchApi(
+                                                                          'shred-request');
+                                                                      Get.back();
+                                                                    },
+                                                                  ),
+                                                                  noLabel:
+                                                                      GlobalText(
+                                                                          'No'),
+                                                                  title:
+                                                                      'shared',
+                                                                  content:
+                                                                      GlobalText(
+                                                                          '')));
+                                                        },
+                                                      ),
+                                                      /* GlobalText(
                                                 customerController
                                                         .customerModel
                                                         .value
@@ -291,29 +407,38 @@ class CustomerView extends StatelessWidget {
                                                         .toString() ??
                                                     '',
                                               ),*/
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Icon(Icons.adf_scanner_sharp),
-                                                  GlobalText(
-                                                    'Rescan',
-                                                    onTap: () {
-                                                      Get.dialog(
-                                                          const CommonDialog(
-                                                              yesLabel:
-                                                                  GlobalText(
-                                                                      'yes'),
-                                                              noLabel:
-                                                                  GlobalText(
-                                                                      'no'),
-                                                              title: 'Rescan',
-                                                              content:
-                                                                  GlobalText(
-                                                                      '')));
-                                                    },
+                                                    ],
                                                   ),
-                                                  /* GlobalText(
+                                                  Row(
+                                                    children: [
+                                                      Icon(Icons
+                                                          .adf_scanner_sharp),
+                                                      GlobalText(
+                                                        'Rescan',
+                                                        onTap: () {
+                                                          Get.dialog(
+                                                              CommonDialog(
+                                                                  yesLabel:
+                                                                      GlobalText(
+                                                                    'yes',
+                                                                    onTap:
+                                                                        () async {
+                                                                      await scanRequestPatchApi(
+                                                                          'rescan-request');
+                                                                      Get.back();
+                                                                    },
+                                                                  ),
+                                                                  noLabel:
+                                                                      GlobalText(
+                                                                          'no'),
+                                                                  title:
+                                                                      'Rescan',
+                                                                  content:
+                                                                      GlobalText(
+                                                                          '')));
+                                                        },
+                                                      ),
+                                                      /* GlobalText(
                                                 customerController
                                                         .customerModel
                                                         .value
@@ -322,30 +447,38 @@ class CustomerView extends StatelessWidget {
                                                         .toString() ??
                                                     '',
                                               ),*/
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Icon(Icons
-                                                      .local_shipping_rounded),
-                                                  GlobalText(
-                                                    'Pick UP',
-                                                    onTap: () {
-                                                      Get.dialog(
-                                                          const CommonDialog(
-                                                              yesLabel:
-                                                                  GlobalText(
-                                                                      'yes'),
-                                                              noLabel:
-                                                                  GlobalText(
-                                                                      'no'),
-                                                              title: 'Pick UP',
-                                                              content:
-                                                                  GlobalText(
-                                                                      '')));
-                                                    },
+                                                    ],
                                                   ),
-                                                  /* GlobalText(
+                                                  Row(
+                                                    children: [
+                                                      Icon(Icons
+                                                          .local_shipping_rounded),
+                                                      GlobalText(
+                                                        'Pick UP',
+                                                        onTap: () {
+                                                          Get.dialog(
+                                                              CommonDialog(
+                                                                  yesLabel:
+                                                                      GlobalText(
+                                                                    'yes',
+                                                                    onTap:
+                                                                        () async {
+                                                                      await scanRequestPatchApi(
+                                                                          'Pick UP');
+                                                                      Get.back();
+                                                                    },
+                                                                  ),
+                                                                  noLabel:
+                                                                      GlobalText(
+                                                                          'no'),
+                                                                  title:
+                                                                      'Pick UP',
+                                                                  content:
+                                                                      GlobalText(
+                                                                          '')));
+                                                        },
+                                                      ),
+                                                      /* GlobalText(
                                                 customerController
                                                         .customerModel
                                                         .value
@@ -354,191 +487,199 @@ class CustomerView extends StatelessWidget {
                                                         .toString() ??
                                                     '',
                                               ),*/
+                                                    ],
+                                                  ),
                                                 ],
-                                              ),
+                                              )
                                             ],
                                           )
-                                        ],
-                                      )
-                                    : SizedBox(),
-                                Card(
-                                  color: MyColor.cardIconColor,
-                                  elevation: 5,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
+                                        : SizedBox(),
+                                    Card(
+                                      color: MyColor.cardIconColor,
+                                      elevation: 5,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: Column(
                                         children: [
-                                          Checkbox(
-                                              value: customerController
-                                                  .customerIndexMail
-                                                  .value
-                                                  .data?[index]
-                                                  .markAsRead,
-                                              onChanged: (bool? value) {
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Checkbox(
+                                                  value: customerController
+                                                      .customerIndexMail
+                                                      .value
+                                                      .data?[index]
+                                                      .markAsRead,
+                                                  onChanged: (bool? value) {
+                                                    customerController
+                                                            .customerIndexMail
+                                                            .value
+                                                            .data?[index]
+                                                            .markAsRead !=
+                                                        value;
+                                                  }),
+                                              GlobalText(
                                                 customerController
                                                         .customerIndexMail
                                                         .value
                                                         .data?[index]
-                                                        .markAsRead !=
-                                                    value;
-                                              }),
-                                          GlobalText(
-                                            customerController
-                                                    .customerIndexMail
-                                                    .value
-                                                    .data?[index]
-                                                    .mailId
-                                                    ?.mailType
-                                                    .toString()
-                                                    .capitalizeFirst ??
-                                                '',
-                                            fontWeight: FontWeight.w700,
-                                            color: MyColor.black,
-                                          ),
-                                          GlobalText(
-                                            customerController
-                                                    .customerIndexMail
-                                                    .value
-                                                    .data?[index]
-                                                    .currentStatus
-                                                    .toString()
-                                                    .capitalizeFirst ??
-                                                '',
-                                            color: MyColor.black,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          Obx(() {
-                                            var data = customerController
-                                                .customerModel.value.data;
-                                            if (data == null ||
-                                                index >= data.length) {
-                                              return GlobalText(
-                                                '',
+                                                        .mailId
+                                                        ?.mailType
+                                                        .toString()
+                                                        .capitalizeFirst ??
+                                                    '',
                                                 fontWeight: FontWeight.w700,
                                                 color: MyColor.black,
-                                              );
-                                            }
-
-                                            String? createdAt =
-                                                data[index].createdAt;
-                                            String formattedDate = '';
-                                            if (createdAt != null) {
-                                              formattedDate =
-                                                  DateFormat('MM-dd-yyyy')
-                                                      .format(DateTime.parse(
-                                                          createdAt));
-                                            }
-
-                                            return GlobalText(
-                                              formattedDate,
-                                              fontWeight: FontWeight.w700,
-                                              color: MyColor.black,
-                                            );
-                                          }),
-                                          Container(
-                                            height: Get.height * 0.07,
-                                            width: Get.width * 0.25,
-                                            child: customerController
+                                              ),
+                                              GlobalText(
+                                                customerController
                                                         .customerIndexMail
                                                         .value
-                                                        .data
-                                                        ?.length ==
-                                                    null
-                                                ? const Center(
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                    color:
-                                                        MyColor.colorBlueHome,
-                                                  ))
-                                                : ListView.builder(
-                                                    itemCount: customerController
+                                                        .data?[index]
+                                                        .currentStatus
+                                                        .toString()
+                                                        .capitalizeFirst ??
+                                                    '',
+                                                color: MyColor.black,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Obx(() {
+                                                var data = customerController
+                                                    .customerModel.value.data;
+                                                if (data == null ||
+                                                    index >= data.length) {
+                                                  return GlobalText(
+                                                    '',
+                                                    fontWeight: FontWeight.w700,
+                                                    color: MyColor.black,
+                                                  );
+                                                }
+
+                                                String? createdAt =
+                                                    data[index].createdAt;
+                                                String formattedDate = '';
+                                                if (createdAt != null) {
+                                                  formattedDate =
+                                                      DateFormat('MM-dd-yyyy')
+                                                          .format(
+                                                              DateTime.parse(
+                                                                  createdAt));
+                                                }
+
+                                                return GlobalText(
+                                                  formattedDate,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: MyColor.black,
+                                                );
+                                              }),
+                                              Container(
+                                                height: Get.height * 0.07,
+                                                width: Get.width * 0.25,
+                                                child: customerController
                                                             .customerIndexMail
                                                             .value
                                                             .data
-                                                            ?.length ??
-                                                        0,
-                                                    itemBuilder:
-                                                        (context, index) {
-                                                      String baseUrl =
-                                                          'https://service.24x7mail.com/uploads/';
-                                                      String imagePath =
-                                                          customerController
-                                                                  .customerIndexMail
-                                                                  .value
-                                                                  .data?[index]
-                                                                  .mailId
-                                                                  ?.measurement?[
-                                                                      0]
-                                                                  .file ??
-                                                              '';
-                                                      String imageUrl =
-                                                          baseUrl + imagePath;
-
-                                                      return Container(
-                                                        height:
-                                                            Get.height * 0.07,
-                                                        width: Get.width * 0.25,
-                                                        child: GestureDetector(
-                                                          onTap: () async {
-                                                            _showImageDialog(
-                                                                context,
-                                                                customerController
+                                                            ?.length ==
+                                                        null
+                                                    ? const Center(
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                        color: MyColor
+                                                            .colorBlueHome,
+                                                      ))
+                                                    : ListView.builder(
+                                                        itemCount:
+                                                            customerController
                                                                     .customerIndexMail
                                                                     .value
-                                                                    .data?[
-                                                                        index]
-                                                                    .mailId
-                                                                    ?.measurement,
-                                                                index);
-                                                          },
-                                                          child: Card(
+                                                                    .data
+                                                                    ?.length ??
+                                                                0,
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          String baseUrl =
+                                                              'https://service.24x7mail.com/uploads/';
+                                                          String imagePath =
+                                                              customerController
+                                                                      .customerIndexMail
+                                                                      .value
+                                                                      .data?[
+                                                                          index]
+                                                                      .mailId
+                                                                      ?.measurement?[
+                                                                          0]
+                                                                      .file ??
+                                                                  '';
+                                                          String imageUrl =
+                                                              baseUrl +
+                                                                  imagePath;
+
+                                                          return Container(
+                                                            height: Get.height *
+                                                                0.07,
+                                                            width: Get.width *
+                                                                0.25,
                                                             child:
-                                                                Image.network(
-                                                              imageUrl,
-                                                              fit: BoxFit.cover,
-                                                              height:
-                                                                  Get.height *
-                                                                      0.03,
+                                                                GestureDetector(
+                                                              onTap: () async {
+                                                                _showImageDialog(
+                                                                    context,
+                                                                    customerController
+                                                                        .customerIndexMail
+                                                                        .value
+                                                                        .data?[
+                                                                            index]
+                                                                        .mailId
+                                                                        ?.measurement,
+                                                                    index);
+                                                              },
+                                                              child: Card(
+                                                                child: Image
+                                                                    .network(
+                                                                  imageUrl,
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                  height:
+                                                                      Get.height *
+                                                                          0.03,
+                                                                ),
+                                                              ),
                                                             ),
-                                                          ),
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
-                                          ),
-                                          GlobalText(
-                                            customerController
-                                                    .customerIndexMail
-                                                    .value
-                                                    .data?[index]
-                                                    .mailId
-                                                    ?.mailBoxId
-                                                    .toString() ??
-                                                '',
-                                            fontWeight: FontWeight.w700,
-                                            color: MyColor.black,
+                                                          );
+                                                        },
+                                                      ),
+                                              ),
+                                              GlobalText(
+                                                customerController
+                                                        .customerIndexMail
+                                                        .value
+                                                        .data?[index]
+                                                        .mailId
+                                                        ?.mailBoxId
+                                                        .toString() ??
+                                                    '',
+                                                fontWeight: FontWeight.w700,
+                                                color: MyColor.black,
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: Get.height * 0.004,
-                                )
-                              ],
-                            );
-                          }),
+                                    ),
+                                    SizedBox(
+                                      height: Get.height * 0.004,
+                                    )
+                                  ],
+                                );
+                              }),
                 )),
           ],
         ),

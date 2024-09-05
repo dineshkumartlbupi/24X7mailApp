@@ -31,12 +31,21 @@ class LoginController extends GetxController {
 
   Future<void> submit() async {
     var token = SharedPrefs.getString('Token');
-
-    // if (formKey.currentState!.validate() && (token == null || token.isEmpty)) {
+    //if (formKey.currentState!.validate() && (token == null || token.isEmpty)) {
     if (formKey.currentState!.validate()) {
-      await login(emailController.text, passwordController.text);
+      var loginResponse =
+          await login(emailController.text, passwordController.text);
+
+      if (loginResponse != null) {
+        log('Login successful, navigating to appropriate screen.');
+      } else {
+        log('Login failed.');
+      }
     } else {
       log('User already logged in or invalid form');
+      if (token != null && token.isNotEmpty) {
+        log('User already has a valid token');
+      }
     }
   }
 }

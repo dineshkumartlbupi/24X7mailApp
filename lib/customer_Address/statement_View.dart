@@ -13,7 +13,7 @@ class StatementView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: MyColor.backgroundLogin,
+        backgroundColor: Colors.blueAccent,
       ),
       body: Obx(
         () => Padding(

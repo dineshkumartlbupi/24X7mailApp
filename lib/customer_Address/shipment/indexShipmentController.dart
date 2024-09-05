@@ -6,14 +6,16 @@ import '../../models/shipmentstatus_model.dart';
 class Indexshipmentcontroller extends GetxController {
   Rx<ShipmentstatusModel> shipmentPastData = ShipmentstatusModel().obs;
   Rx<ShipmentstatusModel> pendingShipmentView = ShipmentstatusModel().obs;
+  Rx<ShipmentstatusModel> pickUpShipmentView = ShipmentstatusModel().obs;
   Rx<ShipmentstatusModel> traceView = ShipmentstatusModel().obs;
   var pendingListLoading = false.obs;
   var traceListLoading = false.obs;
-  //pendingShipmentList()
+  //pickedUpList()
   @override
   void onInit() {
     getShipmentData();
     getShipmentPending();
+    getPickUpData();
     getTraceList();
     super.onInit();
   }
@@ -28,6 +30,10 @@ class Indexshipmentcontroller extends GetxController {
     pendingShipmentView.value =
         await pendingShipmentList() ?? shipmentPastData.value;
     pendingListLoading.value = false;
+  }
+
+  void getPickUpData() async {
+    pickUpShipmentView.value = await pickedUpList() ?? pickUpShipmentView.value;
   }
 
   void getTraceList() async {

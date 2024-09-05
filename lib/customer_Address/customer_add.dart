@@ -20,6 +20,7 @@ class CustomerAdd extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blueAccent,
         actions: [
           Column(
             mainAxisAlignment: MainAxisAlignment.start,

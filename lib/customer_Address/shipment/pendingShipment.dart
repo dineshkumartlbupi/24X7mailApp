@@ -18,6 +18,7 @@ class PendingShipment extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.blueAccent,
           title: const GlobalText(
             'Pending shipment',
             fontWeight: FontWeight.bold,

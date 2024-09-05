@@ -16,7 +16,6 @@ import 'package:twentyfourby_seven/models/customerMailModel.dart';
 import 'package:twentyfourby_seven/models/profileModel.dart';
 import 'package:twentyfourby_seven/models/statementModell.dart';
 
-import '../Operator/operator_requestHome.dart';
 import '../Utils/Mycolor.dart';
 import '../Utils/globalText.dart';
 import '../customer_Address/customer_AddController.dart';
@@ -67,12 +66,12 @@ Future<UserModel?> login(String email, String password) async {
     'email': email,
     'password': password,
   };
-
   try {
     final response = await http.post(url, body: body);
+
     if (response.statusCode == 200 || response.statusCode == 201) {
       final loginResponse = UserModel.fromJson(jsonDecode(response.body));
-      log('login response ${loginResponse.data?.userType.runtimeType}');
+      //log('login response ${loginResponse.data?.userType.runtimeType}');
       log('response withs model ${response.body}');
 
       if (loginResponse.token != null && loginResponse.data != null) {
@@ -82,15 +81,8 @@ Future<UserModel?> login(String email, String password) async {
         SharedPrefs.putString('cID', loginResponse.data?.id ?? '');
         SharedPrefs.putString('firstNAme', loginResponse.data?.fname ?? '');
         SharedPrefs.putString('lastNAme', loginResponse.data?.lname ?? '');
+
         //Get.offAll(() => CustomerView());
-        if (loginResponse.data?.userType == 'user') {
-          // Get.offAll(() => CustomerView());
-          Get.offAll(() => OperatorRequestHome());
-        } else if (loginResponse.data?.userType == 'operator') {
-          // Get.offAll(() => OperatorRequestHome());
-        } else {
-          Get.snackbar('Error', 'Invalid user type');
-        }
         return loginResponse;
       } else {
         log('Invalid response data');
@@ -102,6 +94,39 @@ Future<UserModel?> login(String email, String password) async {
     log('Error: $e');
     showLoginErrorDialog(e.toString());
     return null;
+  }
+  return UserModel();
+}
+
+Future<void> deleteAccountCustomer() async {
+  var userID = SharedPrefs.getString('cID');
+
+  String baseUrl = 'https://service.24x7mail.com/user/soft-delete/$userID';
+
+  var token = SharedPrefs.getString('Token');
+
+  try {
+    var response = await http.delete(
+      Uri.parse(baseUrl),
+      headers: {
+        'Authorization': token,
+      },
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      log('deleted Id successfully: ${response.body}');
+      Get.snackbar(
+        "Deleted",
+        "The account has been deleted successfully",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.redAccent,
+        colorText: Colors.white,
+      );
+    } else {
+      log('Failed to search mail: ${response.statusCode}');
+    }
+  } catch (e) {
+    log('Error adding range: $e');
   }
 }
 
@@ -314,7 +339,7 @@ Future<ShipmentstatusModel?> pickedUpList() async {
 
     final response = await http.get(
       Uri.parse(
-          'https://service.24x7mail.com/assign?&search=&fromDate=&toDate=&user_id=$userID&page=1&limit=10&current_status=pickup status'),
+          'https://service.24x7mail.com/assign?&search=&fromDate=&toDate=&user_id=$userID&page=1&limit=10&current_status=local_pickup_complete'),
       headers: {
         'Authorization': token,
       },
@@ -638,16 +663,15 @@ Future<ShipmentModel?> getShipiingList() async {
   return ShipmentModel();
 }
 
-/// readView
-/// https://service.24x7mail.com/assign?&search=&fromDate=&toDate=&user_id=667d923246b74b03f473b3a7&page=1&limit=10&read=true
-/// https://service.24x7mail.com/assign?&search=&fromDate=&toDate=&user_id=667d923246b74b03f473b3a7&page=1&limit=10&read=false
 ///scan request patch
 Future<void> scanRequestPatchApi(String scanRequest) async {
   try {
     var token = SharedPrefs.getString('Token');
+    var userID = SharedPrefs.getString('cID');
+
 //scan-request
     final Map<String, dynamic> payload = {
-      "ids": ["669a168923ba32ee0e468379"]
+      "ids": [userID]
     };
 
     final response = await http.patch(
@@ -658,10 +682,10 @@ Future<void> scanRequestPatchApi(String scanRequest) async {
       },
       body: json.encode(payload),
     );
-
+    log('response dialogu ${response.body}');
     if (response.statusCode == 200 || response.statusCode == 201) {
       final patchResponse = jsonDecode(response.body);
-      Get.snackbar(' Operator password ${patchResponse['msg']}', '');
+      Get.snackbar(' Request', patchResponse['msg'].toString());
       return patchResponse;
     } else {
       log('Failed to load patchRequest: ${response.reasonPhrase}');

@@ -46,7 +46,7 @@ class CustomerDrawer extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: Get.width * 0.04),
             child: PopupMenuButton<String>(
               onSelected: (String newValue) async {
-                await pastShipmentList();
+                pastShipmentList();
 
                 if (newValue == 'Past Shipment') {
                   Get.to(() => PastShipingList());

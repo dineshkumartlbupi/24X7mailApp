@@ -1,3 +1,5 @@
+import 'package:twentyfourby_seven/models/uploadImageModel.dart';
+
 class UserModel {
   bool? status;
   UserData? data;
@@ -44,7 +46,7 @@ class UserData {
   String? userType;
   String? businessName;
   String? userStatus;
-  List<dynamic>? usps;
+  List<String>? usps;
   String? uspsStatus;
   String? password;
   PlanDetails? planId;
@@ -57,7 +59,7 @@ class UserData {
   DateTime? updatedAt;
   int? lastAssignMailNo;
   String? refreshToken;
-  String? softCash;
+  double? softCash;
   String? cusId;
   String? paymentStatus;
   List<Subscription>? subscription;
@@ -103,11 +105,11 @@ class UserData {
     lname = json['lname'];
     username = json['username'];
     email = json['email'];
-    phone = json['phone'] as String;
+    phone = json['phone'];
     userType = json['user_type'];
     businessName = json['business_name'];
     userStatus = json['user_status'];
-    usps = json['usps'];
+    usps = json['usps'] != null ? List<String>.from(json['usps']) : null;
     uspsStatus = json['usps_status'];
     password = json['password'];
     planId =
@@ -115,16 +117,17 @@ class UserData {
     feature =
         json['feature'] != null ? Feature.fromJson(json['feature']) : null;
     zipCode = json['zip_code'];
-    storeId = json['store_id'];
+    storeId = json['store_id'] as int?;
     approveStatus = json['approve_status'];
     isDeleted = json['isDeleted'];
     createdAt =
         json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null;
     updatedAt =
         json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null;
-    lastAssignMailNo = json['last_assing_mail_no'];
+    lastAssignMailNo = json['last_assing_mail_no'] as int?;
     refreshToken = json['refreshToken'];
-    softCash = json['soft_cash'];
+    softCash =
+        json['soft_cash'] != null ? double.tryParse(json['soft_cash']) : null;
     cusId = json['cus_id'];
     paymentStatus = json['payment_status'];
     if (json['subscription'] != null) {
@@ -140,112 +143,39 @@ class UserData {
     if (plan != null) {
       data['plan'] = plan!.toJson();
     }
-    if (id != null) {
-      data['_id'] = id;
-    }
-    if (accountType != null) {
-      data['accountType'] = accountType;
-    }
-    if (mailBoxNum != null) {
-      data['mail_box_num'] = mailBoxNum;
-    }
-    if (fname != null) {
-      data['fname'] = fname;
-    }
-    if (lname != null) {
-      data['lname'] = lname;
-    }
-    if (username != null) {
-      data['username'] = username;
-    }
-    if (email != null) {
-      data['email'] = email;
-    }
-    if (phone != null) {
-      data['phone'] = phone;
-    }
-    if (userType != null) {
-      data['user_type'] = userType;
-    }
-    if (businessName != null) {
-      data['business_name'] = businessName;
-    }
-    if (userStatus != null) {
-      data['user_status'] = userStatus;
-    }
-    if (usps != null) {
-      data['usps'] = usps;
-    }
-    if (uspsStatus != null) {
-      data['usps_status'] = uspsStatus;
-    }
-    if (password != null) {
-      data['password'] = password;
-    }
+    data['_id'] = id;
+    data['accountType'] = accountType;
+    data['mail_box_num'] = mailBoxNum;
+    data['fname'] = fname;
+    data['lname'] = lname;
+    data['username'] = username;
+    data['email'] = email;
+    data['phone'] = phone;
+    data['user_type'] = userType;
+    data['business_name'] = businessName;
+    data['user_status'] = userStatus;
+    data['usps'] = usps;
+    data['usps_status'] = uspsStatus;
+    data['password'] = password;
     if (planId != null) {
       data['plan_id'] = planId!.toJson();
     }
     if (feature != null) {
       data['feature'] = feature!.toJson();
     }
-    if (zipCode != null) {
-      data['zip_code'] = zipCode;
-    }
-    if (storeId != null) {
-      data['store_id'] = storeId;
-    }
-    if (approveStatus != null) {
-      data['approve_status'] = approveStatus;
-    }
-    if (isDeleted != null) {
-      data['isDeleted'] = isDeleted;
-    }
-    if (createdAt != null) {
-      data['createdAt'] = createdAt!.toIso8601String();
-    }
-    if (updatedAt != null) {
-      data['updatedAt'] = updatedAt!.toIso8601String();
-    }
-    if (lastAssignMailNo != null) {
-      data['last_assing_mail_no'] = lastAssignMailNo;
-    }
-    if (refreshToken != null) {
-      data['refreshToken'] = refreshToken;
-    }
-    if (softCash != null) {
-      data['soft_cash'] = softCash;
-    }
-    if (cusId != null) {
-      data['cus_id'] = cusId;
-    }
-    if (paymentStatus != null) {
-      data['payment_status'] = paymentStatus;
-    }
+    data['zip_code'] = zipCode;
+    data['store_id'] = storeId;
+    data['approve_status'] = approveStatus;
+    data['isDeleted'] = isDeleted;
+    data['createdAt'] = createdAt?.toIso8601String();
+    data['updatedAt'] = updatedAt?.toIso8601String();
+    data['last_assing_mail_no'] = lastAssignMailNo;
+    data['refreshToken'] = refreshToken;
+    data['soft_cash'] = softCash;
+    data['cus_id'] = cusId;
+    data['payment_status'] = paymentStatus;
     if (subscription != null) {
       data['subscription'] = subscription!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class Subscription {
-  String? id;
-  String? name;
-
-  Subscription({this.id, this.name});
-
-  Subscription.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
-    if (id != null) {
-      data['id'] = id;
-    }
-    if (name != null) {
-      data['name'] = name;
     }
     return data;
   }
@@ -264,12 +194,8 @@ class Plan {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};
-    if (expiredAt != null) {
-      data['expired_at'] = expiredAt;
-    }
-    if (planType != null) {
-      data['plan_type'] = planType;
-    }
+    data['expired_at'] = expiredAt;
+    data['plan_type'] = planType;
     return data;
   }
 }
@@ -328,7 +254,7 @@ class PlanDetails {
     physicalStorage = json['physical_storage'] != null
         ? PhysicalStorage.fromJson(json['physical_storage'])
         : null;
-    id = json['_id'];
+    id = json['_id'].toString() ?? '';
     type = json['type'];
     name = json['name'];
     price = json['price'];
@@ -385,7 +311,7 @@ class PlanDetails {
       data['updatedAt'] = updatedAt!.toIso8601String();
     }
     if (v != null) {
-      data['__v'] = v;
+      data['__v'] = v.toString() ?? '';
     }
     return data;
   }
@@ -519,13 +445,13 @@ class FeatureDetails {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};
     if (city != null) {
-      data['city'] = city!.toJson();
+      data['city'] = city?.toJson();
     }
     if (state != null) {
-      data['state'] = state!.toJson();
+      data['state'] = state?.toJson();
     }
     if (country != null) {
-      data['country'] = country!.toJson();
+      data['country'] = country?.toJson();
     }
     if (businessName != null) {
       data['business_name'] = businessName;

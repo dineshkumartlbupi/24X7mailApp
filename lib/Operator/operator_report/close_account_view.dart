@@ -43,11 +43,10 @@ class CloseAccountView extends StatelessWidget {
             ),
             Obx(
               () => reportController.filteredList.isEmpty
-                  ? Center(
-                      child: Text(
-                        'No results found', // Display message when list is empty
-                        style: TextStyle(fontSize: 16),
-                      ),
+                  ? const Center(
+                      child: GlobalText(
+                          'No results found', // Display message when list is empty
+                          fontSize: 16),
                     )
                   : Container(
                       height: Get.height * 0.02,
@@ -57,9 +56,9 @@ class CloseAccountView extends StatelessWidget {
                           final item = reportController.filteredList[index];
 
                           return ListTile(
-                            title: Text(item.userinfo?.mailBoxNum ??
+                            title: GlobalText(item.userinfo?.mailBoxNum ??
                                 'No MailBox Number'),
-                            subtitle: Text(
+                            subtitle: GlobalText(
                                 '${item.userinfo?.fname ?? 'No First Name'} ${item.userinfo?.lname ?? 'No Last Name'}'),
                           );
                         },

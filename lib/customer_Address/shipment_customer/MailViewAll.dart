@@ -7,6 +7,7 @@ import 'package:twentyfourby_seven/Utils/globalText.dart';
 import '../../Customer/customerController.dart';
 import '../../Login/loginController.dart';
 import '../../Utils/SharedPrefrance.dart';
+import '../../Utils/addImage.dart';
 import '../../Utils/commonDialog.dart';
 import '../../models/customerMailModel.dart';
 
@@ -30,7 +31,7 @@ class MailViewAll extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: MyColor.yellowGold,
+          backgroundColor: Colors.blueAccent,
           title: GlobalText(
             'ViewAll Mail',
             color: MyColor.white,
@@ -74,57 +75,78 @@ class MailViewAll extends StatelessWidget {
                 height: Get.height * 0.5,
                 width: Get.width,
                 child: Obx(
-                  () => customerController.customerModel.value.data?.length ==
-                          null
-                      ? const Center(
-                          child: CircularProgressIndicator(
-                          color: MyColor.colorBlueHome,
+                  () => customerController.customerModel.value.data == null
+                      ? Center(
+                          child: Column(
+                          children: [
+                            Image.asset(
+                              AddImage.noMailIcon,
+                              height: Get.height * 0.35,
+                            ),
+                            GlobalText(
+                              'No Mail Found',
+                              fontSize: Get.height * 0.03,
+                              color: MyColor.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ],
                         ))
-                      : ListView.builder(
-                          itemCount: customerController
-                              .customerModel.value.data?.length,
-                          itemBuilder: (_, index) {
-                            return Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                customerController.customerModel.value
-                                            .data?[index].markAsRead ==
-                                        false
-                                    ? Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Row(
+                      : customerController.customerModel.value.data?.length ==
+                              null
+                          ? const Center(
+                              child: CircularProgressIndicator(
+                              color: MyColor.colorBlueHome,
+                            ))
+                          : ListView.builder(
+                              itemCount: customerController
+                                  .customerModel.value.data?.length,
+                              itemBuilder: (_, index) {
+                                return Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    customerController.customerModel.value
+                                                .data?[index].markAsRead ==
+                                            false
+                                        ? Column(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
+                                                MainAxisAlignment.start,
                                             children: [
-                                              Obx(() => Checkbox(
-                                                  value: customerController
-                                                      .isMailChecked.value,
-                                                  onChanged: (bool? value) {
-                                                    customerController
-                                                        .isMailChecked
-                                                        .value = value!;
-                                                  })),
                                               Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
                                                 children: [
-                                                  const Icon(Icons
-                                                      .open_in_new_rounded),
-                                                  GlobalText(
-                                                    'Open and Scan',
-                                                    onTap: () {
-                                                      Get.dialog(CommonDialog(
-                                                          yesLabel:
-                                                              GlobalText('yes'),
-                                                          noLabel:
-                                                              GlobalText('no'),
-                                                          title:
-                                                              'Open and Scan',
-                                                          content:
-                                                              GlobalText('')));
-                                                    },
-                                                  ),
-                                                  /*GlobalText(
+                                                  Obx(() => Checkbox(
+                                                      value: customerController
+                                                          .isMailChecked.value,
+                                                      onChanged: (bool? value) {
+                                                        customerController
+                                                            .isMailChecked
+                                                            .value = value!;
+                                                      })),
+                                                  Row(
+                                                    children: [
+                                                      const Icon(Icons
+                                                          .open_in_new_rounded),
+                                                      GlobalText(
+                                                        'Open and Scan',
+                                                        onTap: () {
+                                                          Get.dialog(CommonDialog(
+                                                              yesLabel:
+                                                                  GlobalText(
+                                                                      'yes'),
+                                                              noLabel:
+                                                                  GlobalText(
+                                                                      'no'),
+                                                              title:
+                                                                  'Open and Scan',
+                                                              content:
+                                                                  GlobalText(
+                                                                      '')));
+                                                        },
+                                                      ),
+                                                      /*GlobalText(
                                                 customerController
                                                         .customerModel
                                                         .value
@@ -134,27 +156,30 @@ class MailViewAll extends StatelessWidget {
                                                     '',
                                                 fontWeight: FontWeight.w700,
                                               ),*/
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Icon(Icons
-                                                      .local_shipping_outlined),
-                                                  GlobalText(
-                                                    'Add to Shipment',
-                                                    onTap: () {
-                                                      Get.dialog(CommonDialog(
-                                                        yesLabel:
-                                                            GlobalText('yes'),
-                                                        noLabel:
-                                                            GlobalText('no'),
-                                                        title:
-                                                            'Add to Shipment',
-                                                        content: GlobalText(''),
-                                                      ));
-                                                    },
+                                                    ],
                                                   ),
-                                                  /* GlobalText(
+                                                  Row(
+                                                    children: [
+                                                      Icon(Icons
+                                                          .local_shipping_outlined),
+                                                      GlobalText(
+                                                        'Add to Shipment',
+                                                        onTap: () {
+                                                          Get.dialog(
+                                                              CommonDialog(
+                                                            yesLabel:
+                                                                GlobalText(
+                                                                    'yes'),
+                                                            noLabel: GlobalText(
+                                                                'no'),
+                                                            title:
+                                                                'Add to Shipment',
+                                                            content:
+                                                                GlobalText(''),
+                                                          ));
+                                                        },
+                                                      ),
+                                                      /* GlobalText(
                                                 customerController
                                                         .customerModel
                                                         .value
@@ -163,55 +188,62 @@ class MailViewAll extends StatelessWidget {
                                                         .toString() ??
                                                     '',
                                               ),*/
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Icon(Icons.recycling),
-                                                  GlobalText(
-                                                    'Recycle',
-                                                    onTap: () {
-                                                      Get.dialog(CommonDialog(
-                                                          yesLabel:
-                                                              GlobalText('yes'),
-                                                          noLabel:
-                                                              GlobalText('no'),
-                                                          title: 'Recycle',
-                                                          content:
-                                                              GlobalText('')));
-                                                    },
+                                                    ],
                                                   ),
-                                                  /* GlobalText(
+                                                  Row(
+                                                    children: [
+                                                      Icon(Icons.recycling),
+                                                      GlobalText(
+                                                        'Recycle',
+                                                        onTap: () {
+                                                          Get.dialog(CommonDialog(
+                                                              yesLabel:
+                                                                  GlobalText(
+                                                                      'yes'),
+                                                              noLabel:
+                                                                  GlobalText(
+                                                                      'no'),
+                                                              title: 'Recycle',
+                                                              content:
+                                                                  GlobalText(
+                                                                      '')));
+                                                        },
+                                                      ),
+                                                      /* GlobalText(
                                                 customerController.customerModel.value
                                                         .data?[index].recycle
                                                         .toString() ??
                                                     '',
                                               ),*/
+                                                    ],
+                                                  ),
                                                 ],
                                               ),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
                                               Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
                                                 children: [
-                                                  Icon(Icons.share),
-                                                  GlobalText(
-                                                    'shared',
-                                                    onTap: () {
-                                                      Get.dialog(CommonDialog(
-                                                          yesLabel:
-                                                              GlobalText('yes'),
-                                                          noLabel:
-                                                              GlobalText('no'),
-                                                          title: 'shared',
-                                                          content:
-                                                              GlobalText('')));
-                                                    },
-                                                  ),
-                                                  /* GlobalText(
+                                                  Row(
+                                                    children: [
+                                                      Icon(Icons.share),
+                                                      GlobalText(
+                                                        'shared',
+                                                        onTap: () {
+                                                          Get.dialog(CommonDialog(
+                                                              yesLabel:
+                                                                  GlobalText(
+                                                                      'yes'),
+                                                              noLabel:
+                                                                  GlobalText(
+                                                                      'no'),
+                                                              title: 'shared',
+                                                              content:
+                                                                  GlobalText(
+                                                                      '')));
+                                                        },
+                                                      ),
+                                                      /* GlobalText(
                                                 customerController
                                                         .customerModel
                                                         .value
@@ -220,25 +252,29 @@ class MailViewAll extends StatelessWidget {
                                                         .toString() ??
                                                     '',
                                               ),*/
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Icon(Icons.adf_scanner_sharp),
-                                                  GlobalText(
-                                                    'Rescan',
-                                                    onTap: () {
-                                                      Get.dialog(CommonDialog(
-                                                          yesLabel:
-                                                              GlobalText('yes'),
-                                                          noLabel:
-                                                              GlobalText('no'),
-                                                          title: 'Rescan',
-                                                          content:
-                                                              GlobalText('')));
-                                                    },
+                                                    ],
                                                   ),
-                                                  /* GlobalText(
+                                                  Row(
+                                                    children: [
+                                                      Icon(Icons
+                                                          .adf_scanner_sharp),
+                                                      GlobalText(
+                                                        'Rescan',
+                                                        onTap: () {
+                                                          Get.dialog(CommonDialog(
+                                                              yesLabel:
+                                                                  GlobalText(
+                                                                      'yes'),
+                                                              noLabel:
+                                                                  GlobalText(
+                                                                      'no'),
+                                                              title: 'Rescan',
+                                                              content:
+                                                                  GlobalText(
+                                                                      '')));
+                                                        },
+                                                      ),
+                                                      /* GlobalText(
                                                 customerController
                                                         .customerModel
                                                         .value
@@ -247,26 +283,29 @@ class MailViewAll extends StatelessWidget {
                                                         .toString() ??
                                                     '',
                                               ),*/
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Icon(Icons
-                                                      .local_shipping_rounded),
-                                                  GlobalText(
-                                                    'Pick UP',
-                                                    onTap: () {
-                                                      Get.dialog(CommonDialog(
-                                                          yesLabel:
-                                                              GlobalText('yes'),
-                                                          noLabel:
-                                                              GlobalText('no'),
-                                                          title: 'Pick UP',
-                                                          content:
-                                                              GlobalText('')));
-                                                    },
+                                                    ],
                                                   ),
-                                                  /* GlobalText(
+                                                  Row(
+                                                    children: [
+                                                      Icon(Icons
+                                                          .local_shipping_rounded),
+                                                      GlobalText(
+                                                        'Pick UP',
+                                                        onTap: () {
+                                                          Get.dialog(CommonDialog(
+                                                              yesLabel:
+                                                                  GlobalText(
+                                                                      'yes'),
+                                                              noLabel:
+                                                                  GlobalText(
+                                                                      'no'),
+                                                              title: 'Pick UP',
+                                                              content:
+                                                                  GlobalText(
+                                                                      '')));
+                                                        },
+                                                      ),
+                                                      /* GlobalText(
                                                 customerController
                                                         .customerModel
                                                         .value
@@ -275,184 +314,191 @@ class MailViewAll extends StatelessWidget {
                                                         .toString() ??
                                                     '',
                                               ),*/
+                                                    ],
+                                                  ),
                                                 ],
-                                              ),
+                                              )
                                             ],
                                           )
-                                        ],
-                                      )
-                                    : SizedBox(),
-                                Card(
-                                  color: MyColor.cardIconColor,
-                                  elevation: 5,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
+                                        : SizedBox(),
+                                    Card(
+                                      color: MyColor.cardIconColor,
+                                      elevation: 5,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: Column(
                                         children: [
-                                          Checkbox(
-                                              value: customerController
-                                                  .customerModel
-                                                  .value
-                                                  .data?[index]
-                                                  .markAsRead,
-                                              onChanged: (bool? value) {
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Checkbox(
+                                                  value: customerController
+                                                      .customerModel
+                                                      .value
+                                                      .data?[index]
+                                                      .markAsRead,
+                                                  onChanged: (bool? value) {
+                                                    customerController
+                                                            .customerModel
+                                                            .value
+                                                            .data?[index]
+                                                            .markAsRead !=
+                                                        value;
+                                                  }),
+                                              GlobalText(
                                                 customerController
                                                         .customerModel
                                                         .value
                                                         .data?[index]
-                                                        .markAsRead !=
-                                                    value;
-                                              }),
-                                          GlobalText(
-                                            customerController
-                                                    .customerModel
-                                                    .value
-                                                    .data?[index]
-                                                    .mailId
-                                                    ?.mailType
-                                                    .toString()
-                                                    .capitalizeFirst ??
-                                                '',
-                                            fontWeight: FontWeight.w700,
-                                            color: MyColor.black,
-                                          ),
-                                          GlobalText(
-                                            customerController
-                                                    .customerModel
-                                                    .value
-                                                    .data?[index]
-                                                    .currentStatus
-                                                    .toString()
-                                                    .capitalizeFirst ??
-                                                '',
-                                            color: MyColor.black,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          GlobalText(
-                                            customerController
+                                                        .mailId
+                                                        ?.mailType
+                                                        .toString()
+                                                        .capitalizeFirst ??
+                                                    '',
+                                                fontWeight: FontWeight.w700,
+                                                color: MyColor.black,
+                                              ),
+                                              GlobalText(
+                                                customerController
                                                         .customerModel
                                                         .value
                                                         .data?[index]
-                                                        .createdAt !=
-                                                    null
-                                                ? DateFormat('dd-MM-yyyy')
-                                                    .format(DateTime.parse(
-                                                        customerController
-                                                                .customerModel
-                                                                .value
-                                                                .data?[index]
-                                                                .createdAt ??
-                                                            ''))
-                                                : '',
-                                            fontWeight: FontWeight.w700,
-                                            color: MyColor.black,
+                                                        .currentStatus
+                                                        .toString()
+                                                        .capitalizeFirst ??
+                                                    '',
+                                                color: MyColor.black,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ],
                                           ),
-                                          Container(
-                                            height: Get.height * 0.07,
-                                            width: Get.width * 0.25,
-                                            child: customerController
-                                                        .customerModel
-                                                        .value
-                                                        .data
-                                                        ?.length ==
-                                                    null
-                                                ? Center(
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                    color:
-                                                        MyColor.colorBlueHome,
-                                                  ))
-                                                : ListView.builder(
-                                                    itemCount:
-                                                        customerController
-                                                                .customerModel
-                                                                .value
-                                                                .data
-                                                                ?.length ??
-                                                            0,
-                                                    itemBuilder:
-                                                        (context, index) {
-                                                      String baseUrl =
-                                                          'https://service.24x7mail.com/uploads/';
-                                                      String imagePath =
-                                                          customerController
-                                                                  .customerModel
-                                                                  .value
-                                                                  .data?[index]
-                                                                  .mailId
-                                                                  ?.measurement?[
-                                                                      0]
-                                                                  .file ??
-                                                              '';
-                                                      String imageUrl =
-                                                          baseUrl + imagePath;
-
-                                                      return Container(
-                                                        height:
-                                                            Get.height * 0.07,
-                                                        width: Get.width * 0.25,
-                                                        child: GestureDetector(
-                                                          onTap: () async {
-                                                            //await getshipment();
-                                                            _showImageDialog(
-                                                                context,
-                                                                customerController
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              GlobalText(
+                                                customerController
+                                                            .customerModel
+                                                            .value
+                                                            .data?[index]
+                                                            .createdAt !=
+                                                        null
+                                                    ? DateFormat('dd-MM-yyyy')
+                                                        .format(DateTime.parse(
+                                                            customerController
                                                                     .customerModel
                                                                     .value
                                                                     .data?[
                                                                         index]
-                                                                    .mailId
-                                                                    ?.measurement,
-                                                                index);
-                                                          },
-                                                          child: Card(
+                                                                    .createdAt ??
+                                                                ''))
+                                                    : '',
+                                                fontWeight: FontWeight.w700,
+                                                color: MyColor.black,
+                                              ),
+                                              Container(
+                                                height: Get.height * 0.07,
+                                                width: Get.width * 0.25,
+                                                child: customerController
+                                                            .customerModel
+                                                            .value
+                                                            .data
+                                                            ?.length ==
+                                                        null
+                                                    ? Center(
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                        color: MyColor
+                                                            .colorBlueHome,
+                                                      ))
+                                                    : ListView.builder(
+                                                        itemCount:
+                                                            customerController
+                                                                    .customerModel
+                                                                    .value
+                                                                    .data
+                                                                    ?.length ??
+                                                                0,
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          String baseUrl =
+                                                              'https://service.24x7mail.com/uploads/';
+                                                          String imagePath =
+                                                              customerController
+                                                                      .customerModel
+                                                                      .value
+                                                                      .data?[
+                                                                          index]
+                                                                      .mailId
+                                                                      ?.measurement?[
+                                                                          0]
+                                                                      .file ??
+                                                                  '';
+                                                          String imageUrl =
+                                                              baseUrl +
+                                                                  imagePath;
+
+                                                          return Container(
+                                                            height: Get.height *
+                                                                0.07,
+                                                            width: Get.width *
+                                                                0.25,
                                                             child:
-                                                                Image.network(
-                                                              imageUrl,
-                                                              fit: BoxFit.cover,
-                                                              height:
-                                                                  Get.height *
-                                                                      0.03,
+                                                                GestureDetector(
+                                                              onTap: () async {
+                                                                //await getshipment();
+                                                                _showImageDialog(
+                                                                    context,
+                                                                    customerController
+                                                                        .customerModel
+                                                                        .value
+                                                                        .data?[
+                                                                            index]
+                                                                        .mailId
+                                                                        ?.measurement,
+                                                                    index);
+                                                              },
+                                                              child: Card(
+                                                                child: Image
+                                                                    .network(
+                                                                  imageUrl,
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                  height:
+                                                                      Get.height *
+                                                                          0.03,
+                                                                ),
+                                                              ),
                                                             ),
-                                                          ),
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
-                                          ),
-                                          GlobalText(
-                                            customerController
-                                                    .customerModel
-                                                    .value
-                                                    .data?[index]
-                                                    .mailId
-                                                    ?.mailBoxId
-                                                    .toString() ??
-                                                '',
-                                            fontWeight: FontWeight.w700,
-                                            color: MyColor.black,
+                                                          );
+                                                        },
+                                                      ),
+                                              ),
+                                              GlobalText(
+                                                customerController
+                                                        .customerModel
+                                                        .value
+                                                        .data?[index]
+                                                        .mailId
+                                                        ?.mailBoxId
+                                                        .toString() ??
+                                                    '',
+                                                fontWeight: FontWeight.w700,
+                                                color: MyColor.black,
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: Get.height * 0.004,
-                                )
-                              ],
-                            );
-                          }),
+                                    ),
+                                    SizedBox(
+                                      height: Get.height * 0.004,
+                                    )
+                                  ],
+                                );
+                              }),
                 )),
           ],
         ),

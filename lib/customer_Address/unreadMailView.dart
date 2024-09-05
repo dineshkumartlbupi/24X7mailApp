@@ -15,7 +15,7 @@ class UnreadMailView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: MyColor.yellowGold,
+        backgroundColor: Colors.blueAccent,
         title: const GlobalText('UnRead'),
       ),
       body: ListView(
