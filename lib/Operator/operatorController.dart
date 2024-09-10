@@ -21,7 +21,7 @@ class OperatorController extends GetxController {
   RxString selectedMenuValue = ''.obs;
   var selectedMailType = ''.obs;
   var selectedImages = <File>[].obs;
-
+  var isLoadingCustomer = false.obs;
   final List<String> mailTypes = [
     'Envelope',
     'Large Envelope',

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
+import 'package:twentyfourby_seven/Login/loginController.dart';
 import 'package:twentyfourby_seven/Operator/operatorController.dart';
 import 'package:twentyfourby_seven/Service/constant.dart';
 import 'package:twentyfourby_seven/SignUp/signUpController.dart';
@@ -36,6 +37,7 @@ var operatorController = Get.put(OperatorController());
 var signController = Get.put(SignupController());
 var customerAddCtrl = Get.put(ShipmentController());
 var getCustomerAdd = Get.put(CustomerAddController());
+var loginCtrl = Get.put(LoginController());
 void showLoginErrorDialog(String mes) {
   Get.defaultDialog(
     backgroundColor: MyColor.backgroundLogin,
@@ -59,47 +61,84 @@ void showLoginErrorDialog(String mes) {
   );
 }
 
-Future<UserModel?> login(String email, String password) async {
+Future<Map<String, dynamic>?> login(String email, String password) async {
   final url = Uri.parse(ApiURl.userLoginUrl);
-
   final body = {
     'email': email,
     'password': password,
   };
+
   try {
     final response = await http.post(url, body: body);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      final loginResponse = UserModel.fromJson(jsonDecode(response.body));
-      //log('login response ${loginResponse.data?.userType.runtimeType}');
-      log('response withs model ${response.body}');
+      final responseData = jsonDecode(response.body);
 
-      if (loginResponse.token != null && loginResponse.data != null) {
-        SharedPrefs.putString('emailId', loginResponse.data?.email ?? '');
-        SharedPrefs.putString('password', loginResponse.data?.password ?? '');
-        SharedPrefs.putString('Token', loginResponse.token ?? '');
-        SharedPrefs.putString('cID', loginResponse.data?.id ?? '');
-        SharedPrefs.putString('firstNAme', loginResponse.data?.fname ?? '');
-        SharedPrefs.putString('lastNAme', loginResponse.data?.lname ?? '');
+      if (responseData['token'] != null && responseData['data'] != null) {
+        final data = responseData['data'];
+        final token = responseData['token'] ?? '';
+        final userId = data['_id'] ?? '';
+        final userType = data['user_type'] ?? '';
 
-        //Get.offAll(() => CustomerView());
-        return loginResponse;
+        log('user current id $userId');
+        SharedPrefs.putString('Token', token);
+        SharedPrefs.putString('userId', userId);
+
+        if (userType == 'user') {
+          _storeUserDetails(data, userId);
+        } else if (userType == 'operator') {
+          _storeOperatorDetails(data, userId);
+        } else {
+          Get.snackbar('Error', 'Invalid user type: $userType');
+          return null;
+        }
+
+        return responseData;
       } else {
         log('Invalid response data');
-        showLoginErrorDialog(loginResponse.msg.toString());
+        showLoginErrorDialog(responseData['msg'] ?? 'Login failed.');
         return null;
       }
+    } else {
+      log('Failed request: ${response.statusCode}');
+      showLoginErrorDialog('Failed with status code ${response.statusCode}');
+      return null;
     }
   } catch (e) {
     log('Error: $e');
     showLoginErrorDialog(e.toString());
     return null;
   }
-  return UserModel();
+}
+
+void _storeUserDetails(Map<String, dynamic> data, String userId) {
+  SharedPrefs.putString('customerId', userId);
+  final firstName = data['fname'] ?? '';
+  final lastName = data['lname'] ?? '';
+  final email = data['email'] ?? '';
+  final password = data['password'] ?? '';
+
+  SharedPrefs.putString('firstName', firstName);
+  SharedPrefs.putString('lastName', lastName);
+  SharedPrefs.putString('emailId', email);
+  SharedPrefs.putString('password', password);
+}
+
+void _storeOperatorDetails(Map<String, dynamic> data, String userId) {
+  SharedPrefs.putString('operatorId', userId);
+  final firstNameOp = data['f_name'] ?? '';
+  final lastNameOp = data['l_name'] ?? '';
+  final emailOp = data['email'] ?? '';
+  final passwordOp = data['password'] ?? '';
+
+  SharedPrefs.putString('firstNameOp', firstNameOp);
+  SharedPrefs.putString('lastNameOp', lastNameOp);
+  SharedPrefs.putString('emailIdOp', emailOp);
+  SharedPrefs.putString('passwordOp', passwordOp);
 }
 
 Future<void> deleteAccountCustomer() async {
-  var userID = SharedPrefs.getString('cID');
+  var userID = SharedPrefs.getString('userId');
 
   String baseUrl = 'https://service.24x7mail.com/user/soft-delete/$userID';
 
@@ -154,7 +193,7 @@ Future<void> changePassword(
 }
 
 Future<CustomerMailModel?> getCustomerApi() async {
-  var userID = SharedPrefs.getString('cID');
+  var userID = SharedPrefs.getString('userId');
 
   final url = Uri.parse(
       'https://service.24x7mail.com/assign?request_comple%E2%80%A6&user_id=$userID&page=1&limit=10');
@@ -164,7 +203,7 @@ Future<CustomerMailModel?> getCustomerApi() async {
 
     if (response.statusCode == 200) {
       final jsonData = CustomerMailModel.fromJson(jsonDecode(response.body));
-      log('customerData==>$jsonData');
+      //log('customerData==>$jsonData');
       return jsonData;
     } else {
       throw Exception('Failed to load data');
@@ -177,7 +216,7 @@ Future<CustomerMailModel?> getCustomerApi() async {
 
 Future<StatementModell?> getStatementApi() async {
   try {
-    var userID = SharedPrefs.getString('cID');
+    var userID = SharedPrefs.getString('userId');
     final response =
         await http.get(Uri.parse('${ApiURl.getStatementUrl}$userID'));
     if (response.statusCode == 200) {
@@ -249,7 +288,7 @@ Future<void> uploadImage() async {
 
 Future<void> getShipment() async {
   try {
-    var userID = SharedPrefs.getString('cID');
+    var userID = SharedPrefs.getString('userId');
     var token = SharedPrefs.getString('Token');
 
     final response = await http.get(
@@ -275,7 +314,7 @@ Future<void> getShipment() async {
 
 Future<ShipmentstatusModel?> pastShipmentList() async {
   try {
-    var userID = SharedPrefs.getString('cID');
+    var userID = SharedPrefs.getString('userId');
     var token = SharedPrefs.getString('Token');
 
     final response = await http.get(
@@ -304,7 +343,7 @@ Future<ShipmentstatusModel?> pastShipmentList() async {
 
 Future<ShipmentstatusModel?> pendingShipmentList() async {
   try {
-    var userID = SharedPrefs.getString('cID');
+    var userID = SharedPrefs.getString('userId');
     var token = SharedPrefs.getString('Token');
 
     final response = await http.get(
@@ -334,7 +373,7 @@ Future<ShipmentstatusModel?> pendingShipmentList() async {
 
 Future<ShipmentstatusModel?> pickedUpList() async {
   try {
-    var userID = SharedPrefs.getString('cID');
+    var userID = SharedPrefs.getString('userId');
     var token = SharedPrefs.getString('Token');
 
     final response = await http.get(
@@ -517,9 +556,8 @@ Future<ShipmentstatusModel> getTrashList() async {
 
 Future<CustomerMailModel> getReadList(bool isRead) async {
   var token = SharedPrefs.getString('Token');
-  var userID = SharedPrefs.getString('cID');
+  var userID = SharedPrefs.getString('userId');
 
-  String readValue = isRead ? 'true' : 'false';
   var url =
       'https://service.24x7mail.com/assign?&search=&fromDate=&toDate=&user_id=$userID&page=1&limit=10&read=$isRead';
   final response = await http.get(
@@ -538,7 +576,7 @@ Future<CustomerMailModel> getReadList(bool isRead) async {
 }
 
 Future<CustomerMailModel?> getViewIndexData(String? fromDate, toDate) async {
-  var userID = SharedPrefs.getString('cID');
+  var userID = SharedPrefs.getString('userId');
   var token = SharedPrefs.getString('Token');
   final response = await http.get(
     //Uri.parse('https://service.24x7mail.com/assign/shipment-list-added'),
@@ -602,7 +640,7 @@ Future<void> uploadUspsData(Map<String, dynamic> updates) async {
 }
 
 void submitShippingAddress() async {
-  var userID = SharedPrefs.getString('cID');
+  var userID = SharedPrefs.getString('userId');
   var token = SharedPrefs.getString('Token');
   const String url = "https://service.24x7mail.com/shipping-address";
 
@@ -667,7 +705,7 @@ Future<ShipmentModel?> getShipiingList() async {
 Future<void> scanRequestPatchApi(String scanRequest) async {
   try {
     var token = SharedPrefs.getString('Token');
-    var userID = SharedPrefs.getString('cID');
+    var userID = SharedPrefs.getString('userId');
 
 //scan-request
     final Map<String, dynamic> payload = {
@@ -752,12 +790,11 @@ Future<UploadImageModel?> uploadUspsFile(File file, String userId) async {
 ///https://service.24x7mail.com/operator/single?id=667c03b54f19c733a01bcb9c
 Future<OperatorHomeModel?> getOperatorRequestApi() async {
   var token = SharedPrefs.getString('Token');
-  var userID = SharedPrefs.getString('cID');
+  var userID = SharedPrefs.getString('userId');
 
   final response = await http.get(
     // Uri.parse('${ApiURl.operatorHomeApi}+${'667c03b54f19c733a01bcb9c'}'),
-    Uri.parse(
-        'https://service.24x7mail.com/assign/status-count/667c03b54f19c733a01bcb9c'),
+    Uri.parse('https://service.24x7mail.com/assign/status-count/$userID'),
     headers: {
       'Authorization': token,
     },
@@ -778,36 +815,35 @@ Future<OperatorHomeModel?> getOperatorRequestApi() async {
 
 Future<UploadImageModel?> operatorCustomerList() async {
   var token = SharedPrefs.getString('Token');
+  var userID = SharedPrefs.getString('userId');
+
   try {
+    operatorController.isLoadingCustomer.value == true;
     final response = await http.get(
       Uri.parse(
-          'https://service.24x7mail.com/user/customer-list-by-feature/667c046a9503bee4ce480c04?search=&page=1&limit=10'),
+          'https://service.24x7mail.com/user/customer-list-by-feature/$userID?search=&page=1&limit=10'),
       headers: {
         'Authorization': token ?? '', // Use the token for Authorization
       },
     );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      // Parse the JSON response
       final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
 
-      // Log the raw JSON response
       log('jsonResponse: $jsonResponse');
 
-      // Convert JSON response to UploadImageModel
       var modelParsed = UploadImageModel.fromJson(jsonResponse);
 
-      // Log the parsed model data
       log('Parsed UploadImageModel: ${modelParsed.msg} items found.');
 
       return modelParsed;
     } else {
-      // Handle HTTP errors
       log('Failed to load customer list: ${response.statusCode}');
       return null;
     }
   } catch (e) {
-    // Handle exceptions
+    operatorController.isLoadingCustomer.value == false;
+
     log('Exception occurred: $e');
     return null;
   }
@@ -815,10 +851,10 @@ Future<UploadImageModel?> operatorCustomerList() async {
 
 Future<OperatorAddModel?> getOperatorSettingApi() async {
   var token = SharedPrefs.getString('Token');
+  var userID = SharedPrefs.getString('userId');
 
   final response = await http.get(
-    Uri.parse(
-        'https://service.24x7mail.com/operator/single?id=667c03b54f19c733a01bcb9c'),
+    Uri.parse('https://service.24x7mail.com/operator/single?id=$userID'),
     headers: {
       'Authorization': token,
     },
@@ -835,13 +871,14 @@ Future<OperatorAddModel?> getOperatorSettingApi() async {
   return OperatorAddModel();
 }
 
-Future<void> operatorChangePassword() async {
+Future<void> operatorChangePassword(String oldPassword, newPassword) async {
   var token = SharedPrefs.getString('Token');
   final url = Uri.parse('https://api.24x7mail.com/user/change-password');
 
   final response = await http.post(url,
       headers: {'Authorization': token},
-      body: jsonEncode({"currentPassword": "1234", "newPassword": "1234"}));
+      body: jsonEncode(
+          {"currentPassword": oldPassword, "newPassword": newPassword}));
 
   if (response.statusCode == 200 || response.statusCode == 201) {
     var forgetPassword = jsonDecode(response.body);
@@ -896,7 +933,9 @@ Future<void> updateOperatorProfile(
   }
 }
 
-Future<void> addRange() async {
+Future<void> addRange(String fromData, toData) async {
+  var userID = SharedPrefs.getString('userId');
+
   const String baseUrl = 'https://service.24x7mail.com/operator/add-range';
 
   ///view status get Api  https://service.24x7mail.com/operator/single?id=667c04004f19c733a01bcba3
@@ -904,8 +943,8 @@ Future<void> addRange() async {
   var token = SharedPrefs.getString('Token');
 
   var body = {
-    "id": "667c04004f19c733a01bcba3",
-    "range": {"from": 4, "to": 6}
+    "id": "$userID",
+    "range": {"from": fromData, "to": toData}
   };
 
   try {
@@ -935,10 +974,11 @@ Future<void> addRange() async {
 
 Future<OperatorAddModel?> getOperatorReportOperationApi() async {
   var token = SharedPrefs.getString('Token');
+  var userID = SharedPrefs.getString('userId');
 
   final response = await http.get(
     Uri.parse(
-        'https://service.24x7mail.com/operator/customer-operation/667c03b54f19c733a01bcb9c?limit=10&page_no=1'),
+        'https://service.24x7mail.com/operator/customer-operation/$userID?limit=10&page_no=1'),
     headers: {
       'Authorization': token,
     },
@@ -957,11 +997,11 @@ Future<OperatorAddModel?> getOperatorReportOperationApi() async {
 
 Future<OperationModel?> getOperatorReportCustomerApi() async {
   var token = SharedPrefs.getString('Token');
-  var userID = SharedPrefs.getString('cID');
+  var userID = SharedPrefs.getString('userId');
 
   final response = await http.get(
     Uri.parse(
-        'https://service.24x7mail.com/operator/customer-operation/667c03b54f19c733a01bcb9c?limit=10&page_no=1'),
+        'https://service.24x7mail.com/operator/customer-operation/$userID?limit=10&page_no=1'),
     headers: {
       'Authorization': token,
     },
@@ -982,11 +1022,11 @@ Future<OperationModel?> getOperatorReportCustomerApi() async {
 
 Future<OperatorOperationModel?> getOperatorReportOperationHOmeApi() async {
   var token = SharedPrefs.getString('Token');
-  var userID = SharedPrefs.getString('cID');
+  var userID = SharedPrefs.getString('userId');
 
   final response = await http.get(
     Uri.parse(
-        'https://service.24x7mail.com/operator/operator-operation/667c03b54f19c733a01bcb9c'),
+        'https://service.24x7mail.com/operator/operator-operation/$userID'),
     headers: {
       'Authorization': token,
     },
@@ -1008,11 +1048,10 @@ Future<OperatorOperationModel?> getOperatorReportOperationHOmeApi() async {
 
 Future<StatementReportModel?> statementReport() async {
   var token = SharedPrefs.getString('Token');
-  var userID = SharedPrefs.getString('cID');
+  var userID = SharedPrefs.getString('userId');
 
   final response = await http.get(
-    Uri.parse(
-        'https://service.24x7mail.com/monthly-report/get-report/667c03b54f19c733a01bcb9c'),
+    Uri.parse('https://service.24x7mail.com/monthly-report/get-report/$userID'),
     headers: {
       'Authorization': token,
     },
@@ -1033,11 +1072,11 @@ Future<StatementReportModel?> statementReport() async {
 
 Future<CloseAccountModel?> getDeleteCustomerList() async {
   var token = SharedPrefs.getString('Token');
-  var userID = SharedPrefs.getString('cID');
+  var userID = SharedPrefs.getString('userId');
 
   final response = await http.get(
     Uri.parse(
-        'https://service.24x7mail.com/operator/delete-customer-list/667c03b54f19c733a01bcb9c'),
+        'https://service.24x7mail.com/operator/delete-customer-list/$userID'),
     headers: {
       'Authorization': token,
     },
@@ -1058,10 +1097,10 @@ Future<CloseAccountModel?> getDeleteCustomerList() async {
 
 Future<AssignMailModel?> getAssignMailPending(String mailStatus) async {
   var token = SharedPrefs.getString('Token');
-  var userID = SharedPrefs.getString('cID');
+  var userID = SharedPrefs.getString('userId');
   final response = await http.get(
     Uri.parse(
-        'https://service.24x7mail.com/mails?operator=667c03b54f19c733a01bcb9c&mail_status=$mailStatus&page=1&limit=9'),
+        'https://service.24x7mail.com/mails?operator=$userID&mail_status=$mailStatus&page=1&limit=9'),
     headers: {
       'Authorization': token,
     },
@@ -1071,7 +1110,6 @@ Future<AssignMailModel?> getAssignMailPending(String mailStatus) async {
   if (response.statusCode == 200 || response.statusCode == 201) {
     var assignPending = AssignMailModel.fromJson(jsonDecode(response.body));
 
-    log('deleteCustomerList=> $assignPending');
     return assignPending;
   } else {
     Get.snackbar(
@@ -1080,13 +1118,12 @@ Future<AssignMailModel?> getAssignMailPending(String mailStatus) async {
   return AssignMailModel();
 }
 
-//https://service.24x7mail.com/assign?operator=667c03b54f19c733a01bcb9c&current_status=shipment_complete&search=&fromDate=&toDate=&page=1&limit=100
-Future<MailManagementModelOp?> mailManagementOp() async {
+Future<MailManagementModelOp?> mailManagementOp(String manageMails) async {
   var token = SharedPrefs.getString('Token');
-  var userID = SharedPrefs.getString('cID');
+  var userID = SharedPrefs.getString('userId');
   final response = await http.get(
     Uri.parse(
-        'https://service.24x7mail.com/assign?operator=667c03b54f19c733a01bcb9c&current_status=shipment_complete&search=&fromDate=&toDate=&page=1&limit=100'),
+        'https://service.24x7mail.com/assign?operator=$userID&current_status=$manageMails&search=&fromDate=&toDate=&page=1&limit=100'),
     headers: {
       'Authorization': token,
     },
@@ -1105,7 +1142,31 @@ Future<MailManagementModelOp?> mailManagementOp() async {
   }
   return MailManagementModelOp();
 }
-//https://service.24x7mail.com/mails?mail_id=operator@gmail.com
+
+Future<MailManagementModelOp?> mailManagementAssignOp() async {
+  var token = SharedPrefs.getString('Token');
+  var userID = SharedPrefs.getString('userId');
+  final response = await http.get(
+    Uri.parse(
+        'https://service.24x7mail.com/assign?operator=$userID&page=1&limit=10&search=&fromDate=&toDate=&current_status='),
+    headers: {
+      'Authorization': token,
+    },
+  );
+  log('MailManagementModelOp ${response.body}');
+
+  if (response.statusCode == 200 || response.statusCode == 201) {
+    var mailManagementModelOpData =
+        MailManagementModelOp.fromJson(jsonDecode(response.body));
+
+    log('MailManagementModelOp=> $mailManagementModelOpData');
+    return mailManagementModelOpData;
+  } else {
+    Get.snackbar(
+        "Error", "Failed to submit assign Pending: ${response..statusCode}");
+  }
+  return MailManagementModelOp();
+}
 
 Future<void> searchMail(String mailId) async {
   String baseUrl = 'https://service.24x7mail.com/mails?mail_id=$mailId';
@@ -1124,7 +1185,7 @@ Future<void> searchMail(String mailId) async {
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       log('mail successfully: ${response.body}');
-      Get.snackbar('Success', 'Range added successfully');
+      Get.snackbar('Success', 'send mail successfully');
     } else {
       log('Failed to search mail: ${response.statusCode}');
       Get.snackbar('Error', 'Failed to search mail: ${response.statusCode}');

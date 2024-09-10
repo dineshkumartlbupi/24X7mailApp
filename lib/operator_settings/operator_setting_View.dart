@@ -151,7 +151,8 @@ class OperatorSettingView extends StatelessWidget {
                     Center(
                       child: ElevatedButton(
                           onPressed: () async {
-                            await addRange();
+                            await addRange(
+                                fromController.text, toController.text);
                           },
                           child: const GlobalText('Save Setting')),
                     ),
@@ -174,7 +175,7 @@ class OperatorSettingView extends StatelessWidget {
                           ),
                         ],
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -282,7 +283,9 @@ class OperatorSettingView extends StatelessWidget {
                         String confirmPassword = confirmPasswordController.text;
 
                         if (newPassword == confirmPassword) {
-                          await operatorChangePassword();
+                          await operatorChangePassword(
+                              oldPasswordController.text,
+                              confirmPasswordController.text);
                           log('Password changed successfully!');
                         } else {
                           log('old $oldPassword');

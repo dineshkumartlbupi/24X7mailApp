@@ -5,7 +5,6 @@ import 'package:twentyfourby_seven/Utils/Mycolor.dart';
 import 'package:twentyfourby_seven/Utils/addImage.dart';
 import 'package:twentyfourby_seven/Utils/globalText.dart';
 
-import '../Customer/customerView.dart';
 import '../Service/api.dart';
 import '../Utils/SharedPrefrance.dart';
 
@@ -205,34 +204,6 @@ class LoginScreen extends StatelessWidget {
                                 InkWell(
                                   onTap: () async {
                                     await loginController.submit();
-                                    var emailText =
-                                        SharedPrefs.getString('emailId');
-                                    var passwordText =
-                                        SharedPrefs.getString('password');
-                                    final userType = loginController
-                                            .loginModel.value.data?.userType
-                                            ?.toString() ??
-                                        '';
-                                    if (loginController.emailController.text ==
-                                            emailText ||
-                                        loginController
-                                                .passwordController.text ==
-                                            passwordText) {
-                                      Get.offAll(() => CustomerView());
-                                    } else {
-                                      showLoginErrorDialog(loginController
-                                              .loginModel.value.msg
-                                              .toString() ??
-                                          '');
-                                    }
-                                    /* if (userType == "user") {
-                                      Get.offAll(() => CustomerView());
-                                    } else if (userType == "operator") {
-                                      Get.offAll(() => OperatorRequestHome());
-                                    } else {
-                                      Get.snackbar('Error',
-                                          'Invalid user type: $userType');
-                                    }*/
                                   },
                                   child: Container(
                                     height: Get.height * 0.05,

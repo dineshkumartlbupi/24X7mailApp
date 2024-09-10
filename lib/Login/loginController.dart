@@ -2,8 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:twentyfourby_seven/models/profileModel.dart';
 
+import '../Customer/customerView.dart';
+import '../Operator/operator_requestHome.dart';
 import '../Service/api.dart';
 import '../Utils/SharedPrefrance.dart';
 
@@ -16,7 +17,6 @@ class LoginController extends GetxController {
   final passwordController = TextEditingController();
   final resetEmailController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  Rx<UserModel> loginModel = UserModel().obs;
 
   @override
   void onClose() {
@@ -30,22 +30,61 @@ class LoginController extends GetxController {
   }
 
   Future<void> submit() async {
-    var token = SharedPrefs.getString('Token');
-    //if (formKey.currentState!.validate() && (token == null || token.isEmpty)) {
+    var emailText = SharedPrefs.getString('emailId');
+    var passwordText = SharedPrefs.getString('password');
+    var emailOpText = SharedPrefs.getString('emailIdOp');
+    var passwordOpText = SharedPrefs.getString('passwordOp');
+
     if (formKey.currentState!.validate()) {
-      var loginResponse =
+      final loginResponse =
           await login(emailController.text, passwordController.text);
 
       if (loginResponse != null) {
-        log('Login successful, navigating to appropriate screen.');
-      } else {
-        log('Login failed.');
+        if (loginResponse['token'] != null && loginResponse['data'] != null) {
+          final userType = loginResponse['data']['user_type'] ?? '';
+          log('Controller userType: $userType');
+
+          if (userType == 'user') {
+            bool isEmailMatching = emailController.text == emailText;
+            bool isPasswordMatching = passwordController.text == passwordText;
+
+            log('User email check: ${emailController.text} == $emailText');
+            log('User password check: ${passwordController.text} == $passwordText');
+
+            if (isEmailMatching || isPasswordMatching) {
+              final firstName = SharedPrefs.getString('firstName') ?? '';
+              final lastName = SharedPrefs.getString('lastName') ?? '';
+              log('User First Name: $firstName, Last Name: $lastName');
+              Get.offAll(() => CustomerView());
+            } else {
+              showLoginErrorDialog(
+                  'Email or password does not match the stored user credentials.');
+            }
+          } else if (userType == 'operator') {
+            bool isEmailMatching = emailController.text == emailOpText;
+            bool isPasswordMatching = passwordController.text == passwordOpText;
+
+            log('Operator email check: ${emailController.text} == $emailOpText');
+            log('Operator password check: ${passwordController.text} == $passwordOpText');
+
+            if (isEmailMatching || isPasswordMatching) {
+              final firstNameOp = SharedPrefs.getString('firstNameOp') ?? '';
+              final lastNameOp = SharedPrefs.getString('lastNameOp') ?? '';
+              log('Operator First Name: $firstNameOp, Last Name: $lastNameOp');
+              Get.offAll(() => OperatorRequestHome());
+            } else {
+              showLoginErrorDialog(
+                  'Email or password does not match the stored operator credentials.');
+            }
+          } else {
+            Get.snackbar('Error', 'Invalid user type: $userType');
+          }
+        } else {
+          showLoginErrorDialog('Email or password is incorrect.');
+        }
       }
     } else {
-      log('User already logged in or invalid form');
-      if (token != null && token.isNotEmpty) {
-        log('User already has a valid token');
-      }
+      log('Form validation failed.');
     }
   }
 }

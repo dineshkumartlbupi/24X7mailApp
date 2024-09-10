@@ -21,10 +21,13 @@ class CustomerView extends StatelessWidget {
   CustomerView({super.key});
   final customerController = Get.put(CustomerController());
   final loginCtrl = Get.put(LoginController());
+  var firstName = SharedPrefs.getString('firstNAme');
+  var lastName = SharedPrefs.getString('lastNAme');
   @override
   Widget build(BuildContext context) {
-    var firstName = SharedPrefs.getString('firstNAme');
-    var lastName = SharedPrefs.getString('lastNAme');
+    log('customer $firstName');
+    log('fisry $lastName');
+
     return WillPopScope(
       onWillPop: () async {
         await SharedPrefs.remove('Token');
@@ -61,6 +64,8 @@ class CustomerView extends StatelessWidget {
                         }
                         var token = SharedPrefs.getString('Token');
                         SharedPrefs.remove(token);
+                        SharedPrefs.clear();
+
                         loginCtrl.rememberMe.value = false;
                         loginCtrl.emailController.clear();
                         loginCtrl.passwordController.clear();

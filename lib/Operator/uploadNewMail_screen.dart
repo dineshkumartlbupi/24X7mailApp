@@ -193,41 +193,28 @@ class UploadNewMailScreen extends StatelessWidget {
             SizedBox(height: Get.height * 0.02),
             Container(
               height: Get.height * 0.35,
-              color: MyColor.deepPurple,
               child: Obx(() => Card(
-                    child: ListView.builder(
-                      itemCount: mailController.customerList.value.data?.length,
-                      itemBuilder: (BuildContext context, int index) => Column(
-                        children: [
-                          GlobalText(mailController
-                                  .customerList.value.data?[index].userType
-                                  .toString() ??
-                              ''),
-                          GlobalText(mailController
-                                  .customerList.value.data?[index].lname
-                                  .toString() ??
-                              ''),
-                        ],
-                      ),
-                    ),
+                    child: mailController.customerList.value.data!.isEmpty
+                        ? Center(child: GlobalText('No data Found'))
+                        : ListView.builder(
+                            itemCount:
+                                mailController.customerList.value.data?.length,
+                            itemBuilder: (BuildContext context, int index) =>
+                                Column(
+                              children: [
+                                GlobalText(mailController.customerList.value
+                                        .data?[index].userType
+                                        .toString() ??
+                                    ''),
+                                GlobalText(mailController
+                                        .customerList.value.data?[index].lname
+                                        .toString() ??
+                                    ''),
+                              ],
+                            ),
+                          ),
                   )),
             ),
-
-            /* Expanded(
-              child: Obx(() => ListView.builder(
-                itemCount: mailController.filteredCustomerList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  var customer = mailController.filteredCustomerList[index];
-                  return Card(
-                    color: MyColor.yellowGold,
-                    child: ListTile(
-                      title: GlobalText(customer.userType.toString() ?? ''),
-                      subtitle: GlobalText(customer.lname.toString() ?? ''),
-                    ),
-                  );
-                },
-              )),
-            ),*/
           ],
         ),
       ),

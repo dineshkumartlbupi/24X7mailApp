@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:twentyfourby_seven/Utils/Mycolor.dart';
@@ -51,7 +52,7 @@ class CustomerAdd extends StatelessWidget {
                   children: [
                     const Icon(
                       Icons.supervised_user_circle_sharp,
-                      color: MyColor.brightBlue,
+                      color: MyColor.black,
                     ),
                     SizedBox(
                       width: Get.width * 0.055,
@@ -93,7 +94,7 @@ class CustomerAdd extends StatelessWidget {
                   children: [
                     const Icon(
                       Icons.account_balance_rounded,
-                      color: MyColor.brightBlue,
+                      color: MyColor.black,
                     ),
                     SizedBox(
                       width: Get.width * 0.02,
@@ -164,54 +165,73 @@ class CustomerAdd extends StatelessWidget {
                     color: MyColor.cardIColorIndigo,
                     size: 32.0,
                   ),
-                  Flexible(
-                      child: Obx(
-                    () => Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            GlobalText(
-                              customerAddView
-                                      .propertyModel.value?.data?.username
-                                      .toString()
-                                      .capitalizeFirst ??
-                                  '',
-                              fontSize: 16.0,
-                              color: Colors.black87,
-                              fontWeight: FontWeight.w700,
-                            ),
-                            SizedBox(
-                              width: Get.width * 0.004,
-                            ),
-                            GlobalText(
-                              customerAddView.propertyModel.value?.data?.lname
-                                      .toString()
-                                      .capitalizeFirst ??
-                                  '',
-                              fontSize: 16.0,
-                              color: Colors.black87,
-                              fontWeight: FontWeight.w700,
-                            ),
-                            GlobalText(
-                              '  #${customerAddView.propertyModel.value?.data?.mailBoxNum.toString() ?? ''}',
-                              fontSize: 16.0,
-                              color: Colors.black87,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ],
-                        ),
-                        GlobalText(
-                          customerAddView.propertyModel.value?.data?.feature
-                                  ?.properties?.featureDetails?.businessAddress
-                                  .toString() ??
-                              '',
-                          fontSize: 16.0,
-                          color: Colors.black87,
-                        ),
-                      ],
-                    ),
+                  Flexible(child: Obx(
+                    () {
+                      final data = customerAddView.propertyModel.value?.data;
+
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          data == null
+                              ? const Center(
+                                  child: CupertinoActivityIndicator(
+                                    color: MyColor.brightBlue,
+                                  ),
+                                )
+                              /*: data.isEmpty
+                                  ? const GlobalText('No Address Found')
+                              */
+                              : Row(
+                                  children: [
+                                    GlobalText(
+                                      customerAddView.propertyModel.value?.data
+                                              ?.username
+                                              .toString()
+                                              .capitalizeFirst ??
+                                          '',
+                                      fontSize: 16.0,
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                    SizedBox(
+                                      width: Get.width * 0.004,
+                                    ),
+                                    GlobalText(
+                                      customerAddView
+                                              .propertyModel.value?.data?.lname
+                                              .toString()
+                                              .capitalizeFirst ??
+                                          '',
+                                      fontSize: 16.0,
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                    GlobalText(
+                                      '  #${customerAddView.propertyModel.value?.data?.mailBoxNum.toString() ?? ''}',
+                                      fontSize: 16.0,
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ],
+                                ),
+                          GlobalText(
+                            customerAddView
+                                    .propertyModel
+                                    .value
+                                    ?.data
+                                    ?.feature
+                                    ?.properties
+                                    ?.featureDetails
+                                    ?.businessAddress
+                                    .toString() ??
+                                '',
+                            fontSize: 16.0,
+                            color: Colors.black87,
+                          ),
+                        ],
+                      );
+                    },
                   )),
                 ],
               ),

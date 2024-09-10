@@ -52,8 +52,8 @@ class CustomerController extends GetxController {
   }
 
   Future<void> getCustomerDetails() async {
-    var userID = SharedPrefs.getString('cID');
-    log('userID==>$userID');
+    var userID = SharedPrefs.getString('userId');
+    log('customerId==>$userID');
     customerModel.value = (await getCustomerApi()) ?? customerModel.value;
   }
 
