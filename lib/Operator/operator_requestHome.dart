@@ -16,7 +16,8 @@ import 'operator_report/operator_reports.dart';
 
 class OperatorRequestHome extends StatelessWidget {
   OperatorRequestHome({super.key});
-  final homeOperatorController = Get.put(OperatorController());
+  var homeOperatorController = Get.find<OperatorController>();
+
   var firstName = SharedPrefs.getString('firstNameOp');
   var lastName = SharedPrefs.getString('lastNameOp');
   final loginController = Get.put(LoginController());

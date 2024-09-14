@@ -10,7 +10,7 @@ import 'operatorController.dart';
 
 class AssignMailScreen extends StatelessWidget {
   AssignMailScreen({super.key});
-  var assignController = Get.put(OperatorController());
+  var assignController = Get.find<OperatorController>();
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

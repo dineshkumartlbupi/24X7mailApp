@@ -69,11 +69,14 @@ Future<Map<String, dynamic>?> login(String email, String password) async {
   };
 
   try {
+    loginCtrl.isLoginData = true.obs;
+
     final response = await http.post(url, body: body);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       final responseData = jsonDecode(response.body);
-
+      log('response with model $responseData}');
+      loginCtrl.isLoginData = true.obs;
       if (responseData['token'] != null && responseData['data'] != null) {
         final data = responseData['data'];
         final token = responseData['token'] ?? '';
@@ -92,7 +95,6 @@ Future<Map<String, dynamic>?> login(String email, String password) async {
           Get.snackbar('Error', 'Invalid user type: $userType');
           return null;
         }
-
         return responseData;
       } else {
         log('Invalid response data');
@@ -108,6 +110,8 @@ Future<Map<String, dynamic>?> login(String email, String password) async {
     log('Error: $e');
     showLoginErrorDialog(e.toString());
     return null;
+  } finally {
+    loginCtrl.isLoginData = false.obs;
   }
 }
 
@@ -261,29 +265,44 @@ Future<UserModel?> getProfileApi() async {
   return UserModel();
 }
 
-Future<void> uploadImage() async {
+Future<UploadImageModel?> uploadImageOperator(
+    String mailType, File file) async {
   try {
     var token = SharedPrefs.getString('Token');
 
-    final response = await http.post(
-      Uri.parse(ApiURl.postUploadMail),
-      body: {''},
-      headers: {
-        'Authorization': token,
-      },
+    var request = http.MultipartRequest(
+      'PATCH',
+      Uri.parse('https://24x7mail.com/operator/mail/upload-new-mail'),
     );
-    log('shipment ${response.statusCode}');
-    log('shipment==>${response.body}');
 
-    if (response.statusCode == 200) {
-      final jsonResponse = jsonDecode(response.body);
-      return jsonResponse;
+    request.headers['Authorization'] = token;
+    request.headers['Content-Type'] = 'multipart/form-data';
+
+    request.files.add(await http.MultipartFile.fromPath(
+      'file',
+      file.path,
+      filename: basename(file.path),
+    ));
+
+    request.fields['mailType'] = mailType;
+
+    var response = await request.send();
+    log('image upload review ${response.statusCode}');
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      var responseBody = await http.Response.fromStream(response);
+
+      var jsonResponse = json.decode(responseBody.body);
+      var uploaded = UploadImageModel.fromJson(jsonResponse);
+      Get.snackbar('file upload', uploaded.msg.toString());
+      return uploaded;
     } else {
-      throw Exception('Failed to load data');
+      var responseBody = await http.Response.fromStream(response);
+      throw Exception('Failed to upload file: ${responseBody.reasonPhrase}');
     }
   } catch (e) {
     log('Error: $e');
-  } finally {}
+    return null;
+  }
 }
 
 Future<void> getShipment() async {
@@ -579,7 +598,6 @@ Future<CustomerMailModel?> getViewIndexData(String? fromDate, toDate) async {
   var userID = SharedPrefs.getString('userId');
   var token = SharedPrefs.getString('Token');
   final response = await http.get(
-    //Uri.parse('https://service.24x7mail.com/assign/shipment-list-added'),
     Uri.parse(
         'https://service.24x7mail.com/assign?request_completed=true&&search=&$fromDate=&$toDate=&user_id=$userID&page=1&limit=10'),
     headers: {
@@ -589,7 +607,6 @@ Future<CustomerMailModel?> getViewIndexData(String? fromDate, toDate) async {
 
   if (response.statusCode == 200 || response.statusCode == 201) {
     var responseData = CustomerMailModel.fromJson(jsonDecode(response.body));
-    //log('View Index: $responseData');
 
     return responseData;
   } else {
@@ -649,9 +666,20 @@ void submitShippingAddress() async {
     "company": customerAddCtrl.companyController.text,
     "address1": customerAddCtrl.addLineOneController.text,
     "address2": customerAddCtrl.addLineTwoController.text,
-    "country": {"country_id": "233", "name": "United States"},
-    "state": {"country_id": "233", "state_id": 1456, "name": "Alabama"},
-    "city": {"state_id": 1456, "city_id": 111146, "name": "Alexander City"},
+    "country": {
+      "country_id": "233",
+      "name": customerAddCtrl.selectedCountry.toString()
+    },
+    "state": {
+      "country_id": "233",
+      "state_id": 1456,
+      "name": customerAddCtrl.selectedState.toString()
+    },
+    "city": {
+      "state_id": 1456,
+      "city_id": 111146,
+      "name": customerAddCtrl.selectedCity.toString()
+    },
     "postal_code": customerAddCtrl.postolController.text,
     "phone": customerAddCtrl.phoneController.text,
     "user_id": userID
@@ -818,16 +846,16 @@ Future<UploadImageModel?> operatorCustomerList() async {
   var userID = SharedPrefs.getString('userId');
 
   try {
-    operatorController.isLoadingCustomer.value == true;
     final response = await http.get(
       Uri.parse(
           'https://service.24x7mail.com/user/customer-list-by-feature/$userID?search=&page=1&limit=10'),
       headers: {
-        'Authorization': token ?? '', // Use the token for Authorization
+        'Authorization': token,
       },
     );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
+      operatorController.isLoadingCustomer.value == true;
       final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
 
       log('jsonResponse: $jsonResponse');

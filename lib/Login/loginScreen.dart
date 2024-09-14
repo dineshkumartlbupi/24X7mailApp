@@ -206,19 +206,23 @@ class LoginScreen extends StatelessWidget {
                                     await loginController.submit();
                                   },
                                   child: Container(
-                                    height: Get.height * 0.05,
-                                    width: Get.width,
-                                    decoration: BoxDecoration(
-                                        color: MyColor.nevyBlue,
-                                        borderRadius:
-                                            BorderRadius.circular(12)),
-                                    child: Center(
-                                        child: GlobalText(
-                                      'Login',
-                                      fontSize: Get.height * 0.02,
-                                      color: MyColor.white,
-                                    )),
-                                  ),
+                                      height: Get.height * 0.05,
+                                      width: Get.width,
+                                      decoration: BoxDecoration(
+                                          color: MyColor.nevyBlue,
+                                          borderRadius:
+                                              BorderRadius.circular(12)),
+                                      child: Center(
+                                          child: loginController
+                                                  .isLoginData.value
+                                              ? CircularProgressIndicator(
+                                                  color: MyColor.brightBlue,
+                                                )
+                                              : GlobalText(
+                                                  'Login',
+                                                  fontSize: Get.height * 0.02,
+                                                  color: MyColor.white,
+                                                ))),
                                 ),
 
                                 /* Padding(

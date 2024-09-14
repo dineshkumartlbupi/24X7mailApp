@@ -13,12 +13,10 @@ import '../../models/customerMailModel.dart';
 
 class MailViewAll extends StatelessWidget {
   MailViewAll({super.key});
-  final customerController = Get.put(CustomerController());
+  final customerController = Get.find<CustomerController>();
   final loginCtrl = Get.put(LoginController());
   @override
   Widget build(BuildContext context) {
-    var firstName = SharedPrefs.getString('firstNAme');
-    var lastName = SharedPrefs.getString('lastNAme');
     return WillPopScope(
       onWillPop: () async {
         await SharedPrefs.remove('Token');

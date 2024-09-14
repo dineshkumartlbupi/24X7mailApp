@@ -20,7 +20,7 @@ class CustomerController extends GetxController {
   Rx<CustomerMailModel> customerModel = CustomerMailModel().obs;
   Rx<CustomerMailModel> customerIndexMail = CustomerMailModel().obs;
   Rx<CustomerMailModel> readListData = CustomerMailModel().obs;
-  Rx<CustomerMailModel> UnreadListData = CustomerMailModel().obs;
+  Rx<CustomerMailModel> unreadListData = CustomerMailModel().obs;
   String? baseUrl;
   List<Data> filteredList = [];
 
@@ -70,7 +70,7 @@ class CustomerController extends GetxController {
   }
 
   Future<void> getUnReadDetails() async {
-    UnreadListData.value = await getReadList(false);
+    unreadListData.value = await getReadList(false);
   }
 
   //final readListTrue = await getReadList('2024-01-01', '2024-01-31', true);

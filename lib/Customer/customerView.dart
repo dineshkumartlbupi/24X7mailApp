@@ -21,10 +21,11 @@ class CustomerView extends StatelessWidget {
   CustomerView({super.key});
   final customerController = Get.put(CustomerController());
   final loginCtrl = Get.put(LoginController());
-  var firstName = SharedPrefs.getString('firstNAme');
-  var lastName = SharedPrefs.getString('lastNAme');
+
   @override
   Widget build(BuildContext context) {
+    final firstName = SharedPrefs.getString('firstName') ?? '';
+    final lastName = SharedPrefs.getString('lastName') ?? '';
     log('customer $firstName');
     log('fisry $lastName');
 

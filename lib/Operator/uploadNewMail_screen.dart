@@ -6,11 +6,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:twentyfourby_seven/Utils/Mycolor.dart';
 import 'package:twentyfourby_seven/Utils/globalText.dart';
 
+import '../Service/api.dart';
 import 'operatorController.dart';
 
 class UploadNewMailScreen extends StatelessWidget {
   UploadNewMailScreen({super.key});
-  final OperatorController mailController = Get.put(OperatorController());
+  final mailController = Get.find<OperatorController>();
   final ImagePicker _picker = ImagePicker();
 
   @override
@@ -110,8 +111,8 @@ class UploadNewMailScreen extends StatelessWidget {
                                 )
                               : Obx(() {
                                   return Wrap(
-                                    spacing: 10.0,
-                                    runSpacing: 10.0,
+                                    spacing: 5.0,
+                                    runSpacing: 5.0,
                                     children: mailController.selectedImages
                                         .map((file) {
                                       return Stack(
@@ -150,7 +151,11 @@ class UploadNewMailScreen extends StatelessWidget {
                   ),
                   SizedBox(height: Get.height * 0.02),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      await uploadImageOperator(
+                          mailController.selectedMailType.value,
+                          mailController.selectedImages.first);
+                    },
                     child: const GlobalText(
                       'Upload',
                       color: MyColor.cardIColorIndigo,
@@ -194,7 +199,7 @@ class UploadNewMailScreen extends StatelessWidget {
             Container(
               height: Get.height * 0.35,
               child: Obx(() => Card(
-                    child: mailController.customerList.value.data!.isEmpty
+                    child: mailController.customerList.value.data == null
                         ? Center(child: GlobalText('No data Found'))
                         : ListView.builder(
                             itemCount:

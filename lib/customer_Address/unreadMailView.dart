@@ -24,7 +24,7 @@ class UnreadMailView extends StatelessWidget {
               height: Get.height * 0.7,
               width: Get.width,
               child: Obx(
-                () => unreadData.UnreadListData.value.data == null
+                () => unreadData.unreadListData.value.data == null
                     ? Center(
                         child: Column(
                         children: [
@@ -37,14 +37,14 @@ class UnreadMailView extends StatelessWidget {
                           ),
                         ],
                       ))
-                    : unreadData.UnreadListData.value.data?.length == null
+                    : unreadData.unreadListData.value.data?.length == null
                         ? Center(
                             child: CircularProgressIndicator(
                             color: MyColor.colorBlueHome,
                           ))
                         : ListView.builder(
                             itemCount:
-                                unreadData.UnreadListData.value.data?.length,
+                                unreadData.unreadListData.value.data?.length,
                             itemBuilder: (_, index) {
                               return Column(
                                 mainAxisAlignment:
@@ -71,7 +71,7 @@ class UnreadMailView extends StatelessWidget {
                                                 })),
                                             GlobalText(
                                               unreadData
-                                                      .UnreadListData
+                                                      .unreadListData
                                                       .value
                                                       .data?[index]
                                                       .mailId
@@ -84,7 +84,7 @@ class UnreadMailView extends StatelessWidget {
                                             ),
                                             GlobalText(
                                               unreadData
-                                                      .UnreadListData
+                                                      .unreadListData
                                                       .value
                                                       .data?[index]
                                                       .currentStatus
@@ -102,7 +102,7 @@ class UnreadMailView extends StatelessWidget {
                                           children: [
                                             Obx(() {
                                               var data = unreadData
-                                                  .UnreadListData.value.data;
+                                                  .unreadListData.value.data;
                                               if (data == null ||
                                                   index >= data.length) {
                                                 return GlobalText(
@@ -131,7 +131,7 @@ class UnreadMailView extends StatelessWidget {
                                             Container(
                                               height: Get.height * 0.07,
                                               width: Get.width * 0.25,
-                                              child: unreadData.UnreadListData
+                                              child: unreadData.unreadListData
                                                           .value.data?.length ==
                                                       null
                                                   ? const Center(
@@ -142,7 +142,7 @@ class UnreadMailView extends StatelessWidget {
                                                     ))
                                                   : ListView.builder(
                                                       itemCount: unreadData
-                                                              .UnreadListData
+                                                              .unreadListData
                                                               .value
                                                               .data
                                                               ?.length ??
@@ -152,7 +152,7 @@ class UnreadMailView extends StatelessWidget {
                                                         String baseUrl =
                                                             'https://service.24x7mail.com/uploads/';
                                                         String imagePath = unreadData
-                                                                .UnreadListData
+                                                                .unreadListData
                                                                 .value
                                                                 .data?[index]
                                                                 .mailId
@@ -174,7 +174,7 @@ class UnreadMailView extends StatelessWidget {
                                                               _showImageReadDialog(
                                                                   context,
                                                                   unreadData
-                                                                      .UnreadListData
+                                                                      .unreadListData
                                                                       .value
                                                                       .data?[
                                                                           index]
@@ -200,7 +200,7 @@ class UnreadMailView extends StatelessWidget {
                                             ),
                                             GlobalText(
                                               unreadData
-                                                      .UnreadListData
+                                                      .unreadListData
                                                       .value
                                                       .data?[index]
                                                       .mailId
@@ -244,7 +244,7 @@ class UnreadMailView extends StatelessWidget {
                 fontWeight: FontWeight.w700,
               ),
               GlobalText(
-                  '${unreadData.UnreadListData.value.data?[index].mailId?.mailType.toString().capitalizeFirst}'),
+                  '${unreadData.unreadListData.value.data?[index].mailId?.mailType.toString().capitalizeFirst}'),
             ],
           ),
           content: Container(
@@ -301,7 +301,7 @@ class UnreadMailView extends StatelessWidget {
                           'Sender :',
                           fontWeight: FontWeight.w700,
                         ),
-                        GlobalText(unreadData.UnreadListData.value.data?[index]
+                        GlobalText(unreadData.unreadListData.value.data?[index]
                                 .mailId?.mailType
                                 .toString()
                                 .capitalizeFirst ??
@@ -314,7 +314,7 @@ class UnreadMailView extends StatelessWidget {
                           'Mail ID :',
                           fontWeight: FontWeight.w700,
                         ),
-                        GlobalText(unreadData.UnreadListData.value.data?[index]
+                        GlobalText(unreadData.unreadListData.value.data?[index]
                                 .mailId?.mailBoxId
                                 .toString() ??
                             ''),
@@ -332,11 +332,11 @@ class UnreadMailView extends StatelessWidget {
                           fontWeight: FontWeight.w700,
                         ),
                         GlobalText(
-                          unreadData.UnreadListData.value.data?[index]
+                          unreadData.unreadListData.value.data?[index]
                                       .updatedAt !=
                                   null
                               ? DateFormat('dd-MM-yyyy').format(DateTime.parse(
-                                  unreadData.UnreadListData.value.data?[index]
+                                  unreadData.unreadListData.value.data?[index]
                                           .updatedAt ??
                                       ''))
                               : '',
@@ -385,14 +385,14 @@ class UnreadMailView extends StatelessWidget {
                     height: Get.height * 0.05,
                     width: Get.width,
                     child: ListView.builder(
-                        itemCount: unreadData.UnreadListData.value.data?[index]
+                        itemCount: unreadData.unreadListData.value.data?[index]
                             .mailHistory?.length,
                         itemBuilder: (context, ind) {
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               GlobalText(unreadData
-                                          .UnreadListData
+                                          .unreadListData
                                           .value
                                           .data?[index]
                                           .mailHistory?[ind]
@@ -400,20 +400,20 @@ class UnreadMailView extends StatelessWidget {
                                       null
                                   ? DateFormat('dd-MM-yyyy').format(
                                       DateTime.parse(unreadData
-                                              .UnreadListData
+                                              .unreadListData
                                               .value
                                               .data?[index]
                                               .mailHistory?[ind]
                                               .createdAt ??
                                           ''))
                                   : ''),
-                              GlobalText(unreadData.UnreadListData.value
+                              GlobalText(unreadData.unreadListData.value
                                       .data?[index].mailHistory?[ind].status
                                       .toString()
                                       .capitalizeFirst ??
                                   ''),
                               GlobalText(unreadData
-                                          .UnreadListData
+                                          .unreadListData
                                           .value
                                           .data?[index]
                                           .mailHistory?[ind]
@@ -421,7 +421,7 @@ class UnreadMailView extends StatelessWidget {
                                       null
                                   ? DateFormat('hh:mm a').format(DateTime.parse(
                                       unreadData
-                                              .UnreadListData
+                                              .unreadListData
                                               .value
                                               .data?[index]
                                               .mailHistory?[ind]

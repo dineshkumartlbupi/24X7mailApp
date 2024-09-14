@@ -21,7 +21,7 @@ class OperatorCustomerView extends StatelessWidget {
           child: Obx(() {
             if (mailController.isLoadingCustomer.value) {
               return const Center(child: CircularProgressIndicator());
-            } else if (mailController.customerList.value.data!.isEmpty) {
+            } else if (mailController.customerList.value.data?.length == null) {
               return Padding(
                   padding: EdgeInsets.only(left: Get.width * 0.35),
                   child: Center(

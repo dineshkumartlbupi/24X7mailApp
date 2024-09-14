@@ -111,8 +111,8 @@ class OperatorReports extends StatelessWidget {
                                           ?.fname?.capitalizeFirst ??
                                       '' '${userinfo?.lname?.capitalizeFirst ?? ''}')),
                                   DataCell(GlobalText('N/A')),
-                                  DataCell(GlobalText(
-                                      item.assignCount.toString() ?? '')),
+                                  DataCell(
+                                      GlobalText(item.assignCount.toString())),
                                   DataCell(GlobalText(
                                       item.openScanCount.toString() ?? '')),
                                   DataCell(GlobalText(
