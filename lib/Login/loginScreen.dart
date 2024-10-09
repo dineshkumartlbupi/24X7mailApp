@@ -18,8 +18,8 @@ class LoginScreen extends StatelessWidget {
         child: Card(
           elevation: 12,
           child: Container(
-            height: Get.height * 0.45,
-            //height: Get.height * 0.55,
+            //height: Get.height * 0.45,
+            height: Get.height * 0.5,
             width: Get.width * 0.9,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
@@ -45,7 +45,7 @@ class LoginScreen extends StatelessWidget {
                               children: <Widget>[
                                 TextFormField(
                                   controller: loginController.emailController,
-                                  decoration: const InputDecoration(
+                                  decoration: InputDecoration(
                                     suffixIcon: Icon(
                                       Icons.account_circle_rounded,
                                       color: MyColor.nevyBlue,
@@ -122,7 +122,7 @@ class LoginScreen extends StatelessWidget {
                                       onTap: () {
                                         Get.defaultDialog(
                                           title: 'Forgot Password',
-                                          titleStyle: TextStyle(
+                                          titleStyle: const TextStyle(
                                             fontWeight: FontWeight.w700,
                                             color: MyColor.black,
                                             fontSize: 18,
@@ -206,7 +206,7 @@ class LoginScreen extends StatelessWidget {
                                     await loginController.submit();
                                   },
                                   child: Container(
-                                      height: Get.height * 0.05,
+                                      height: Get.height * 0.055,
                                       width: Get.width,
                                       decoration: BoxDecoration(
                                           color: MyColor.nevyBlue,
@@ -215,12 +215,13 @@ class LoginScreen extends StatelessWidget {
                                       child: Center(
                                           child: loginController
                                                   .isLoginData.value
-                                              ? CircularProgressIndicator(
+                                              ? const CircularProgressIndicator(
                                                   color: MyColor.brightBlue,
                                                 )
                                               : GlobalText(
                                                   'Login',
-                                                  fontSize: Get.height * 0.02,
+                                                  fontSize: Get.height * 0.025,
+                                                  fontWeight: FontWeight.bold,
                                                   color: MyColor.white,
                                                 ))),
                                 ),

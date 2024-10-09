@@ -34,7 +34,7 @@ class LoginController extends GetxController {
     if (formKey.currentState!.validate()) {
       final loginResponse =
           await login(emailController.text, passwordController.text);
-
+      log('login response==> $loginResponse');
       if (loginResponse != null) {
         if (loginResponse['token'] != null && loginResponse['data'] != null) {
           final userType = loginResponse['data']['user_type'] ?? '';

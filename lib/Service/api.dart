@@ -607,10 +607,11 @@ Future<CustomerMailModel?> getViewIndexData(String? fromDate, toDate) async {
 
   if (response.statusCode == 200 || response.statusCode == 201) {
     var responseData = CustomerMailModel.fromJson(jsonDecode(response.body));
-
+    log('res[pnse===============>${responseData.data ?? ''}');
+    log('res[pnse boday===============>${response.body}');
     return responseData;
   } else {
-    throw Exception('Failed to load traceList');
+    throw Exception('Failed to load mailData');
   }
 }
 

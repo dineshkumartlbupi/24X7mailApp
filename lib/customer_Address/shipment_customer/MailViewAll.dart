@@ -6,6 +6,7 @@ import 'package:twentyfourby_seven/Utils/globalText.dart';
 
 import '../../Customer/customerController.dart';
 import '../../Login/loginController.dart';
+import '../../Service/api.dart';
 import '../../Utils/SharedPrefrance.dart';
 import '../../Utils/addImage.dart';
 import '../../Utils/commonDialog.dart';
@@ -47,12 +48,12 @@ class MailViewAll extends StatelessWidget {
                   hintText: 'Search Mail Id or Sender',
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15)),
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                  contentPadding: const EdgeInsets.symmetric(
+                      vertical: 15.0, horizontal: 10.0),
                 ),
                 onChanged: (value) {
                   customerController.filterList();
-                  //value = customerController.searchController.value.toString();
+                  value = customerController.searchController.value.toString();
                 },
               ),
             ),
@@ -70,7 +71,7 @@ class MailViewAll extends StatelessWidget {
               ),
             ),
             Container(
-                height: Get.height * 0.5,
+                height: Get.height,
                 width: Get.width,
                 child: Obx(
                   () => customerController.customerModel.value.data == null
@@ -105,7 +106,7 @@ class MailViewAll extends StatelessWidget {
                                   children: [
                                     customerController.customerModel.value
                                                 .data?[index].markAsRead ==
-                                            false
+                                            true
                                         ? Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
@@ -130,30 +131,29 @@ class MailViewAll extends StatelessWidget {
                                                       GlobalText(
                                                         'Open and Scan',
                                                         onTap: () {
-                                                          Get.dialog(CommonDialog(
-                                                              yesLabel:
-                                                                  GlobalText(
-                                                                      'yes'),
-                                                              noLabel:
-                                                                  GlobalText(
-                                                                      'no'),
-                                                              title:
-                                                                  'Open and Scan',
-                                                              content:
-                                                                  GlobalText(
-                                                                      '')));
+                                                          Get.dialog(
+                                                              CommonDialog(
+                                                                  yesLabel:
+                                                                      GlobalText(
+                                                                    'yes',
+                                                                    onTap:
+                                                                        () async {
+                                                                      await scanRequestPatchApi(
+                                                                          'scan-request');
+                                                                      Get.back();
+                                                                      Get.back();
+                                                                    },
+                                                                  ),
+                                                                  noLabel:
+                                                                      GlobalText(
+                                                                          'no'),
+                                                                  title:
+                                                                      'Open and Scan',
+                                                                  content:
+                                                                      GlobalText(
+                                                                          '')));
                                                         },
                                                       ),
-                                                      /*GlobalText(
-                                                customerController
-                                                        .customerModel
-                                                        .value
-                                                        .data?[index]
-                                                        .openScan
-                                                        .toString() ??
-                                                    '',
-                                                fontWeight: FontWeight.w700,
-                                              ),*/
                                                     ],
                                                   ),
                                                   Row(
@@ -167,7 +167,12 @@ class MailViewAll extends StatelessWidget {
                                                               CommonDialog(
                                                             yesLabel:
                                                                 GlobalText(
-                                                                    'yes'),
+                                                              'yes',
+                                                              onTap: () async {
+                                                                await scanRequestPatchApi(
+                                                                    'add-shipment');
+                                                              },
+                                                            ),
                                                             noLabel: GlobalText(
                                                                 'no'),
                                                             title:
@@ -177,15 +182,6 @@ class MailViewAll extends StatelessWidget {
                                                           ));
                                                         },
                                                       ),
-                                                      /* GlobalText(
-                                                customerController
-                                                        .customerModel
-                                                        .value
-                                                        .data?[index]
-                                                        .shipmentStatus
-                                                        .toString() ??
-                                                    '',
-                                              ),*/
                                                     ],
                                                   ),
                                                   Row(
@@ -194,25 +190,28 @@ class MailViewAll extends StatelessWidget {
                                                       GlobalText(
                                                         'Recycle',
                                                         onTap: () {
-                                                          Get.dialog(CommonDialog(
-                                                              yesLabel:
-                                                                  GlobalText(
-                                                                      'yes'),
-                                                              noLabel:
-                                                                  GlobalText(
-                                                                      'no'),
-                                                              title: 'Recycle',
-                                                              content:
-                                                                  GlobalText(
-                                                                      '')));
+                                                          Get.dialog(
+                                                              CommonDialog(
+                                                                  yesLabel:
+                                                                      GlobalText(
+                                                                    'yes',
+                                                                    onTap:
+                                                                        () async {
+                                                                      await scanRequestPatchApi(
+                                                                          'recycle-request');
+                                                                      Get.back();
+                                                                    },
+                                                                  ),
+                                                                  noLabel:
+                                                                      GlobalText(
+                                                                          'no'),
+                                                                  title:
+                                                                      'Recycle',
+                                                                  content:
+                                                                      GlobalText(
+                                                                          '')));
                                                         },
                                                       ),
-                                                      /* GlobalText(
-                                                customerController.customerModel.value
-                                                        .data?[index].recycle
-                                                        .toString() ??
-                                                    '',
-                                              ),*/
                                                     ],
                                                   ),
                                                 ],
@@ -228,28 +227,28 @@ class MailViewAll extends StatelessWidget {
                                                       GlobalText(
                                                         'shared',
                                                         onTap: () {
-                                                          Get.dialog(CommonDialog(
-                                                              yesLabel:
-                                                                  GlobalText(
-                                                                      'yes'),
-                                                              noLabel:
-                                                                  GlobalText(
-                                                                      'no'),
-                                                              title: 'shared',
-                                                              content:
-                                                                  GlobalText(
-                                                                      '')));
+                                                          Get.dialog(
+                                                              CommonDialog(
+                                                                  yesLabel:
+                                                                      GlobalText(
+                                                                    'yes',
+                                                                    onTap:
+                                                                        () async {
+                                                                      await scanRequestPatchApi(
+                                                                          'shred-request');
+                                                                      Get.back();
+                                                                    },
+                                                                  ),
+                                                                  noLabel:
+                                                                      GlobalText(
+                                                                          'no'),
+                                                                  title:
+                                                                      'shared',
+                                                                  content:
+                                                                      GlobalText(
+                                                                          '')));
                                                         },
                                                       ),
-                                                      /* GlobalText(
-                                                customerController
-                                                        .customerModel
-                                                        .value
-                                                        .data?[index]
-                                                        .shred
-                                                        .toString() ??
-                                                    '',
-                                              ),*/
                                                     ],
                                                   ),
                                                   Row(
@@ -259,28 +258,28 @@ class MailViewAll extends StatelessWidget {
                                                       GlobalText(
                                                         'Rescan',
                                                         onTap: () {
-                                                          Get.dialog(CommonDialog(
-                                                              yesLabel:
-                                                                  GlobalText(
-                                                                      'yes'),
-                                                              noLabel:
-                                                                  GlobalText(
-                                                                      'no'),
-                                                              title: 'Rescan',
-                                                              content:
-                                                                  GlobalText(
-                                                                      '')));
+                                                          Get.dialog(
+                                                              CommonDialog(
+                                                                  yesLabel:
+                                                                      GlobalText(
+                                                                    'yes',
+                                                                    onTap:
+                                                                        () async {
+                                                                      await scanRequestPatchApi(
+                                                                          'rescan-request');
+                                                                      Get.back();
+                                                                    },
+                                                                  ),
+                                                                  noLabel:
+                                                                      GlobalText(
+                                                                          'no'),
+                                                                  title:
+                                                                      'Rescan',
+                                                                  content:
+                                                                      GlobalText(
+                                                                          '')));
                                                         },
                                                       ),
-                                                      /* GlobalText(
-                                                customerController
-                                                        .customerModel
-                                                        .value
-                                                        .data?[index]
-                                                        .rescan
-                                                        .toString() ??
-                                                    '',
-                                              ),*/
                                                     ],
                                                   ),
                                                   Row(
@@ -290,28 +289,28 @@ class MailViewAll extends StatelessWidget {
                                                       GlobalText(
                                                         'Pick UP',
                                                         onTap: () {
-                                                          Get.dialog(CommonDialog(
-                                                              yesLabel:
-                                                                  GlobalText(
-                                                                      'yes'),
-                                                              noLabel:
-                                                                  GlobalText(
-                                                                      'no'),
-                                                              title: 'Pick UP',
-                                                              content:
-                                                                  GlobalText(
-                                                                      '')));
+                                                          Get.dialog(
+                                                              CommonDialog(
+                                                                  yesLabel:
+                                                                      GlobalText(
+                                                                    'yes',
+                                                                    onTap:
+                                                                        () async {
+                                                                      await scanRequestPatchApi(
+                                                                          'Pick UP');
+                                                                      Get.back();
+                                                                    },
+                                                                  ),
+                                                                  noLabel:
+                                                                      GlobalText(
+                                                                          'no'),
+                                                                  title:
+                                                                      'Pick UP',
+                                                                  content:
+                                                                      GlobalText(
+                                                                          '')));
                                                         },
                                                       ),
-                                                      /* GlobalText(
-                                                customerController
-                                                        .customerModel
-                                                        .value
-                                                        .data?[index]
-                                                        .pickupStatus
-                                                        .toString() ??
-                                                    '',
-                                              ),*/
                                                     ],
                                                   ),
                                                 ],
@@ -331,20 +330,23 @@ class MailViewAll extends StatelessWidget {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceAround,
                                             children: [
-                                              Checkbox(
+                                              Obx(() => Checkbox(
                                                   value: customerController
-                                                      .customerModel
-                                                      .value
-                                                      .data?[index]
-                                                      .markAsRead,
+                                                          .customerModel
+                                                          .value
+                                                          .data?[index]
+                                                          .markAsRead ??
+                                                      false,
                                                   onChanged: (bool? value) {
                                                     customerController
-                                                            .customerModel
-                                                            .value
-                                                            .data?[index]
-                                                            .markAsRead !=
-                                                        value;
-                                                  }),
+                                                        .customerModel
+                                                        .value
+                                                        .data?[index]
+                                                        .markAsRead = value;
+                                                    customerController
+                                                        .customerModel
+                                                        .refresh();
+                                                  })),
                                               GlobalText(
                                                 customerController
                                                         .customerModel
@@ -420,7 +422,7 @@ class MailViewAll extends StatelessWidget {
                                                                     ?.length ??
                                                                 0,
                                                         itemBuilder:
-                                                            (context, index) {
+                                                            (context, inde) {
                                                           String baseUrl =
                                                               'https://service.24x7mail.com/uploads/';
                                                           String imagePath =
@@ -431,7 +433,7 @@ class MailViewAll extends StatelessWidget {
                                                                           index]
                                                                       .mailId
                                                                       ?.measurement?[
-                                                                          0]
+                                                                          inde]
                                                                       .file ??
                                                                   '';
                                                           String imageUrl =
@@ -456,7 +458,7 @@ class MailViewAll extends StatelessWidget {
                                                                             index]
                                                                         .mailId
                                                                         ?.measurement,
-                                                                    index);
+                                                                    inde);
                                                               },
                                                               child: Card(
                                                                 child: Image

@@ -102,11 +102,11 @@ class CustomerView extends StatelessWidget {
                           title: "Delete Account",
                           middleText:
                               "Are you sure you want to delete the account?",
-                          titleStyle: TextStyle(
+                          titleStyle: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
                           ),
-                          middleTextStyle: TextStyle(
+                          middleTextStyle: const TextStyle(
                             fontSize: 16,
                           ),
                           backgroundColor: Colors.white,
@@ -172,7 +172,7 @@ class CustomerView extends StatelessWidget {
                 ),
                 onChanged: (value) {
                   customerController.filterList();
-                  //value = customerController.searchController.value.toString();
+                  value = customerController.searchController.value.toString();
                 },
               ),
             ),
@@ -181,7 +181,7 @@ class CustomerView extends StatelessWidget {
               child: TextField(
                 controller: customerController.dateRangeController,
                 decoration: InputDecoration(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.calendar_today,
                       color: MyColor.brightBlue,
                     ),
@@ -193,7 +193,8 @@ class CustomerView extends StatelessWidget {
               ),
             ),
             Container(
-                height: Get.height * 0.5,
+                height: Get.height,
+                color: MyColor.cardIconColor,
                 width: Get.width,
                 child: Obx(
                   () => customerController.customerIndexMail.value.data == null
@@ -223,13 +224,14 @@ class CustomerView extends StatelessWidget {
                               itemCount: customerController
                                   .customerIndexMail.value.data?.length,
                               itemBuilder: (_, index) {
+                                var emailItem = customerController
+                                    .customerIndexMail.value.data?[index];
+
                                 return Column(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    customerController.customerIndexMail.value
-                                                .data?[index].markAsRead ==
-                                            true
+                                    emailItem?.markAsRead == true
                                         ? Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
@@ -239,14 +241,14 @@ class CustomerView extends StatelessWidget {
                                                     MainAxisAlignment
                                                         .spaceAround,
                                                 children: [
-                                                  Obx(() => Checkbox(
+                                                  /* Obx(() => Checkbox(
                                                       value: customerController
                                                           .isMailChecked.value,
                                                       onChanged: (bool? value) {
                                                         customerController
                                                             .isMailChecked
                                                             .value = value!;
-                                                      })),
+                                                      })),*/
                                                   Row(
                                                     children: [
                                                       Icon(Icons
@@ -282,16 +284,6 @@ class CustomerView extends StatelessWidget {
                                                                           '')));
                                                         },
                                                       ),
-                                                      /*GlobalText(
-                                                    customerController
-                                                            .customerModel
-                                                            .value
-                                                            .data?[index]
-                                                            .openScan
-                                                            .toString() ??
-                                                        '',
-                                                    fontWeight: FontWeight.w700,
-                                                  ),*/
                                                     ],
                                                   ),
                                                   Row(
@@ -321,15 +313,6 @@ class CustomerView extends StatelessWidget {
                                                           ));
                                                         },
                                                       ),
-                                                      /* GlobalText(
-                                                customerController
-                                                        .customerModel
-                                                        .value
-                                                        .data?[index]
-                                                        .shipmentStatus
-                                                        .toString() ??
-                                                    '',
-                                              ),*/
                                                     ],
                                                   ),
                                                   Row(
@@ -361,12 +344,6 @@ class CustomerView extends StatelessWidget {
                                                                           '')));
                                                         },
                                                       ),
-                                                      /* GlobalText(
-                                                customerController.customerModel.value
-                                                        .data?[index].recycle
-                                                        .toString() ??
-                                                    '',
-                                              ),*/
                                                     ],
                                                   ),
                                                 ],
@@ -404,15 +381,6 @@ class CustomerView extends StatelessWidget {
                                                                           '')));
                                                         },
                                                       ),
-                                                      /* GlobalText(
-                                                customerController
-                                                        .customerModel
-                                                        .value
-                                                        .data?[index]
-                                                        .shred
-                                                        .toString() ??
-                                                    '',
-                                              ),*/
                                                     ],
                                                   ),
                                                   Row(
@@ -444,15 +412,6 @@ class CustomerView extends StatelessWidget {
                                                                           '')));
                                                         },
                                                       ),
-                                                      /* GlobalText(
-                                                customerController
-                                                        .customerModel
-                                                        .value
-                                                        .data?[index]
-                                                        .rescan
-                                                        .toString() ??
-                                                    '',
-                                              ),*/
                                                     ],
                                                   ),
                                                   Row(
@@ -484,15 +443,6 @@ class CustomerView extends StatelessWidget {
                                                                           '')));
                                                         },
                                                       ),
-                                                      /* GlobalText(
-                                                customerController
-                                                        .customerModel
-                                                        .value
-                                                        .data?[index]
-                                                        .pickupStatus
-                                                        .toString() ??
-                                                    '',
-                                              ),*/
                                                     ],
                                                   ),
                                                 ],
@@ -501,7 +451,8 @@ class CustomerView extends StatelessWidget {
                                           )
                                         : SizedBox(),
                                     Card(
-                                      color: MyColor.cardIconColor,
+                                      margin: EdgeInsets.all(5),
+                                      //color: MyColor.cardIconColor,
                                       elevation: 5,
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
@@ -512,20 +463,22 @@ class CustomerView extends StatelessWidget {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceAround,
                                             children: [
-                                              Checkbox(
-                                                  value: customerController
-                                                      .customerIndexMail
-                                                      .value
-                                                      .data?[index]
-                                                      .markAsRead,
-                                                  onChanged: (bool? value) {
-                                                    customerController
+                                              Obx(() => Checkbox(
+                                                    value:
+                                                        emailItem?.markAsRead ??
+                                                            false,
+                                                    onChanged:
+                                                        (bool? newValue) {
+                                                      if (newValue != null) {
+                                                        emailItem?.markAsRead =
+                                                            newValue;
+
+                                                        customerController
                                                             .customerIndexMail
-                                                            .value
-                                                            .data?[index]
-                                                            .markAsRead !=
-                                                        value;
-                                                  }),
+                                                            .refresh();
+                                                      }
+                                                    },
+                                                  )),
                                               GlobalText(
                                                 customerController
                                                         .customerIndexMail
@@ -574,7 +527,7 @@ class CustomerView extends StatelessWidget {
                                                 String formattedDate = '';
                                                 if (createdAt != null) {
                                                   formattedDate =
-                                                      DateFormat('MM-dd-yyyy')
+                                                      DateFormat('dd-mm-yyyy')
                                                           .format(
                                                               DateTime.parse(
                                                                   createdAt));
@@ -610,7 +563,7 @@ class CustomerView extends StatelessWidget {
                                                                     ?.length ??
                                                                 0,
                                                         itemBuilder:
-                                                            (context, index) {
+                                                            (context, ind) {
                                                           String baseUrl =
                                                               'https://service.24x7mail.com/uploads/';
                                                           String imagePath =
@@ -621,7 +574,7 @@ class CustomerView extends StatelessWidget {
                                                                           index]
                                                                       .mailId
                                                                       ?.measurement?[
-                                                                          0]
+                                                                          ind]
                                                                       .file ??
                                                                   '';
                                                           String imageUrl =
@@ -645,7 +598,7 @@ class CustomerView extends StatelessWidget {
                                                                             index]
                                                                         .mailId
                                                                         ?.measurement,
-                                                                    index);
+                                                                    ind);
                                                               },
                                                               child: Card(
                                                                 child: Image

@@ -11,8 +11,9 @@ class CustomerController extends GetxController {
   String? selectedUserType;
   DateTime? fromDate;
   DateTime? toDate;
-  var isMailChecked = false.obs;
+
   var isMailRead = false.obs;
+  var isMailReadChecked = false.obs;
   final RxString? selectedOption = 'Option 1'.obs;
   TextEditingController dateRangeController = TextEditingController();
   final ScrollController scrollController = ScrollController();
@@ -23,6 +24,7 @@ class CustomerController extends GetxController {
   Rx<CustomerMailModel> unreadListData = CustomerMailModel().obs;
   String? baseUrl;
   List<Data> filteredList = [];
+  var isMailChecked = false.obs;
 
   @override
   void onInit() {
@@ -49,6 +51,7 @@ class CustomerController extends GetxController {
               false;
         }).toList() ??
         [];
+    update();
   }
 
   Future<void> getCustomerDetails() async {
@@ -61,6 +64,7 @@ class CustomerController extends GetxController {
     customerIndexMail.value =
         (await getViewIndexData(fromDate.toString(), toDate.toString())) ??
             customerIndexMail.value;
+    update();
   }
 
   Future<void> getReadDetails() async {

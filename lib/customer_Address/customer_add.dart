@@ -328,6 +328,10 @@ class CustomerAdd extends StatelessWidget {
                                 customerAddView.propertyModel.value?.data?.id
                                         ?.toString() ??
                                     '');
+                            Get.snackbar(
+                              'Image uploaded',
+                              '${customerAddView.propertyModel.value?.msg.toString() ?? ''}',
+                            );
                           },
                           child: const GlobalText("upload"),
                         ),

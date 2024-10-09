@@ -256,6 +256,10 @@ class Data {
   List<MailHistory>? get mailHistory => _mailHistory;
   String? get idi => _id;
 
+  set markAsRead(bool? value) {
+    _markAsRead = value;
+  }
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     if (_scanData != null) {
