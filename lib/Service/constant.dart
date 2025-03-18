@@ -1,4 +1,5 @@
 class APIConstants {
+  // static const String baseUrl = 'https://service.24x7mail.com/'; ///ssl enabled
   static const String baseUrl = 'https://service.24x7mail.com/';
   static const String loginUser = 'user/login';
 

@@ -67,11 +67,15 @@ Future<Map<String, dynamic>?> login(String email, String password) async {
     'email': email,
     'password': password,
   };
+  log("request-------->$body");
+  log("url-------->$url");
 
   try {
     loginCtrl.isLoginData = true.obs;
 
     final response = await http.post(url, body: body);
+    log("status code------->${response.statusCode}");
+    log("status code------->${response.body}");
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       final responseData = jsonDecode(response.body);
@@ -106,8 +110,9 @@ Future<Map<String, dynamic>?> login(String email, String password) async {
       showLoginErrorDialog('Failed with status code ${response.statusCode}');
       return null;
     }
-  } catch (e) {
+  } catch (e,stack) {
     log('Error: $e');
+    log('stack: $stack');
     showLoginErrorDialog(e.toString());
     return null;
   } finally {

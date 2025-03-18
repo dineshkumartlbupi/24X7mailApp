@@ -13,6 +13,7 @@ class LoginScreen extends StatelessWidget {
   final loginController = Get.put(LoginController());
   @override
   Widget build(BuildContext context) {
+    print("data------------------------entered login screen");
     return Scaffold(
       body: Center(
         child: Card(

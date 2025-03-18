@@ -1,0 +1,88 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file("key.properties")
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader("UTF-8") { reader ->
+        localProperties.load(reader)
+    }
+}
+
+
+def flutterVersionCode = localProperties.getProperty("flutter.versionCode")
+if (flutterVersionCode == null) {
+    flutterVersionCode = "7"
+}
+
+def flutterVersionName = localProperties.getProperty("flutter.versionName")
+if (flutterVersionName == null) {
+    flutterVersionName = "1.1.3"
+}
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file("key.properties")
+if (keystorePropertiesFile.exists()) {
+    keystorePropertiesFile.withReader("UTF-8") { reader ->
+        keystoreProperties.load(reader)
+    }
+}
+
+android {
+    namespace = "com.app.twentyFourby_seven"
+    // namespace = "com.example.twentyfourby_seven"
+    compileSdk = 34
+    ndkVersion = flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId = "com.app.twentyFourby_seven"
+        // applicationId = "com.example.twentyfourby_seven"
+        minSdk = 21
+        targetSdk = 34
+        versionCode = 7
+        versionName = 1.3
+    }
+
+    signingConfigs {
+
+        /// for accessing from the keystore from key.properties
+        release {
+            if (keystorePropertiesFile.exists()) {
+                storeFile = file(keystoreProperties['storeFile'])
+                storePassword = keystoreProperties['storePassword']
+                keyAlias = keystoreProperties['keyAlias']
+                keyPassword = keystoreProperties['keyPassword']
+            }
+        }
+/// directly accessing the .jks file from /android/app/....your file
+        /*release {
+            storeFile file('debug.keystore.keystore') // Specify the path to your debug.keystore.keystore file
+            storePassword '12345678' // Replace with your store password
+            keyAlias 'AndroidDebugKey' // Replace with your key alias
+            keyPassword '12345678' // Replace with your key password
+        }*/
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            // Uncomment below lines to enable code obfuscation and shrinking
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+}
+
+flutter {
+    source = "../.."
+}

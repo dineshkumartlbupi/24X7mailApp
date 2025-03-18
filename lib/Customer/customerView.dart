@@ -463,7 +463,7 @@ class CustomerView extends StatelessWidget {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceAround,
                                             children: [
-                                              Obx(() => Checkbox(
+                                              Checkbox(
                                                     value:
                                                         emailItem?.markAsRead ??
                                                             false,
@@ -478,7 +478,7 @@ class CustomerView extends StatelessWidget {
                                                             .refresh();
                                                       }
                                                     },
-                                                  )),
+                                                  ),
                                               GlobalText(
                                                 customerController
                                                         .customerIndexMail
