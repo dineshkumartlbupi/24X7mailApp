@@ -25,7 +25,6 @@ void main() async {
       FlutterError.presentError(details);
     }
   };
-
   runApp(MyApp());
 }
 
