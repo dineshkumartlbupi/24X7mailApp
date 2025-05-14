@@ -170,7 +170,7 @@ class OperatorSettingView extends StatelessWidget {
                               )),
                           IconButton(
                             onPressed: () {},
-                            icon: Icon(Icons.delete),
+                            icon: const Icon(Icons.delete),
                             color: Colors.red,
                           ),
                         ],
@@ -359,7 +359,7 @@ class OperatorSettingView extends StatelessWidget {
                             hintText: '$businessName',
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15)),
-                            suffixIcon: Icon(Icons.business),
+                            suffixIcon: const Icon(Icons.business),
                           ),
                         ),
                         const SizedBox(height: 15),
@@ -369,7 +369,7 @@ class OperatorSettingView extends StatelessWidget {
                             hintText: '$firstName',
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15)),
-                            suffixIcon: Icon(Icons.person),
+                            suffixIcon: const Icon(Icons.person),
                           ),
                         ),
                         const SizedBox(height: 15),
@@ -379,7 +379,7 @@ class OperatorSettingView extends StatelessWidget {
                             hintText: '$lastName',
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15)),
-                            suffixIcon: Icon(Icons.person_outlined),
+                            suffixIcon: const Icon(Icons.person_outlined),
                           ),
                         ),
                         const SizedBox(height: 15),
@@ -410,7 +410,7 @@ class OperatorSettingView extends StatelessWidget {
                             hintText: '$businessAdd',
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15)),
-                            suffixIcon: Icon(Icons.business_sharp),
+                            suffixIcon: const Icon(Icons.business_sharp),
                           ),
                         ),
                         const SizedBox(height: 15),
@@ -420,7 +420,7 @@ class OperatorSettingView extends StatelessWidget {
                             hintText: '$zipNo',
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15)),
-                            suffixIcon: Icon(Icons.confirmation_number_sharp),
+                            suffixIcon: const Icon(Icons.confirmation_number_sharp),
                           ),
                         ),
                       ],

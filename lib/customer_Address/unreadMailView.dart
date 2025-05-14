@@ -20,7 +20,7 @@ class UnreadMailView extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          Container(
+          SizedBox(
               height: Get.height * 0.7,
               width: Get.width,
               child: Obx(
@@ -38,7 +38,7 @@ class UnreadMailView extends StatelessWidget {
                         ],
                       ))
                     : unreadData.unreadListData.value.data?.length == null
-                        ? Center(
+                        ? const Center(
                             child: CircularProgressIndicator(
                             color: MyColor.colorBlueHome,
                           ))
@@ -105,7 +105,7 @@ class UnreadMailView extends StatelessWidget {
                                                   .unreadListData.value.data;
                                               if (data == null ||
                                                   index >= data.length) {
-                                                return GlobalText(
+                                                return const GlobalText(
                                                   '',
                                                   fontWeight: FontWeight.w700,
                                                   color: MyColor.black,
@@ -128,7 +128,7 @@ class UnreadMailView extends StatelessWidget {
                                                 color: MyColor.black,
                                               );
                                             }),
-                                            Container(
+                                            SizedBox(
                                               height: Get.height * 0.07,
                                               width: Get.width * 0.25,
                                               child: unreadData.unreadListData
@@ -163,7 +163,7 @@ class UnreadMailView extends StatelessWidget {
                                                         String imageUrl =
                                                             baseUrl + imagePath;
 
-                                                        return Container(
+                                                        return SizedBox(
                                                           height:
                                                               Get.height * 0.07,
                                                           width:
@@ -239,7 +239,7 @@ class UnreadMailView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              GlobalText(
+              const GlobalText(
                 'You have received new mail',
                 fontWeight: FontWeight.w700,
               ),
@@ -247,7 +247,7 @@ class UnreadMailView extends StatelessWidget {
                   '${unreadData.unreadListData.value.data?[index].mailId?.mailType.toString().capitalizeFirst}'),
             ],
           ),
-          content: Container(
+          content: SizedBox(
             height: Get.height * 0.35,
             width: Get.width * 0.75,
             child: Scrollbar(
@@ -297,7 +297,7 @@ class UnreadMailView extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        GlobalText(
+                        const GlobalText(
                           'Sender :',
                           fontWeight: FontWeight.w700,
                         ),
@@ -310,7 +310,7 @@ class UnreadMailView extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        GlobalText(
+                        const GlobalText(
                           'Mail ID :',
                           fontWeight: FontWeight.w700,
                         ),
@@ -327,7 +327,7 @@ class UnreadMailView extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        GlobalText(
+                        const GlobalText(
                           'Received :',
                           fontWeight: FontWeight.w700,
                         ),
@@ -350,7 +350,7 @@ class UnreadMailView extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        GlobalText(
+                        const GlobalText(
                           'Weight:',
                           fontWeight: FontWeight.w700,
                         ),
@@ -381,7 +381,7 @@ class UnreadMailView extends StatelessWidget {
                   SizedBox(
                     height: Get.height * 0.001,
                   ),
-                  Container(
+                  SizedBox(
                     height: Get.height * 0.05,
                     width: Get.width,
                     child: ListView.builder(
@@ -439,9 +439,9 @@ class UnreadMailView extends StatelessWidget {
               height: Get.height * 0.02,
             ),
             TextButton(
-              style: ButtonStyle(
+              style: const ButtonStyle(
                   backgroundColor: WidgetStatePropertyAll(MyColor.softBlue)),
-              child: GlobalText('Close'),
+              child: const GlobalText('Close'),
               onPressed: () {
                 Get.back();
               },

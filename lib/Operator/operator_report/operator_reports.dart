@@ -42,7 +42,7 @@ class OperatorReports extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.offline_pin_sharp,
                           color: MyColor.brightBlue,
                         ),
@@ -56,7 +56,7 @@ class OperatorReports extends StatelessWidget {
                         SizedBox(
                           width: Get.width * 0.025,
                         ),
-                        Icon(Icons.arrow_drop_down),
+                        const Icon(Icons.arrow_drop_down),
                       ],
                     ),
                   ),
@@ -67,7 +67,7 @@ class OperatorReports extends StatelessWidget {
               ),
             ],
             title: const GlobalText('Operations', fontWeight: FontWeight.w600),
-            bottom: TabBar(
+            bottom: const TabBar(
               automaticIndicatorColorAdjustment: true,
               tabs: [
                 Tab(text: 'Customers'),
@@ -78,7 +78,7 @@ class OperatorReports extends StatelessWidget {
           body: TabBarView(
             children: [
               Container(
-                margin: EdgeInsets.all(8.0),
+                margin: const EdgeInsets.all(8.0),
                 child: SingleChildScrollView(
                   scrollDirection:
                       Axis.horizontal, // Allows horizontal scrolling
@@ -86,7 +86,7 @@ class OperatorReports extends StatelessWidget {
                     () => Column(
                       children: [
                         DataTable(
-                          columns: [
+                          columns: const [
                             DataColumn(label: Text('MailBox')),
                             DataColumn(label: Text('Customer')),
                             DataColumn(label: Text('Business Name')),
@@ -110,7 +110,7 @@ class OperatorReports extends StatelessWidget {
                                   DataCell(GlobalText(userinfo
                                           ?.fname?.capitalizeFirst ??
                                       '' '${userinfo?.lname?.capitalizeFirst ?? ''}')),
-                                  DataCell(GlobalText('N/A')),
+                                  const DataCell(GlobalText('N/A')),
                                   DataCell(
                                       GlobalText(item.assignCount.toString())),
                                   DataCell(GlobalText(
@@ -156,7 +156,7 @@ class OperatorReports extends StatelessWidget {
                     rows: <DataRow>[
                       DataRow(
                         cells: <DataCell>[
-                          DataCell(Text('1')),
+                          const DataCell(Text('1')),
                           DataCell(Obx(() => GlobalText(
                               '${reportController.operatorOperationModel.value.data?.upload ?? ''}'))),
                           DataCell(Obx(() => GlobalText(

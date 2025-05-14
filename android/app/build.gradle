@@ -44,7 +44,7 @@ android {
 
     defaultConfig {
         applicationId = "com.app.twentyFourby_seven"
-        // applicationId = "com.example.twentyfourby_seven"
+        //applicationId = "com.example.twentyfourby_seven"
         minSdk = 21
         targetSdk = 34
         versionCode = 7

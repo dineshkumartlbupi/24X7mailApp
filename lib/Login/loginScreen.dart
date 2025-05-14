@@ -46,7 +46,7 @@ class LoginScreen extends StatelessWidget {
                               children: <Widget>[
                                 TextFormField(
                                   controller: loginController.emailController,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     suffixIcon: Icon(
                                       Icons.account_circle_rounded,
                                       color: MyColor.nevyBlue,
@@ -68,7 +68,7 @@ class LoginScreen extends StatelessWidget {
                                     return null;
                                   },
                                 ),
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
                                 TextFormField(
                                   controller:
                                       loginController.passwordController,
@@ -81,12 +81,12 @@ class LoginScreen extends StatelessWidget {
                                                   Icons.visibility_off,
                                                   color: MyColor.nevyBlue,
                                                 )
-                                              : Icon(Icons.visibility,
+                                              : const Icon(Icons.visibility,
                                                   color: MyColor.nevyBlue),
                                     ),
                                     labelText: 'Enter Password',
                                     border: const OutlineInputBorder(),
-                                    errorStyle: TextStyle(color: Colors.red),
+                                    errorStyle: const TextStyle(color: Colors.red),
                                   ),
                                   obscureText:
                                       loginController.isViewPassword.value,
@@ -100,7 +100,7 @@ class LoginScreen extends StatelessWidget {
                                     return null;
                                   },
                                 ),
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
                                 Row(
                                   children: [
                                     Obx(
@@ -113,12 +113,12 @@ class LoginScreen extends StatelessWidget {
                                         },
                                       ),
                                     ),
-                                    GlobalText(
+                                    const GlobalText(
                                       'Remember me',
                                       color: Colors.black,
                                       fontWeight: FontWeight.w500,
                                     ),
-                                    Spacer(),
+                                    const Spacer(),
                                     InkWell(
                                       onTap: () {
                                         Get.defaultDialog(
@@ -147,7 +147,7 @@ class LoginScreen extends StatelessWidget {
                                                 decoration: InputDecoration(
                                                   hintText: 'test@gmail.com',
                                                   suffixIcon: IconButton(
-                                                    icon: Icon(Icons.clear),
+                                                    icon: const Icon(Icons.clear),
                                                     onPressed: () =>
                                                         loginController
                                                             .resetEmailController
@@ -157,7 +157,7 @@ class LoginScreen extends StatelessWidget {
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               10),
-                                                      borderSide: BorderSide(
+                                                      borderSide: const BorderSide(
                                                           style:
                                                               BorderStyle.solid,
                                                           color:
@@ -271,8 +271,8 @@ class LoginScreen extends StatelessWidget {
 
   void _saveCredentials(bool rememberMe) async {
     if (rememberMe) {
-      await SharedPrefs.getString('emailId');
-      await SharedPrefs.getString('password');
+      SharedPrefs.getString('emailId');
+      SharedPrefs.getString('password');
     } else {
       await SharedPrefs.remove('emailId');
       await SharedPrefs.remove('password');

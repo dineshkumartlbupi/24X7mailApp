@@ -20,7 +20,7 @@ class GlobalText extends StatelessWidget {
   final TextStyle? textStyle;
   const GlobalText(
     this.text, {
-    Key? key,
+    super.key,
     this.height,
     this.fontSize,
     this.fontWeight,
@@ -40,7 +40,7 @@ class GlobalText extends StatelessWidget {
     this.paddingRight,
     this.paddingLeft,
     this.textStyle,
-  }) : super(key: key);
+  });
   @override
   Widget build(BuildContext context) {
     final fontTextStyle = TextStyle(

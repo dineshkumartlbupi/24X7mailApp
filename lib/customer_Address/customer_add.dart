@@ -64,7 +64,7 @@ class CustomerAdd extends StatelessWidget {
                     SizedBox(
                       width: Get.width * 0.025,
                     ),
-                    Icon(Icons.arrow_drop_down),
+                    const Icon(Icons.arrow_drop_down),
                   ],
                 ),
               ),
@@ -76,7 +76,7 @@ class CustomerAdd extends StatelessWidget {
                   if (newValue == 'Statements') {
                     Get.to(() => StatementView());
                   } else if (newValue == 'Subscription & Billing') {
-                    Get.to(() => SubscribeView());
+                    Get.to(() => const SubscribeView());
                   }
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
@@ -99,11 +99,11 @@ class CustomerAdd extends StatelessWidget {
                     SizedBox(
                       width: Get.width * 0.02,
                     ),
-                    GlobalText(
+                    const GlobalText(
                       'Account Setting',
                       fontWeight: FontWeight.w700,
                     ),
-                    Icon(Icons.arrow_drop_down),
+                    const Icon(Icons.arrow_drop_down),
                   ],
                 ),
               ),
@@ -119,7 +119,7 @@ class CustomerAdd extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.location_city),
+                const Icon(Icons.location_city),
                 SizedBox(
                   width: Get.width * 0.025,
                 ),
@@ -143,7 +143,7 @@ class CustomerAdd extends StatelessWidget {
             ),
             Container(
               height: Get.height * 0.15,
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(8.0),
@@ -152,7 +152,7 @@ class CustomerAdd extends StatelessWidget {
                     color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 1,
                     blurRadius: 5,
-                    offset: Offset(0, 3),
+                    offset: const Offset(0, 3),
                   ),
                 ],
               ),
@@ -175,7 +175,7 @@ class CustomerAdd extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             data == null
-                                ? Center(
+                                ? const Center(
                                     child: CupertinoActivityIndicator(
                                       color: MyColor.brightBlue,
                                     ),
@@ -287,7 +287,7 @@ class CustomerAdd extends StatelessWidget {
                                       shape: BoxShape.circle,
                                       color: Colors.black.withOpacity(0.5),
                                     ),
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.close,
                                       color: Colors.white,
                                       size: 20,
@@ -297,8 +297,8 @@ class CustomerAdd extends StatelessWidget {
                               ),
                             ],
                           )),
-                    GlobalText('Drag & Drop background image(s)'),
-                    GlobalText('or'),
+                    const GlobalText('Drag & Drop background image(s)'),
+                    const GlobalText('or'),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -306,7 +306,7 @@ class CustomerAdd extends StatelessWidget {
                           onPressed: () {
                             customerAddView.pickImage();
                           },
-                          child: GlobalText("Choose file(s)"),
+                          child: const GlobalText("Choose file(s)"),
                         ),
                         SizedBox(
                           width: Get.width * 0.01,
@@ -330,7 +330,7 @@ class CustomerAdd extends StatelessWidget {
                                     '');
                             Get.snackbar(
                               'Image uploaded',
-                              '${customerAddView.propertyModel.value?.msg.toString() ?? ''}',
+                              customerAddView.propertyModel.value?.msg.toString() ?? '',
                             );
                           },
                           child: const GlobalText("upload"),
@@ -354,9 +354,7 @@ class CustomerAdd extends StatelessWidget {
               if (cleanedString.isNotEmpty) {
                 List<String> pathSegments = cleanedString.split('/');
                 if (pathSegments.length >= 2) {
-                  imageName = pathSegments[pathSegments.length - 2] +
-                      '/' +
-                      pathSegments.last;
+                  imageName = '${pathSegments[pathSegments.length - 2]}/${pathSegments.last}';
                 } else if (pathSegments.isNotEmpty) {
                   imageName = pathSegments.last;
                 }
@@ -390,7 +388,7 @@ class CustomerAdd extends StatelessWidget {
                             Get.dialog(
                               Dialog(
                                 backgroundColor: Colors.transparent,
-                                child: Container(
+                                child: SizedBox(
                                   width: Get.width,
                                   height: Get.height,
                                   child: Stack(
@@ -421,7 +419,7 @@ class CustomerAdd extends StatelessWidget {
                             Get.snackbar("Error", "No image selected.");
                           }
                         },
-                        child: Icon(Icons.remove_red_eye_sharp)),
+                        child: const Icon(Icons.remove_red_eye_sharp)),
                   ))
           ],
         ),

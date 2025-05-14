@@ -86,7 +86,7 @@ class traceList extends StatelessWidget {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  GlobalText(
+                                  const GlobalText(
                                     'Shipping Address:',
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -101,7 +101,7 @@ class traceList extends StatelessWidget {
                               ),
                               Row(
                                 children: [
-                                  GlobalText('Shipping Method :',
+                                  const GlobalText('Shipping Method :',
                                       fontWeight: FontWeight.bold),
                                   GlobalText(shipmentIndex
                                           ?.shippedDetails?[0].shipmentCareer
@@ -115,7 +115,7 @@ class traceList extends StatelessWidget {
                                 children: [
                                   Row(
                                     children: [
-                                      GlobalText('Ship Date	:',
+                                      const GlobalText('Ship Date	:',
                                           fontWeight: FontWeight.bold),
                                       GlobalText(shipmentIndex
                                                   ?.shippedDetails?[0]
@@ -129,7 +129,7 @@ class traceList extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      GlobalText('Tracking Number	:',
+                                      const GlobalText('Tracking Number	:',
                                           fontWeight: FontWeight.bold),
                                       GlobalText(shipmentIndex
                                               ?.shippedDetails?[0]

@@ -196,11 +196,11 @@ class UploadNewMailScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: Get.height * 0.02),
-            Container(
+            SizedBox(
               height: Get.height * 0.35,
               child: Obx(() => Card(
                     child: mailController.customerList.value.data == null
-                        ? Center(child: GlobalText('No data Found'))
+                        ? const Center(child: GlobalText('No data Found'))
                         : ListView.builder(
                             itemCount:
                                 mailController.customerList.value.data?.length,

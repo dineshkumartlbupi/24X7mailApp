@@ -42,7 +42,7 @@ class Homepage extends StatelessWidget {
                               border: Border.all(
                                   width: 1.0, style: BorderStyle.solid)),
                           child:
-                              Center(child: Icon(Icons.format_list_bulleted))))
+                              const Center(child: Icon(Icons.format_list_bulleted))))
                 ],
               ),
               Divider(
@@ -79,8 +79,8 @@ class Homepage extends StatelessWidget {
                               height: Get.height * 0.05,
                               width: Get.width * 0.2,
                               color: MyColor.white,
-                              child: Center(
-                                child: const GlobalText(
+                              child: const Center(
+                                child: GlobalText(
                                   'Virtual',
                                   color: MyColor.black,
                                   fontSize: 24,
@@ -92,8 +92,8 @@ class Homepage extends StatelessWidget {
                               height: Get.height * 0.05,
                               width: Get.width * 0.25,
                               color: MyColor.nevyBlue,
-                              child: Center(
-                                child: const GlobalText(
+                              child: const Center(
+                                child: GlobalText(
                                   'Mail Box',
                                   color: MyColor.white,
                                   fontSize: 24,
@@ -125,20 +125,20 @@ class Homepage extends StatelessWidget {
                         ),
                         ElevatedButton.icon(
                           onPressed: () {},
-                          icon: Icon(Icons.search, color: Colors.white),
-                          label: GlobalText(
+                          icon: const Icon(Icons.search, color: Colors.white),
+                          label: const GlobalText(
                             'Browse Locations',
                             fontWeight: FontWeight.w700,
                           ),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: MyColor.yellowGold,
                             foregroundColor: Colors.white,
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 24, vertical: 12),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
-                            textStyle: TextStyle(
+                            textStyle: const TextStyle(
                               fontSize: 18, // Font size
                             ),
                           ),
@@ -148,31 +148,31 @@ class Homepage extends StatelessWidget {
                   ],
                 ),
               ),
-              CommonCard(
+              const CommonCard(
                 imagePath: AddImage.watchHomeGif,
                 titleText: 'ANYTIME',
                 detailsText:
                     'Instant mail notification\n High resolution image',
               ),
-              CommonCard(
+              const CommonCard(
                 imagePath: AddImage.worldWideGif,
                 titleText: 'ANYWHERE',
                 detailsText:
                     'Manage the Digital Box \n See Your Account \nNo Clutter\n No Fuss',
               ),
-              CommonCard(
+              const CommonCard(
                 imagePath: AddImage.responsiveGif,
                 titleText: 'MOBILE ACCESS',
                 detailsText:
                     'Through User Friendly Application \n iOS and Android',
               ),
-              CommonCard(
+              const CommonCard(
                 imagePath: AddImage.responsiveGif,
                 titleText: 'REAL BUSINESS ADDRESS',
                 detailsText:
                     'You got professional real street address with suite number no P.O box.',
               ),
-              GlobalText('Digital Mailroom Process'),
+              const GlobalText('Digital Mailroom Process'),
               SizedBox(
                 height: Get.height * 0.05,
               ),

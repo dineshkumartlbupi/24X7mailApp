@@ -47,7 +47,7 @@ class MailManagementScreen extends StatelessWidget {
                     ],
                     rows: mailsData.mailOperationsPick.value.data == null
                         ? [
-                            DataRow(cells: [
+                            const DataRow(cells: [
                               DataCell(
                                 Center(child: GlobalText('No data Found')),
                                 placeholder: true,
@@ -70,7 +70,7 @@ class MailManagementScreen extends StatelessWidget {
                             final formattedDate = firstDetail != null
                                 ? DateFormat('dd/MM/yyyy').format(
                                     DateTime.parse(
-                                        firstDetail?.updatedAt?.toString() ??
+                                        firstDetail.updatedAt?.toString() ??
                                             ''))
                                 : '';
                             return DataRow(cells: [
@@ -219,7 +219,7 @@ class MailManagementScreen extends StatelessWidget {
                                         : null;
                                 final formattedDate = firstDetail != null
                                     ? DateFormat('dd/MM/yyyy').format(
-                                        DateTime.parse(firstDetail?.updatedAt
+                                        DateTime.parse(firstDetail.updatedAt
                                                 ?.toString() ??
                                             ''))
                                     : '';
@@ -259,11 +259,11 @@ class MailManagementScreen extends StatelessWidget {
 
             // Third Tab: Search with Date Range and Status Filter
             Container(
-              padding: EdgeInsets.all(16.0), // Overall container padding
+              padding: const EdgeInsets.all(16.0), // Overall container padding
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                     color: Colors.black12,
                     blurRadius: 10,
@@ -419,7 +419,7 @@ class MailManagementScreen extends StatelessWidget {
             ),
 
             // Fourth Tab: Search Mail ID
-            Container(
+            SizedBox(
               height: Get.height * 0.05,
               width: Get.width * 0.5,
               child: Card(

@@ -58,7 +58,7 @@ class PendingShipment extends StatelessWidget {
                                 color: MyColor.colorBlueHome, width: 2.0),
                             borderRadius: BorderRadius.circular(10)),
                         child: Padding(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 10),
                           child: Column(
                             children: [
@@ -92,7 +92,7 @@ class PendingShipment extends StatelessWidget {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  GlobalText(
+                                  const GlobalText(
                                     'Shipping Address:',
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -107,7 +107,7 @@ class PendingShipment extends StatelessWidget {
                               ),
                               Row(
                                 children: [
-                                  GlobalText('Shipping Method :',
+                                  const GlobalText('Shipping Method :',
                                       fontWeight: FontWeight.bold),
                                   GlobalText(shipmentIndex
                                           ?.shippedDetails?[0].shipmentCareer
@@ -122,7 +122,7 @@ class PendingShipment extends StatelessWidget {
                                 children: [
                                   Row(
                                     children: [
-                                      GlobalText('Ship Date	:',
+                                      const GlobalText('Ship Date	:',
                                           fontWeight: FontWeight.bold),
                                       GlobalText(shipmentIndex
                                                   ?.shippedDetails?[0]
@@ -136,7 +136,7 @@ class PendingShipment extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      GlobalText('Tracking Number	:',
+                                      const GlobalText('Tracking Number	:',
                                           fontWeight: FontWeight.bold),
                                       GlobalText(shipmentIndex
                                               ?.shippedDetails?[0]

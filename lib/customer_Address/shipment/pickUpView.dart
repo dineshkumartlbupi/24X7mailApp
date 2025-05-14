@@ -18,7 +18,7 @@ class PickupView extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.blueAccent,
-          title: GlobalText(
+          title: const GlobalText(
             'Pick Up shipment',
             fontWeight: FontWeight.bold,
           ),
@@ -57,7 +57,7 @@ class PickupView extends StatelessWidget {
                                 color: MyColor.colorBlueHome, width: 2.0),
                             borderRadius: BorderRadius.circular(10)),
                         child: Padding(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 10),
                           child: Column(
                             children: [
@@ -91,7 +91,7 @@ class PickupView extends StatelessWidget {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  GlobalText(
+                                  const GlobalText(
                                     'Shipping Address:',
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -106,7 +106,7 @@ class PickupView extends StatelessWidget {
                               ),
                               Row(
                                 children: [
-                                  GlobalText('Shipping Method :',
+                                  const GlobalText('Shipping Method :',
                                       fontWeight: FontWeight.bold),
                                   GlobalText(shipmentIndex
                                           ?.shippedDetails?[0].shipmentCareer
@@ -121,7 +121,7 @@ class PickupView extends StatelessWidget {
                                 children: [
                                   Row(
                                     children: [
-                                      GlobalText('Ship Date	:',
+                                      const GlobalText('Ship Date	:',
                                           fontWeight: FontWeight.bold),
                                       GlobalText(shipmentIndex
                                                   ?.shippedDetails?[0]
@@ -135,7 +135,7 @@ class PickupView extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      GlobalText('Tracking Number	:',
+                                      const GlobalText('Tracking Number	:',
                                           fontWeight: FontWeight.bold),
                                       GlobalText(shipmentIndex
                                               ?.shippedDetails?[0]

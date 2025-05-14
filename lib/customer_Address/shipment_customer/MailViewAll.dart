@@ -31,7 +31,7 @@ class MailViewAll extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.blueAccent,
-          title: GlobalText(
+          title: const GlobalText(
             'ViewAll Mail',
             color: MyColor.white,
             fontWeight: FontWeight.bold,
@@ -44,7 +44,7 @@ class MailViewAll extends StatelessWidget {
               child: TextField(
                 controller: customerController.searchController,
                 decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.search),
+                  prefixIcon: const Icon(Icons.search),
                   hintText: 'Search Mail Id or Sender',
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15)),
@@ -62,7 +62,7 @@ class MailViewAll extends StatelessWidget {
               child: TextField(
                 controller: customerController.dateRangeController,
                 decoration: InputDecoration(
-                    icon: Icon(Icons.calendar_today),
+                    icon: const Icon(Icons.calendar_today),
                     hintText: 'Select Date Range',
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15))),
@@ -70,7 +70,7 @@ class MailViewAll extends StatelessWidget {
                 onTap: () => _selectDateRange(context),
               ),
             ),
-            Container(
+            SizedBox(
                 height: Get.height,
                 width: Get.width,
                 child: Obx(
@@ -145,12 +145,12 @@ class MailViewAll extends StatelessWidget {
                                                                     },
                                                                   ),
                                                                   noLabel:
-                                                                      GlobalText(
+                                                                      const GlobalText(
                                                                           'no'),
                                                                   title:
                                                                       'Open and Scan',
                                                                   content:
-                                                                      GlobalText(
+                                                                      const GlobalText(
                                                                           '')));
                                                         },
                                                       ),
@@ -158,7 +158,7 @@ class MailViewAll extends StatelessWidget {
                                                   ),
                                                   Row(
                                                     children: [
-                                                      Icon(Icons
+                                                      const Icon(Icons
                                                           .local_shipping_outlined),
                                                       GlobalText(
                                                         'Add to Shipment',
@@ -173,12 +173,12 @@ class MailViewAll extends StatelessWidget {
                                                                     'add-shipment');
                                                               },
                                                             ),
-                                                            noLabel: GlobalText(
+                                                            noLabel: const GlobalText(
                                                                 'no'),
                                                             title:
                                                                 'Add to Shipment',
                                                             content:
-                                                                GlobalText(''),
+                                                                const GlobalText(''),
                                                           ));
                                                         },
                                                       ),
@@ -186,7 +186,7 @@ class MailViewAll extends StatelessWidget {
                                                   ),
                                                   Row(
                                                     children: [
-                                                      Icon(Icons.recycling),
+                                                      const Icon(Icons.recycling),
                                                       GlobalText(
                                                         'Recycle',
                                                         onTap: () {
@@ -203,12 +203,12 @@ class MailViewAll extends StatelessWidget {
                                                                     },
                                                                   ),
                                                                   noLabel:
-                                                                      GlobalText(
+                                                                      const GlobalText(
                                                                           'no'),
                                                                   title:
                                                                       'Recycle',
                                                                   content:
-                                                                      GlobalText(
+                                                                      const GlobalText(
                                                                           '')));
                                                         },
                                                       ),
@@ -223,7 +223,7 @@ class MailViewAll extends StatelessWidget {
                                                 children: [
                                                   Row(
                                                     children: [
-                                                      Icon(Icons.share),
+                                                      const Icon(Icons.share),
                                                       GlobalText(
                                                         'shared',
                                                         onTap: () {
@@ -240,12 +240,12 @@ class MailViewAll extends StatelessWidget {
                                                                     },
                                                                   ),
                                                                   noLabel:
-                                                                      GlobalText(
+                                                                      const GlobalText(
                                                                           'no'),
                                                                   title:
                                                                       'shared',
                                                                   content:
-                                                                      GlobalText(
+                                                                      const GlobalText(
                                                                           '')));
                                                         },
                                                       ),
@@ -253,7 +253,7 @@ class MailViewAll extends StatelessWidget {
                                                   ),
                                                   Row(
                                                     children: [
-                                                      Icon(Icons
+                                                      const Icon(Icons
                                                           .adf_scanner_sharp),
                                                       GlobalText(
                                                         'Rescan',
@@ -271,12 +271,12 @@ class MailViewAll extends StatelessWidget {
                                                                     },
                                                                   ),
                                                                   noLabel:
-                                                                      GlobalText(
+                                                                      const GlobalText(
                                                                           'no'),
                                                                   title:
                                                                       'Rescan',
                                                                   content:
-                                                                      GlobalText(
+                                                                      const GlobalText(
                                                                           '')));
                                                         },
                                                       ),
@@ -284,7 +284,7 @@ class MailViewAll extends StatelessWidget {
                                                   ),
                                                   Row(
                                                     children: [
-                                                      Icon(Icons
+                                                      const Icon(Icons
                                                           .local_shipping_rounded),
                                                       GlobalText(
                                                         'Pick UP',
@@ -302,12 +302,12 @@ class MailViewAll extends StatelessWidget {
                                                                     },
                                                                   ),
                                                                   noLabel:
-                                                                      GlobalText(
+                                                                      const GlobalText(
                                                                           'no'),
                                                                   title:
                                                                       'Pick UP',
                                                                   content:
-                                                                      GlobalText(
+                                                                      const GlobalText(
                                                                           '')));
                                                         },
                                                       ),
@@ -317,7 +317,7 @@ class MailViewAll extends StatelessWidget {
                                               )
                                             ],
                                           )
-                                        : SizedBox(),
+                                        : const SizedBox(),
                                     Card(
                                       color: MyColor.cardIconColor,
                                       elevation: 5,
@@ -398,7 +398,7 @@ class MailViewAll extends StatelessWidget {
                                                 fontWeight: FontWeight.w700,
                                                 color: MyColor.black,
                                               ),
-                                              Container(
+                                              SizedBox(
                                                 height: Get.height * 0.07,
                                                 width: Get.width * 0.25,
                                                 child: customerController
@@ -407,7 +407,7 @@ class MailViewAll extends StatelessWidget {
                                                             .data
                                                             ?.length ==
                                                         null
-                                                    ? Center(
+                                                    ? const Center(
                                                         child:
                                                             CircularProgressIndicator(
                                                         color: MyColor
@@ -440,7 +440,7 @@ class MailViewAll extends StatelessWidget {
                                                               baseUrl +
                                                                   imagePath;
 
-                                                          return Container(
+                                                          return SizedBox(
                                                             height: Get.height *
                                                                 0.07,
                                                             width: Get.width *
@@ -517,7 +517,7 @@ class MailViewAll extends StatelessWidget {
     if (pickedFromDate != null) {
       DateTime? pickedToDate = await showDatePicker(
         context: context,
-        initialDate: pickedFromDate.add(Duration(days: 1)),
+        initialDate: pickedFromDate.add(const Duration(days: 1)),
         firstDate: pickedFromDate,
         lastDate: DateTime(2101),
       );
@@ -543,7 +543,7 @@ class MailViewAll extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              GlobalText(
+              const GlobalText(
                 'You have received new mail',
                 fontWeight: FontWeight.w700,
               ),
@@ -551,7 +551,7 @@ class MailViewAll extends StatelessWidget {
                   '${customerController.customerModel.value.data?[index].mailId?.mailType.toString().capitalizeFirst}'),
             ],
           ),
-          content: Container(
+          content: SizedBox(
             height: Get.height * 0.35,
             width: Get.width * 0.75,
             child: Scrollbar(
@@ -601,7 +601,7 @@ class MailViewAll extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        GlobalText(
+                        const GlobalText(
                           'Sender :',
                           fontWeight: FontWeight.w700,
                         ),
@@ -614,7 +614,7 @@ class MailViewAll extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        GlobalText(
+                        const GlobalText(
                           'Mail ID :',
                           fontWeight: FontWeight.w700,
                         ),
@@ -631,7 +631,7 @@ class MailViewAll extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        GlobalText(
+                        const GlobalText(
                           'Received :',
                           fontWeight: FontWeight.w700,
                         ),
@@ -654,7 +654,7 @@ class MailViewAll extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        GlobalText(
+                        const GlobalText(
                           'Weight:',
                           fontWeight: FontWeight.w700,
                         ),
@@ -685,7 +685,7 @@ class MailViewAll extends StatelessWidget {
                   SizedBox(
                     height: Get.height * 0.001,
                   ),
-                  Container(
+                  SizedBox(
                     height: Get.height * 0.05,
                     width: Get.width,
                     child: ListView.builder(
@@ -743,9 +743,9 @@ class MailViewAll extends StatelessWidget {
               height: Get.height * 0.02,
             ),
             TextButton(
-              style: ButtonStyle(
+              style: const ButtonStyle(
                   backgroundColor: WidgetStatePropertyAll(MyColor.softBlue)),
-              child: GlobalText('Close'),
+              child: const GlobalText('Close'),
               onPressed: () {
                 Get.back();
               },

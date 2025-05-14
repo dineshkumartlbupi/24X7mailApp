@@ -9,7 +9,7 @@ import '../../Utils/addImage.dart';
 enum SubscriptionType { monthly, annual }
 
 class SubscribeView extends StatefulWidget {
-  SubscribeView({super.key});
+  const SubscribeView({super.key});
 
   @override
   State<SubscribeView> createState() => _SubscribeViewState();
@@ -27,7 +27,7 @@ class _SubscribeViewState extends State<SubscribeView> {
         backgroundColor: Colors.grey.shade200,
         title: Row(
           children: [
-            Icon(Icons.add_card_outlined),
+            const Icon(Icons.add_card_outlined),
             SizedBox(
               width: Get.width * 0.02,
             ),

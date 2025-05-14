@@ -500,7 +500,7 @@ Future<ShipmentModel?> getSTatedata() async {
       final jsonResponse = jsonDecode(response.body);
 
       final stateModel = ShipmentModel.fromJson(jsonResponse);
-      log('json Response of GetState==> ${stateModel}');
+      log('json Response of GetState==> $stateModel');
 
       return stateModel;
     } else {
@@ -633,7 +633,7 @@ Future<void> getSOftStatement() async {
     if (responseData['status'] == true && responseData['data'] != null) {
       var softCash = responseData['data']['soft_cash'];
       getCustomerAdd.softCash.value = softCash;
-      log('Soft Cash: ${softCash}');
+      log('Soft Cash: $softCash');
 
       return responseData;
     } else {
@@ -977,7 +977,7 @@ Future<void> addRange(String fromData, toData) async {
   var token = SharedPrefs.getString('Token');
 
   var body = {
-    "id": "$userID",
+    "id": userID,
     "range": {"from": fromData, "to": toData}
   };
 

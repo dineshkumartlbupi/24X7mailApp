@@ -111,7 +111,7 @@ class ReadMailView extends StatelessWidget {
                                                     .readListData.value.data;
                                                 if (data == null ||
                                                     index >= data.length) {
-                                                  return GlobalText(
+                                                  return const GlobalText(
                                                     '',
                                                     fontWeight: FontWeight.w700,
                                                     color: MyColor.black,
@@ -135,7 +135,7 @@ class ReadMailView extends StatelessWidget {
                                                   color: MyColor.black,
                                                 );
                                               }),
-                                              Container(
+                                              SizedBox(
                                                 height: Get.height * 0.07,
                                                 width: Get.width * 0.25,
                                                 child: readListController
@@ -177,7 +177,7 @@ class ReadMailView extends StatelessWidget {
                                                               baseUrl +
                                                                   imagePath;
 
-                                                          return Container(
+                                                          return SizedBox(
                                                             height: Get.height *
                                                                 0.07,
                                                             width: Get.width *
@@ -254,7 +254,7 @@ class ReadMailView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              GlobalText(
+              const GlobalText(
                 'You have received new mail',
                 fontWeight: FontWeight.w700,
               ),
@@ -262,7 +262,7 @@ class ReadMailView extends StatelessWidget {
                   '${readListController.readListData.value.data?[index].mailId?.mailType.toString().capitalizeFirst}'),
             ],
           ),
-          content: Container(
+          content: SizedBox(
             height: Get.height * 0.35,
             width: Get.width * 0.75,
             child: Scrollbar(
@@ -312,7 +312,7 @@ class ReadMailView extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        GlobalText(
+                        const GlobalText(
                           'Sender :',
                           fontWeight: FontWeight.w700,
                         ),
@@ -325,7 +325,7 @@ class ReadMailView extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        GlobalText(
+                        const GlobalText(
                           'Mail ID :',
                           fontWeight: FontWeight.w700,
                         ),
@@ -342,7 +342,7 @@ class ReadMailView extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        GlobalText(
+                        const GlobalText(
                           'Received :',
                           fontWeight: FontWeight.w700,
                         ),
@@ -365,7 +365,7 @@ class ReadMailView extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        GlobalText(
+                        const GlobalText(
                           'Weight:',
                           fontWeight: FontWeight.w700,
                         ),
@@ -396,7 +396,7 @@ class ReadMailView extends StatelessWidget {
                   SizedBox(
                     height: Get.height * 0.001,
                   ),
-                  Container(
+                  SizedBox(
                     height: Get.height * 0.05,
                     width: Get.width,
                     child: ListView.builder(
@@ -454,9 +454,9 @@ class ReadMailView extends StatelessWidget {
               height: Get.height * 0.02,
             ),
             TextButton(
-              style: ButtonStyle(
+              style: const ButtonStyle(
                   backgroundColor: WidgetStatePropertyAll(MyColor.softBlue)),
-              child: GlobalText('Close'),
+              child: const GlobalText('Close'),
               onPressed: () {
                 Get.back();
               },

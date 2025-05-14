@@ -96,7 +96,7 @@ class CustomerView extends StatelessWidget {
                   ),
                   CircleAvatar(
                     child: IconButton(
-                      icon: Icon(Icons.delete),
+                      icon: const Icon(Icons.delete),
                       onPressed: () {
                         Get.defaultDialog(
                           title: "Delete Account",
@@ -111,7 +111,7 @@ class CustomerView extends StatelessWidget {
                           ),
                           backgroundColor: Colors.white,
                           radius: 10,
-                          contentPadding: EdgeInsets.all(20),
+                          contentPadding: const EdgeInsets.all(20),
                           barrierDismissible: false,
                           confirm: ElevatedButton.icon(
                             style: ElevatedButton.styleFrom(
@@ -132,13 +132,13 @@ class CustomerView extends StatelessWidget {
                           ),
                           cancel: OutlinedButton.icon(
                             style: OutlinedButton.styleFrom(
-                              side: BorderSide(color: Colors.grey),
+                              side: const BorderSide(color: Colors.grey),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
-                            icon: Icon(Icons.cancel, color: Colors.grey),
-                            label: GlobalText(
+                            icon: const Icon(Icons.cancel, color: Colors.grey),
+                            label: const GlobalText(
                               "Cancel",
                               color: Colors.grey,
                             ),
@@ -251,7 +251,7 @@ class CustomerView extends StatelessWidget {
                                                       })),*/
                                                   Row(
                                                     children: [
-                                                      Icon(Icons
+                                                      const Icon(Icons
                                                           .open_in_new_rounded),
                                                       GlobalText(
                                                         'Open and Scan',
@@ -280,7 +280,7 @@ class CustomerView extends StatelessWidget {
                                                                   title:
                                                                       'Open and Scan',
                                                                   content:
-                                                                      GlobalText(
+                                                                      const GlobalText(
                                                                           '')));
                                                         },
                                                       ),
@@ -304,12 +304,12 @@ class CustomerView extends StatelessWidget {
                                                                     'add-shipment');
                                                               },
                                                             ),
-                                                            noLabel: GlobalText(
+                                                            noLabel: const GlobalText(
                                                                 'no'),
                                                             title:
                                                                 'Add to Shipment',
                                                             content:
-                                                                GlobalText(''),
+                                                                const GlobalText(''),
                                                           ));
                                                         },
                                                       ),
@@ -317,7 +317,7 @@ class CustomerView extends StatelessWidget {
                                                   ),
                                                   Row(
                                                     children: [
-                                                      Icon(Icons.recycling),
+                                                      const Icon(Icons.recycling),
                                                       GlobalText(
                                                         'Recycle',
                                                         onTap: () {
@@ -334,13 +334,13 @@ class CustomerView extends StatelessWidget {
                                                                     },
                                                                   ),
                                                                   noLabel:
-                                                                      GlobalText(
+                                                                      const GlobalText(
                                                                     'no',
                                                                   ),
                                                                   title:
                                                                       'Recycle',
                                                                   content:
-                                                                      GlobalText(
+                                                                      const GlobalText(
                                                                           '')));
                                                         },
                                                       ),
@@ -355,7 +355,7 @@ class CustomerView extends StatelessWidget {
                                                 children: [
                                                   Row(
                                                     children: [
-                                                      Icon(Icons.share),
+                                                      const Icon(Icons.share),
                                                       GlobalText(
                                                         'shared',
                                                         onTap: () {
@@ -372,12 +372,12 @@ class CustomerView extends StatelessWidget {
                                                                     },
                                                                   ),
                                                                   noLabel:
-                                                                      GlobalText(
+                                                                      const GlobalText(
                                                                           'No'),
                                                                   title:
                                                                       'shared',
                                                                   content:
-                                                                      GlobalText(
+                                                                      const GlobalText(
                                                                           '')));
                                                         },
                                                       ),
@@ -385,7 +385,7 @@ class CustomerView extends StatelessWidget {
                                                   ),
                                                   Row(
                                                     children: [
-                                                      Icon(Icons
+                                                      const Icon(Icons
                                                           .adf_scanner_sharp),
                                                       GlobalText(
                                                         'Rescan',
@@ -403,12 +403,12 @@ class CustomerView extends StatelessWidget {
                                                                     },
                                                                   ),
                                                                   noLabel:
-                                                                      GlobalText(
+                                                                      const GlobalText(
                                                                           'no'),
                                                                   title:
                                                                       'Rescan',
                                                                   content:
-                                                                      GlobalText(
+                                                                      const GlobalText(
                                                                           '')));
                                                         },
                                                       ),
@@ -416,7 +416,7 @@ class CustomerView extends StatelessWidget {
                                                   ),
                                                   Row(
                                                     children: [
-                                                      Icon(Icons
+                                                      const Icon(Icons
                                                           .local_shipping_rounded),
                                                       GlobalText(
                                                         'Pick UP',
@@ -434,12 +434,12 @@ class CustomerView extends StatelessWidget {
                                                                     },
                                                                   ),
                                                                   noLabel:
-                                                                      GlobalText(
+                                                                      const GlobalText(
                                                                           'no'),
                                                                   title:
                                                                       'Pick UP',
                                                                   content:
-                                                                      GlobalText(
+                                                                      const GlobalText(
                                                                           '')));
                                                         },
                                                       ),
@@ -449,9 +449,9 @@ class CustomerView extends StatelessWidget {
                                               )
                                             ],
                                           )
-                                        : SizedBox(),
+                                        : const SizedBox(),
                                     Card(
-                                      margin: EdgeInsets.all(5),
+                                      margin: const EdgeInsets.all(5),
                                       //color: MyColor.cardIconColor,
                                       elevation: 5,
                                       shape: RoundedRectangleBorder(
@@ -515,7 +515,7 @@ class CustomerView extends StatelessWidget {
                                                     .customerModel.value.data;
                                                 if (data == null ||
                                                     index >= data.length) {
-                                                  return GlobalText(
+                                                  return const GlobalText(
                                                     '',
                                                     fontWeight: FontWeight.w700,
                                                     color: MyColor.black,
@@ -539,7 +539,7 @@ class CustomerView extends StatelessWidget {
                                                   color: MyColor.black,
                                                 );
                                               }),
-                                              Container(
+                                              SizedBox(
                                                 height: Get.height * 0.07,
                                                 width: Get.width * 0.25,
                                                 child: customerController
@@ -581,7 +581,7 @@ class CustomerView extends StatelessWidget {
                                                               baseUrl +
                                                                   imagePath;
 
-                                                          return Container(
+                                                          return SizedBox(
                                                             height: Get.height *
                                                                 0.07,
                                                             width: Get.width *
@@ -657,7 +657,7 @@ class CustomerView extends StatelessWidget {
     if (pickedFromDate != null) {
       DateTime? pickedToDate = await showDatePicker(
         context: context,
-        initialDate: pickedFromDate.add(Duration(days: 1)),
+        initialDate: pickedFromDate.add(const Duration(days: 1)),
         firstDate: pickedFromDate,
         lastDate: DateTime(2101),
       );
@@ -683,7 +683,7 @@ class CustomerView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              GlobalText(
+              const GlobalText(
                 'You have received new mail',
                 fontWeight: FontWeight.w700,
               ),
@@ -691,7 +691,7 @@ class CustomerView extends StatelessWidget {
                   '${customerController.customerIndexMail.value.data?[index].mailId?.mailType.toString().capitalizeFirst}'),
             ],
           ),
-          content: Container(
+          content: SizedBox(
             height: Get.height * 0.35,
             width: Get.width * 0.75,
             child: Scrollbar(
@@ -741,7 +741,7 @@ class CustomerView extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        GlobalText(
+                        const GlobalText(
                           'Sender :',
                           fontWeight: FontWeight.w700,
                         ),
@@ -754,7 +754,7 @@ class CustomerView extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        GlobalText(
+                        const GlobalText(
                           'Mail ID :',
                           fontWeight: FontWeight.w700,
                         ),
@@ -771,7 +771,7 @@ class CustomerView extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        GlobalText(
+                        const GlobalText(
                           'Received :',
                           fontWeight: FontWeight.w700,
                         ),
@@ -794,7 +794,7 @@ class CustomerView extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        GlobalText(
+                        const GlobalText(
                           'Weight:',
                           fontWeight: FontWeight.w700,
                         ),
@@ -825,7 +825,7 @@ class CustomerView extends StatelessWidget {
                   SizedBox(
                     height: Get.height * 0.001,
                   ),
-                  Container(
+                  SizedBox(
                     height: Get.height * 0.05,
                     width: Get.width,
                     child: ListView.builder(
@@ -887,9 +887,9 @@ class CustomerView extends StatelessWidget {
               height: Get.height * 0.02,
             ),
             TextButton(
-              style: ButtonStyle(
+              style: const ButtonStyle(
                   backgroundColor: WidgetStatePropertyAll(MyColor.softBlue)),
-              child: GlobalText('Close'),
+              child: const GlobalText('Close'),
               onPressed: () {
                 Get.back();
               },

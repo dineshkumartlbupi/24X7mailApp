@@ -65,11 +65,11 @@ class PastShipingList extends StatelessWidget {
                             margin: const EdgeInsets.all(8),
                             elevation: 2,
                             shape: RoundedRectangleBorder(
-                                side: BorderSide(
+                                side: const BorderSide(
                                     color: MyColor.colorBlueHome, width: 2.0),
                                 borderRadius: BorderRadius.circular(10)),
                             child: Padding(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 10),
                               child: Column(
                                 children: [
@@ -80,7 +80,7 @@ class PastShipingList extends StatelessWidget {
                                     children: [
                                       Row(
                                         children: [
-                                          GlobalText(
+                                          const GlobalText(
                                             'Mail ID :',
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -104,7 +104,7 @@ class PastShipingList extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      GlobalText(
+                                      const GlobalText(
                                         'Shipping Address:',
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -119,7 +119,7 @@ class PastShipingList extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      GlobalText('Shipping Method :',
+                                      const GlobalText('Shipping Method :',
                                           fontWeight: FontWeight.bold),
                                       GlobalText(shipmentIndex
                                               ?.shippedDetails?[0]
@@ -135,7 +135,7 @@ class PastShipingList extends StatelessWidget {
                                     children: [
                                       Row(
                                         children: [
-                                          GlobalText('Ship Date	:',
+                                          const GlobalText('Ship Date	:',
                                               fontWeight: FontWeight.bold),
                                           GlobalText(shipmentIndex
                                                       ?.shippedDetails?[0]
@@ -149,7 +149,7 @@ class PastShipingList extends StatelessWidget {
                                       ),
                                       Row(
                                         children: [
-                                          GlobalText('Tracking Number	:',
+                                          const GlobalText('Tracking Number	:',
                                               fontWeight: FontWeight.bold),
                                           GlobalText(shipmentIndex
                                                   ?.shippedDetails?[0]

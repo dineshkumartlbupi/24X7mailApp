@@ -8,8 +8,8 @@ class CommonCard extends StatelessWidget {
   final String titleText;
   final String detailsText;
 
-  CommonCard(
-      {required this.imagePath,
+  const CommonCard(
+      {super.key, required this.imagePath,
       required this.titleText,
       required this.detailsText});
 

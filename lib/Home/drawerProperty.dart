@@ -20,15 +20,15 @@ class DrawerProperty extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: MyColor.white,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(AddImage.homeLogo, height: 80),
-                SizedBox(height: 10),
-                GlobalText(
+                const SizedBox(height: 10),
+                const GlobalText(
                   'Menu',
                   fontSize: 20,
                   color: MyColor.white,
@@ -69,7 +69,7 @@ class DrawerProperty extends StatelessWidget {
             text: 'Partner Program',
             onTap: () => Get.to(() => SignUpView()),
           ),
-          Divider(),
+          const Divider(),
           const Padding(
             padding: EdgeInsets.all(8.0),
             child: GlobalText(
@@ -106,7 +106,7 @@ class DrawerProperty extends StatelessWidget {
         fontWeight: FontWeight.w700,
       ),
       trailing:
-          Icon(Icons.arrow_forward_ios, size: 16, color: MyColor.deepPurple),
+          const Icon(Icons.arrow_forward_ios, size: 16, color: MyColor.deepPurple),
       onTap: onTap,
     );
   }

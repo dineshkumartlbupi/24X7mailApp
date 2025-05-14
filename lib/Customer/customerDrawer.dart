@@ -88,7 +88,7 @@ class CustomerDrawer extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                     fontSize: Get.height * 0.02,
                   ),
-                  Spacer(),
+                  const Spacer(),
                   const Icon(Icons.arrow_drop_down, color: MyColor.nevyBlue),
                 ],
               ),
@@ -137,7 +137,7 @@ class CustomerDrawer extends StatelessWidget {
               ],
               child: Row(
                 children: [
-                  Icon(Icons.filter_alt_rounded, color: MyColor.nevyBlue),
+                  const Icon(Icons.filter_alt_rounded, color: MyColor.nevyBlue),
                   SizedBox(width: Get.width * 0.02),
                   GlobalText(
                     'Filter',
@@ -168,7 +168,7 @@ class CustomerDrawer extends StatelessWidget {
         fontSize: Get.height * 0.02,
       ),
       trailing:
-          Icon(Icons.arrow_forward_ios, size: 16, color: MyColor.nevyBlue),
+          const Icon(Icons.arrow_forward_ios, size: 16, color: MyColor.nevyBlue),
       onTap: onTap,
     );
   }

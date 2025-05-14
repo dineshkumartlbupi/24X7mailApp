@@ -36,7 +36,7 @@ class OperatorRequestHome extends StatelessWidget {
         return true;
       },
       child: Scaffold(
-        drawer: Drawer(
+        drawer: const Drawer(
           child: OperatorDrawer(),
         ),
         appBar: AppBar(
@@ -112,13 +112,13 @@ class OperatorRequestHome extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Expanded(child: Divider()),
+                    const Expanded(child: Divider()),
                     GlobalText(
                       'By Operation',
                       fontWeight: FontWeight.w700,
                       fontSize: Get.height * 0.020,
                     ),
-                    Expanded(child: Divider()),
+                    const Expanded(child: Divider()),
                   ],
                 ),
                 SizedBox(
@@ -126,8 +126,8 @@ class OperatorRequestHome extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Icon(Icons.circle, size: 8), // Bullet point
-                    SizedBox(width: 8),
+                    const Icon(Icons.circle, size: 8), // Bullet point
+                    const SizedBox(width: 8),
                     GlobalText(
                       'Scan Request:',
                       fontSize: Get.height * 0.025,
@@ -145,11 +145,11 @@ class OperatorRequestHome extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Row(
                   children: [
-                    Icon(Icons.circle, size: 8), // Bullet point
-                    SizedBox(width: 8),
+                    const Icon(Icons.circle, size: 8), // Bullet point
+                    const SizedBox(width: 8),
                     GlobalText(
                       'Rescan Request:',
                       fontSize: Get.height * 0.025,
@@ -167,11 +167,11 @@ class OperatorRequestHome extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Row(
                   children: [
-                    Icon(Icons.circle, size: 8), // Bullet point
-                    SizedBox(width: 8),
+                    const Icon(Icons.circle, size: 8), // Bullet point
+                    const SizedBox(width: 8),
                     GlobalText(
                       'Shred Request:',
                       fontSize: Get.height * 0.025,
@@ -189,11 +189,11 @@ class OperatorRequestHome extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Row(
                   children: [
-                    Icon(Icons.circle, size: 8), // Bullet point
-                    SizedBox(width: 8),
+                    const Icon(Icons.circle, size: 8), // Bullet point
+                    const SizedBox(width: 8),
                     GlobalText(
                       'Recycle Request: ',
                       fontSize: Get.height * 0.025,
@@ -211,11 +211,11 @@ class OperatorRequestHome extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Row(
                   children: [
-                    Icon(Icons.circle, size: 8), // Bullet point
-                    SizedBox(width: 8),
+                    const Icon(Icons.circle, size: 8), // Bullet point
+                    const SizedBox(width: 8),
                     GlobalText(
                       'Forward Shipment:',
                       fontSize: Get.height * 0.025,
@@ -236,8 +236,8 @@ class OperatorRequestHome extends StatelessWidget {
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    Icon(Icons.circle, size: 8), // Bullet point
-                    SizedBox(width: 8),
+                    const Icon(Icons.circle, size: 8), // Bullet point
+                    const SizedBox(width: 8),
                     GlobalText(
                       'Local Pickup Request:',
                       fontSize: Get.height * 0.025,

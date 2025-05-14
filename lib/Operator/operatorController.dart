@@ -90,7 +90,7 @@ class OperatorController extends GetxController {
           children: [
             TextField(
               controller: businessNameController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   labelText: 'Business Name', border: OutlineInputBorder()),
             ),
             SizedBox(
@@ -99,19 +99,19 @@ class OperatorController extends GetxController {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
+                SizedBox(
                   width: Get.width * 0.3,
                   child: TextField(
                     controller: fNameController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         labelText: 'First Name', border: OutlineInputBorder()),
                   ),
                 ),
-                Container(
+                SizedBox(
                   width: Get.width * 0.3,
                   child: TextField(
                     controller: lNameController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         labelText: 'Last Name', border: OutlineInputBorder()),
                   ),
                 ),
@@ -122,14 +122,14 @@ class OperatorController extends GetxController {
             ),
             TextField(
               controller: emailController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   labelText: 'Email', border: OutlineInputBorder()),
             ),
             SizedBox(
               height: Get.height * 0.02,
             ),
             DropdownButton<String>(
-              hint: Text('Select a Country'),
+              hint: const Text('Select a Country'),
               value: _selectedCountry,
               onChanged: (String? newValue) {
                 _selectedCountry = newValue;
@@ -146,7 +146,7 @@ class OperatorController extends GetxController {
             ),
             TextField(
               controller: stateController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   labelText: 'State', border: OutlineInputBorder()),
             ),
             SizedBox(
@@ -154,7 +154,7 @@ class OperatorController extends GetxController {
             ),
             TextField(
               controller: cityController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   labelText: 'City', border: OutlineInputBorder()),
             ),
             SizedBox(
@@ -162,7 +162,7 @@ class OperatorController extends GetxController {
             ),
             TextField(
               controller: zipCodeController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   labelText: 'Zip Code', border: OutlineInputBorder()),
             ),
             SizedBox(
@@ -170,7 +170,7 @@ class OperatorController extends GetxController {
             ),
             TextField(
               controller: businessAddressController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   labelText: 'Business Address', border: OutlineInputBorder()),
             ),
           ],

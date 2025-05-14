@@ -11,7 +11,7 @@ class CloseAccountView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: GlobalText(
+        title: const GlobalText(
           'Closed Accounts',
           fontWeight: FontWeight.bold,
           fontSize: 20,
@@ -31,8 +31,8 @@ class CloseAccountView extends StatelessWidget {
                   suffixIcon: IconButton(
                       onPressed: () =>
                           reportController.searchController.clear(),
-                      icon: Icon(Icons.clear)),
-                  border: OutlineInputBorder(),
+                      icon: const Icon(Icons.clear)),
+                  border: const OutlineInputBorder(),
                 ),
                 onChanged: (value) {
                   reportController.searchQuery.value =
@@ -48,7 +48,7 @@ class CloseAccountView extends StatelessWidget {
                           'No results found', // Display message when list is empty
                           fontSize: 16),
                     )
-                  : Container(
+                  : SizedBox(
                       height: Get.height * 0.02,
                       child: ListView.builder(
                         itemCount: reportController.filteredList.length,
@@ -65,7 +65,7 @@ class CloseAccountView extends StatelessWidget {
                       ),
                     ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Expanded(
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical, // Enable horizontal scrolling
@@ -116,13 +116,13 @@ class CloseAccountView extends StatelessWidget {
                             ],
                           );
                         },
-                      ).toList(),
+                      ),
                     ],
                   ),
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
           ],
         ),
       ),
@@ -131,7 +131,7 @@ class CloseAccountView extends StatelessWidget {
 
   Widget _buildTableHeader(String text) {
     return Padding(
-      padding: EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
       child: GlobalText(
         text,
         fontWeight: FontWeight.bold,

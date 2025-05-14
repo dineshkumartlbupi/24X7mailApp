@@ -40,7 +40,7 @@ class OperatorView extends StatelessWidget {
               height: Get.height * 0.04,
             ),
           ],
-          title: GlobalText(
+          title: const GlobalText(
             'Operator',
             fontWeight: FontWeight.w700,
           )),
@@ -64,7 +64,7 @@ class OperatorView extends StatelessWidget {
                     onPressed: () {
                       opController.showAddOperatorDialog(context);
                     },
-                    child: GlobalText('Add')),
+                    child: const GlobalText('Add')),
               ],
             ),
           ),
@@ -82,7 +82,7 @@ class OperatorView extends StatelessWidget {
                       elevation: 10,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
-                          side: BorderSide(
+                          side: const BorderSide(
                               color: MyColor.cardIColorIndigo, width: 2.0)),
                       margin: EdgeInsets.symmetric(
                           vertical: Get.height * 0.015,

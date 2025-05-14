@@ -17,7 +17,7 @@ class AddressBook extends StatelessWidget {
           backgroundColor: Colors.blueAccent,
           title: Row(
             children: [
-              Icon(Icons.add_home_rounded),
+              const Icon(Icons.add_home_rounded),
               SizedBox(
                 width: Get.width * 0.02,
               ),
@@ -41,9 +41,9 @@ class AddressBook extends StatelessWidget {
             ),
             Obx(() => Flexible(
                   child: shipmentData.shipment.value?.data == null
-                      ? Center(child: GlobalText('No data found!!! '))
+                      ? const Center(child: GlobalText('No data found!!! '))
                       : shipmentData.shipment.value?.data?.length == null
-                          ? Center(
+                          ? const Center(
                               child: CircularProgressIndicator(
                               color: MyColor.brightBlue,
                             ))
@@ -80,7 +80,7 @@ class AddressBook extends StatelessWidget {
                                                           .id);
                                                   shipmentData.update();
                                                 },
-                                                icon: Icon(Icons.delete),
+                                                icon: const Icon(Icons.delete),
                                                 color: MyColor.brightBlue,
                                               )
                                             ],
@@ -157,10 +157,10 @@ class AddressBook extends StatelessWidget {
           child: Column(
             children: [
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 5.0),
+                padding: const EdgeInsets.symmetric(vertical: 5.0),
                 child: TextField(
                   controller: shipmentData.nameController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Shipment Name',
                     border: OutlineInputBorder(),
                   ),
@@ -172,7 +172,7 @@ class AddressBook extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: TextField(
                   controller: shipmentData.companyController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Company Name (optional)',
                     border: OutlineInputBorder(),
                   ),
@@ -186,7 +186,7 @@ class AddressBook extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: TextField(
                   controller: shipmentData.addLineOneController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Address Line One',
                     border: OutlineInputBorder(),
                   ),
@@ -199,7 +199,7 @@ class AddressBook extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: TextField(
                   controller: shipmentData.addLineTwoController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Address Line 2 (optional)',
                     border: OutlineInputBorder(),
                   ),
@@ -213,7 +213,7 @@ class AddressBook extends StatelessWidget {
                 child: Obx(
                   () => DropdownButton<String>(
                     isExpanded: true,
-                    hint: GlobalText('Select a Country'),
+                    hint: const GlobalText('Select a Country'),
                     value: shipmentData.selectedCountry.value,
                     onChanged: (String? newValue) =>
                         shipmentData.selectedCountry.value = newValue,
@@ -233,7 +233,7 @@ class AddressBook extends StatelessWidget {
                 child: Obx(
                   () => DropdownButton<String>(
                     isExpanded: true,
-                    hint: GlobalText('Select a State'),
+                    hint: const GlobalText('Select a State'),
                     value: shipmentData.selectedState.value,
                     onChanged: (String? newValue) =>
                         shipmentData.selectedState.value = newValue,
@@ -255,7 +255,7 @@ class AddressBook extends StatelessWidget {
                 child: Obx(
                   () => DropdownButton<String>(
                     isExpanded: true,
-                    hint: GlobalText('Select a City'),
+                    hint: const GlobalText('Select a City'),
                     value: shipmentData.selectedCity.value,
                     onChanged: (String? newValue) {
                       shipmentData.selectedCity.value = newValue;
@@ -277,7 +277,7 @@ class AddressBook extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: TextField(
                   controller: shipmentData.postolController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Postal Code',
                     border: OutlineInputBorder(),
                   ),
@@ -290,7 +290,7 @@ class AddressBook extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: TextField(
                   controller: shipmentData.phoneController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Phone Number',
                     border: OutlineInputBorder(),
                   ),
@@ -303,13 +303,13 @@ class AddressBook extends StatelessWidget {
       ),
       actions: [
         TextButton(
-          child: GlobalText('Cancel'),
+          child: const GlobalText('Cancel'),
           onPressed: () {
             Get.back();
           },
         ),
         ElevatedButton(
-          child: GlobalText('Add'),
+          child: const GlobalText('Add'),
           onPressed: () {
             submitShippingAddress();
           },

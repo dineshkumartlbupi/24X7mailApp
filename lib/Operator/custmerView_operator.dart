@@ -14,7 +14,7 @@ class OperatorCustomerView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: GlobalText('Customers'),
+          title: const GlobalText('Customers'),
         ),
         body: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
@@ -24,7 +24,7 @@ class OperatorCustomerView extends StatelessWidget {
             } else if (mailController.customerList.value.data?.length == null) {
               return Padding(
                   padding: EdgeInsets.only(left: Get.width * 0.35),
-                  child: Center(
+                  child: const Center(
                     child: GlobalText(
                       'No data Found',
                     ),
@@ -75,7 +75,7 @@ class OperatorCustomerView extends StatelessWidget {
                                     ? Colors.green
                                     : Colors.red,
                                 size: 10),
-                            SizedBox(width: 5),
+                            const SizedBox(width: 5),
                             GlobalText(customer.userStatus.toString()),
                           ],
                         ),
@@ -83,7 +83,7 @@ class OperatorCustomerView extends StatelessWidget {
                       DataCell(GlobalText(customer.isDeleted! ? 'YES' : 'NO')),
                       DataCell(
                         IconButton(
-                          icon: Icon(Icons.login, color: Colors.green),
+                          icon: const Icon(Icons.login, color: Colors.green),
                           onPressed: () {
                             log('Remote login for ${customer.fname}');
                           },
@@ -91,7 +91,7 @@ class OperatorCustomerView extends StatelessWidget {
                       ),
                       DataCell(
                         IconButton(
-                          icon: Icon(Icons.person_off, color: Colors.black),
+                          icon: const Icon(Icons.person_off, color: Colors.black),
                           onPressed: () {
                             log('Deleting user ${customer.fname}');
                           },

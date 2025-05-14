@@ -34,7 +34,7 @@ class SignUpView extends StatelessWidget {
                                   .businessNameController.text.isEmpty
                               ? 'This field is required'
                               : null,
-                          border: OutlineInputBorder(),
+                          border: const OutlineInputBorder(),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -47,7 +47,7 @@ class SignUpView extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Container(
+                          SizedBox(
                             width: Get.width * 0.25,
                             child: TextFormField(
                               controller: signUpController.firstNameController,
@@ -58,7 +58,7 @@ class SignUpView extends StatelessWidget {
                                         .firstNameController.text.isEmpty
                                     ? 'This field is required'
                                     : null,
-                                border: OutlineInputBorder(),
+                                border: const OutlineInputBorder(),
                               ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -68,7 +68,7 @@ class SignUpView extends StatelessWidget {
                               },
                             ),
                           ),
-                          Container(
+                          SizedBox(
                             width: Get.width * 0.25,
                             child: TextFormField(
                               controller: signUpController.lastNameController,
@@ -79,7 +79,7 @@ class SignUpView extends StatelessWidget {
                                         .lastNameController.text.isEmpty
                                     ? 'This field is required'
                                     : null,
-                                border: OutlineInputBorder(),
+                                border: const OutlineInputBorder(),
                               ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -100,7 +100,7 @@ class SignUpView extends StatelessWidget {
                                   .phoneNumberController.text.isEmpty
                               ? 'This field is required'
                               : null,
-                          border: OutlineInputBorder(),
+                          border: const OutlineInputBorder(),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -119,7 +119,7 @@ class SignUpView extends StatelessWidget {
                               signUpController.emailController.text.isEmpty
                                   ? 'This field is required'
                                   : null,
-                          border: OutlineInputBorder(),
+                          border: const OutlineInputBorder(),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -132,7 +132,7 @@ class SignUpView extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Container(
+                          SizedBox(
                             width: Get.width * 0.25,
                             child: TextFormField(
                               controller: signUpController.password,
@@ -143,7 +143,7 @@ class SignUpView extends StatelessWidget {
                                     signUpController.password.text.isEmpty
                                         ? 'This field is required'
                                         : null,
-                                border: OutlineInputBorder(),
+                                border: const OutlineInputBorder(),
                               ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -153,7 +153,7 @@ class SignUpView extends StatelessWidget {
                               },
                             ),
                           ),
-                          Container(
+                          SizedBox(
                             width: Get.width * 0.25,
                             child: TextFormField(
                               controller: signUpController.confirmPassword,
@@ -164,7 +164,7 @@ class SignUpView extends StatelessWidget {
                                         .confirmPassword.text.isEmpty
                                     ? 'This field is required'
                                     : null,
-                                border: OutlineInputBorder(),
+                                border: const OutlineInputBorder(),
                               ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -185,7 +185,7 @@ class SignUpView extends StatelessWidget {
                           errorText: signUpController.businessAdd.text.isEmpty
                               ? 'This field is required'
                               : null,
-                          border: OutlineInputBorder(),
+                          border: const OutlineInputBorder(),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -218,10 +218,10 @@ class SignUpView extends StatelessWidget {
                             width: Get.width * 0.05,
                           ),
                           Obx(
-                            () => Container(
+                            () => SizedBox(
                               width: Get.width * 0.23,
                               child: DropdownButton<String>(
-                                hint: GlobalText('Select a State'),
+                                hint: const GlobalText('Select a State'),
                                 value: signUpController.selectedState.value,
                                 onChanged: (String? newValue) {
                                   signUpController.selectedState.value =
@@ -263,7 +263,7 @@ class SignUpView extends StatelessWidget {
                             width: Get.width * 0.05,
                           ),
                           Obx(
-                            () => Container(
+                            () => SizedBox(
                               width: Get.width * 0.23,
                               child: TextFormField(
                                 controller: signUpController.postalController,
@@ -274,7 +274,7 @@ class SignUpView extends StatelessWidget {
                                           .postalController.text.isEmpty
                                       ? 'This field is required'
                                       : null,
-                                  border: OutlineInputBorder(),
+                                  border: const OutlineInputBorder(),
                                 ),
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
@@ -299,7 +299,7 @@ class SignUpView extends StatelessWidget {
                                     content: GlobalText('Processing Data')));
                           }
                         },
-                        child: GlobalText('Send'),
+                        child: const GlobalText('Send'),
                       ),
                     ],
                   ),

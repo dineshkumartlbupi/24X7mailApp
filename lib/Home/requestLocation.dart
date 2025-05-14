@@ -29,7 +29,7 @@ class RequestLocation extends StatelessWidget {
                 SizedBox(
                   height: Get.height * 0.02,
                 ),
-                Container(
+                SizedBox(
                   width: Get.width * 0.5,
                   child: const TextField(
                     autofocus: true,

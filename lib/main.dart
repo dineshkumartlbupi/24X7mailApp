@@ -20,12 +20,12 @@ void main() async {
     if (details.stack != null) {
       Zone.current.handleUncaughtError(details.exception, details.stack!);
       print(
-          details.exception.toString() + '\n' + details.stack.toString());
+          '${details.exception}\n${details.stack}');
     } else {
       FlutterError.presentError(details);
     }
   };
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

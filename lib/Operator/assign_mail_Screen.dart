@@ -17,8 +17,8 @@ class AssignMailScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: GlobalText('Assign Mail', fontWeight: FontWeight.w600),
-          bottom: TabBar(
+          title: const GlobalText('Assign Mail', fontWeight: FontWeight.w600),
+          bottom: const TabBar(
             automaticIndicatorColorAdjustment: true,
             tabs: [
               Tab(text: 'Pending'),
@@ -29,7 +29,7 @@ class AssignMailScreen extends StatelessWidget {
         body: TabBarView(
           children: [
             Container(
-              margin: EdgeInsets.all(08),
+              margin: const EdgeInsets.all(08),
               child: Obx(() => ListView.builder(
                     itemCount: assignController.assignList.value.data?.length,
                     itemBuilder: (_, inx) {
@@ -92,7 +92,7 @@ class AssignMailScreen extends StatelessWidget {
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(8.0),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -107,14 +107,14 @@ class AssignMailScreen extends StatelessWidget {
                                     Row(
                                       children: [
                                         IconButton(
-                                          icon: Icon(Icons.flag),
+                                          icon: const Icon(Icons.flag),
                                           color: Colors.blue,
                                           onPressed: () {
                                             // Flag button action
                                           },
                                         ),
                                         IconButton(
-                                          icon: Icon(Icons.delete),
+                                          icon: const Icon(Icons.delete),
                                           color: Colors.red,
                                           onPressed: () {
                                             assignController
@@ -128,7 +128,7 @@ class AssignMailScreen extends StatelessWidget {
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(8.0),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -138,7 +138,7 @@ class AssignMailScreen extends StatelessWidget {
                                       fontWeight: FontWeight.w700,
                                     ),
                                     GlobalText(
-                                      'Time: ${timeFormate}',
+                                      'Time: $timeFormate',
                                       fontWeight: FontWeight.w700,
                                     ),
                                   ],
@@ -153,7 +153,7 @@ class AssignMailScreen extends StatelessWidget {
             ),
             Container(
               color: MyColor.backgroundLogin,
-              margin: EdgeInsets.all(08),
+              margin: const EdgeInsets.all(08),
               child: Obx(() => ListView.builder(
                     itemCount:
                         assignController.flaggedAssignList.value.data?.length,
@@ -217,7 +217,7 @@ class AssignMailScreen extends StatelessWidget {
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(8.0),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -232,14 +232,14 @@ class AssignMailScreen extends StatelessWidget {
                                     Row(
                                       children: [
                                         IconButton(
-                                          icon: Icon(Icons.flag),
+                                          icon: const Icon(Icons.flag),
                                           color: Colors.blue,
                                           onPressed: () {
                                             // Flag button action
                                           },
                                         ),
                                         IconButton(
-                                          icon: Icon(Icons.delete),
+                                          icon: const Icon(Icons.delete),
                                           color: Colors.red,
                                           onPressed: () {
                                             assignController
@@ -253,18 +253,18 @@ class AssignMailScreen extends StatelessWidget {
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(8.0),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    GlobalText(
+                                    const GlobalText(
                                       // 'Date: ${formattedDate.toString()}',
                                       'Date: DATE',
                                       fontWeight: FontWeight.w700,
                                     ),
                                     GlobalText(
-                                      'Time: ${timeFormate}',
+                                      'Time: $timeFormate',
                                       fontWeight: FontWeight.w700,
                                     ),
                                   ],

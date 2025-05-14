@@ -9,7 +9,7 @@ import 'assign_mail_Screen.dart';
 import 'mailMaanagement_Screen.dart';
 
 class OperatorDrawer extends StatelessWidget {
-  OperatorDrawer({super.key});
+  const OperatorDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +71,7 @@ class OperatorDrawer extends StatelessWidget {
         fontSize: Get.height * 0.02,
       ),
       trailing:
-          Icon(Icons.arrow_forward_ios, size: 16, color: MyColor.nevyBlue),
+          const Icon(Icons.arrow_forward_ios, size: 16, color: MyColor.nevyBlue),
       onTap: onTap,
     );
   }

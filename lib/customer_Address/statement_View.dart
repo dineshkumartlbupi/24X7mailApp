@@ -89,7 +89,7 @@ class StatementView extends StatelessWidget {
               ),
               Container(
                 height: Get.height * 0.25,
-                margin: EdgeInsets.all(5),
+                margin: const EdgeInsets.all(5),
                 child: ListView.builder(
                   itemCount: addStatement.statement.value.data?.length,
                   itemBuilder: (_, index) {
